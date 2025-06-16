@@ -15,7 +15,7 @@ public class Disponibilite {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private  long idDispo;
-    @Column(name = "date", nullable = false, length = 20)
+    @Column(name = "date", nullable = false, length = 30)
     @JsonProperty("date")
     private Date date;
     @Column(name = "heureDebut", nullable = false)
@@ -24,7 +24,7 @@ public class Disponibilite {
     @Column(name = "heureFin", nullable = false)
     @JsonProperty("heureFin")
     private int heureFin;
-    @Column(name = "idUser")
+    @Column(name = "idUser", nullable = false)
     @JsonProperty("idUser")
     private long idUser;
 

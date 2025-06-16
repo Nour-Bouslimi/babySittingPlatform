@@ -10,8 +10,7 @@ import java.sql.Date;
 import java.util.List;
 @Service
 public class DisponibilityImplement implements DisponibilityInterface {
-    @Autowired
-    DisponibilityRepo disponibiliteRepo;
+
     @Autowired
     private DisponibilityRepo disponibilityRepo;
 
@@ -67,8 +66,8 @@ public class DisponibilityImplement implements DisponibilityInterface {
 
 
     @Override
-    public List<Disponibilite> getDisponibiliteByUserId(Long userId) {
-        return disponibilityRepo.findByIdUser(userId);
+    public List<Disponibilite> getDisponibiliteByIdUser(Long IdUser) {
+        return disponibilityRepo.findByIdUser(IdUser);
     }
 
 

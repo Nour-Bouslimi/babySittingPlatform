@@ -39,8 +39,8 @@ public class DisponibilityController {
         return disponibilityInterface.getDisponibiliteById(id);
     }
     @GetMapping("/getDisponibilityByUserId/{userId}")
-    public List<Disponibilite> getDisponibilityByUserId(@PathVariable Long userId) {
-        return disponibilityInterface.getDisponibiliteByUserId(userId);
+    public List<Disponibilite> getDisponibilityByUserId(@PathVariable Long IdUser) {
+        return disponibilityInterface.getDisponibiliteByIdUser(IdUser);
     }
     @GetMapping("/getDisponibilityByDate/{date}")
     public List<Disponibilite> getDisponibilityByDate(@PathVariable String date) {
