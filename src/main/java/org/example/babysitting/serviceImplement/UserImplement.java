@@ -1,6 +1,7 @@
 package org.example.babysitting.serviceImplement;
 
 import org.example.babysitting.entities.User;
+import org.example.babysitting.entities.UserRole;
 import org.example.babysitting.repository.UserRepo;
 import org.example.babysitting.service.UserInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class UserImplement implements UserInterface {
     }
 
     @Override
-    public User updateUser(long id, User user) {
+    public User updateUser(Long id, User user) {
        User u= getUserById(id);
         if (u != null) {
             u.setFirstName(user.getFirstName());
@@ -94,6 +95,11 @@ public class UserImplement implements UserInterface {
         //on peut aussi utiliser findByFirstNamejpql(String firstName) ou findByFirstNamesql(String firstName) si on veut utiliser les méthodes nommées ou JPQL/SQL
     }
 
+    @Override
+    public boolean getUserByEmail(String email) {
+        return userRepo.existsByEmail(email);
+    }
+
 
     @Override
     public List<User> getUserSWT(String firstName) {
@@ -106,9 +112,11 @@ public class UserImplement implements UserInterface {
         return userRepo.findByEmailDomain(domaine); // retourne la liste des utilisateurs dont l'email contient le domaine donné
     }
 
-    public User getUserById(long id) {
-        return userRepo.findById(id).orElse(null); // retourne l'utilisateur si trouvé, sinon null
-        //.orElse(null) ou .get() pour obtenir l'utilisateur ou lancer une exception si non trouvé
-        //ou bien type de retour te3 lmethode n7otou Optional<User> w na3mel  isPresent
+    @Override
+    public List<User> getUsersByRole(UserRole role) {
+        return userRepo.findByRole(role);
+
     }
+
+
 }

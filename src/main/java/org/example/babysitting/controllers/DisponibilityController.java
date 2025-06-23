@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @RestController
@@ -27,7 +31,7 @@ public class DisponibilityController {
         disponibilityInterface.deleteDisponibilite(id);
     }
     @PutMapping("/updateDisponibility/{id}")
-    public Disponibilite updateDisponibility(@PathVariable long id, @RequestBody Disponibilite disponibilite) {
+    public Disponibilite updateDisponibility(@PathVariable Long id, @RequestBody Disponibilite disponibilite) {
         return disponibilityInterface.updateDisponibilite(id, disponibilite);
     }
     @GetMapping("/getAllDisponibilities")
@@ -44,7 +48,13 @@ public class DisponibilityController {
     }
     @GetMapping("/getDisponibilityByDate/{date}")
     public List<Disponibilite> getDisponibilityByDate(@PathVariable String date) {
-        return disponibilityInterface.getDisponibiliteByDate(Date.valueOf(date));
+        try {
+            LocalDate parsedDate = LocalDate.parse(date); // Conversion de la chaîne en LocalDate
+            return disponibilityInterface.getDisponibiliteByDate(parsedDate);
+        } catch (DateTimeParseException e) {
+            throw new RuntimeException("Format de date invalide. Utilisez 'yyyy-MM-dd'.");
+        }
+
     }
     @GetMapping("/getDisponibilityByTimeRange")
     public List<Disponibilite> getDisponibilityByTimeRange(@RequestParam int heureDebut, @RequestParam int heureFin) {

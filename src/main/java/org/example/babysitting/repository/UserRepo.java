@@ -1,6 +1,7 @@
 package org.example.babysitting.repository;
 
 import org.example.babysitting.entities.User;
+import org.example.babysitting.entities.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,8 +19,9 @@ public interface UserRepo extends JpaRepository<User, Long> {
     List<User> findByEmailAndFirstNameStartingWith(String email, String firstName);
     boolean existsByEmail(String email); //vérifie si l'email existe déjà dans la base de données
     boolean existsByFirstName(String firstName); //vérifie si le prénom existe déjà dans la base de données
-    User findByFirstName(String firstName); //trouve un utilisateur par son prénom
 
+    User findByFirstName(String firstName); //trouve un utilisateur par son prénom
+    List<User> findByRole(UserRole role); //trouve les utilisateurs par leur rôle
     // JPQL methods: requete 3al entity fy wost spring boot
 
     @Query("SELECT u from User u WHERE u.firstName=?1")  // ma3neha: select * from user where firstName= ?1 1 howa l'index te3 el parametre eli bch na3tiwha lel requete

@@ -6,13 +6,14 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Data
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long idNotif;
+    private Long idNotif;
     @Column(name = "message", nullable = false, length = 500)
     @JsonProperty("message")
     private String message;
@@ -22,22 +23,26 @@ public class Notification {
     @CreationTimestamp
     @Column(name = "date", nullable = false, length = 30)
     @JsonProperty("date")
-    private Date date; // Date of the notification, automatically set to current date
+    private LocalDate date; // Date of the notification, automatically set to current date
     @Column(name = "idUser", nullable = false)
     @JsonProperty("idUser")
-    private long idUser; // ID of the user who receives the notification
+    private Long idUser; // ID of the user who receives the notification
+
+    // Association with User
+    @ManyToOne
+    private User user;
 
     public Notification() {
     }
     @PrePersist
     @PreUpdate
     public void setSystemDate() {
-        this.date = new Date(System.currentTimeMillis());
+        //this.date = new Date(System.currentTimeMillis());
     }
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

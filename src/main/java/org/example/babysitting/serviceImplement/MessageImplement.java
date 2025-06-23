@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 @Service
 public class MessageImplement implements MessageInterface {
@@ -34,7 +35,7 @@ public class MessageImplement implements MessageInterface {
     }
 
     @Override
-    public Message updateMessage(long id, Message message) {
+    public Message updateMessage(Long id, Message message) {
 
 
 
@@ -65,7 +66,7 @@ public class MessageImplement implements MessageInterface {
     }
 
     @Override
-    public List<Message> getMessagesByDate(Date date) {
+    public List<Message> getMessagesByDate(LocalDate date) {
         return messageRepo.findByDate(date);
     }
 }

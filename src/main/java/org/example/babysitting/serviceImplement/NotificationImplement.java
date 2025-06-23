@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -86,7 +87,7 @@ public class NotificationImplement implements NotificationInterface {
     }
 
     @Override
-    public List<Notification> getNotificationsByDate(Date date) {
+    public List<Notification> getNotificationsByDate(LocalDate date) {
         return notificationRepo.findByDate(date);
     }
 }

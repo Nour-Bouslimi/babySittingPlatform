@@ -6,13 +6,14 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Data
 public class Annonce {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long idAnnonce;
+    private Long idAnnonce;
     @Column(name = "titre", nullable = false, length = 100)
     @JsonProperty("titre")
     private String titre;
@@ -22,19 +23,24 @@ public class Annonce {
     @CreationTimestamp
     @Column(name = "date", nullable = false, length = 30)
     @JsonProperty("date")
-    private Date date;
+    private LocalDate date;
     @Column(name = "img")
     @JsonProperty("img")
     private String img;
     @Column(name = "idUser", nullable = false)
     @JsonProperty("idUser")
-    private long idUser; // ID of the user who created the announcement
+    private Long idUser; // ID of the user who created the announcement
+    // Association with User
+    @ManyToOne
+    private User user;
+
+
     public Annonce() {
     }
     @PrePersist
     @PreUpdate
     public void setSystemDate() {
-        this.date = new Date(System.currentTimeMillis());
+        //this.date = new Date(System.currentTimeMillis());
     }
 
     public long getIdAnnonce() {
@@ -53,11 +59,11 @@ public class Annonce {
         this.titre = titre;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

@@ -5,6 +5,8 @@ import org.example.babysitting.service.NotificationInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @RestController
@@ -55,7 +57,13 @@ public class NotificationController {
     }
     @GetMapping("/getNotificationsByDate/{date}")
     public List<Notification> getNotificationsByDate(@PathVariable String date) {
-        return notificationInterface.getNotificationsByDate(java.sql.Date.valueOf(date));
+        try {
+            LocalDate parsedDate = LocalDate.parse(date); // Conversion de la chaîne en LocalDate
+            return notificationInterface.getNotificationsByDate(parsedDate);
+        } catch (DateTimeParseException e) {
+            throw new RuntimeException("Format de date invalide. Utilisez 'yyyy-MM-dd'.");
+        }
+
     }
 
 

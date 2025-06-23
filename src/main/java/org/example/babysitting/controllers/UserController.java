@@ -1,6 +1,7 @@
 package org.example.babysitting.controllers;
 
 import org.example.babysitting.entities.User;
+import org.example.babysitting.entities.UserRole;
 import org.example.babysitting.service.UserInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +45,7 @@ public class UserController {
             return userInterface.addUserWEmail(user);
     }
     @PutMapping("updateUser/{id}")
-    public User updateUser(@PathVariable long id, @RequestBody User user) {
+    public User updateUser(@PathVariable Long id, @RequestBody User user) {
         return userInterface.updateUser(id, user);
     }
 
@@ -68,5 +69,14 @@ public class UserController {
     @GetMapping("getUserByEmailDomain/{domaine}")
     public List<User> getUserByEmailDomain(@PathVariable String domaine) {
         return userInterface.getUserByEmailDomain(domaine);
+    }
+    @GetMapping("getUsersByRole/{role}")
+    public List<User> getUsersByRole(@PathVariable String role) {
+         UserRole roleEnum = UserRole.valueOf(role.toUpperCase());
+        return userInterface.getUsersByRole(roleEnum);
+    }
+    @GetMapping("getUserByEmail/{email}")
+    public boolean getUserByEmail(@PathVariable String email) {
+        return userInterface.getUserByEmail(email);
     }
 }

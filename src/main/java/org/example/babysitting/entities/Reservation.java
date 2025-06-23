@@ -8,20 +8,21 @@ import lombok.Data;
 import lombok.NonNull;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Date;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
+
 
 @Entity
 @Data
 public class Reservation {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private long idReserv;
+    private Long idReserv;
     @CreationTimestamp
     @Column(name = "date", nullable = false, length = 30)
     @JsonProperty("date")
-    private Date date;
+    private LocalDate date;
 
     @Column(name = "heureDebut", nullable = false)
     @JsonProperty("heureDebut")
@@ -38,14 +39,18 @@ public class Reservation {
 
     @Column(name = "idUser", nullable = false)
     @JsonProperty("idUser")
-    private long idUser;
+    private Long idUser;
 
+    //association avec User
+    @ManyToOne
+    private User user;
 
     public Reservation() {
+        this.statut = Statut.PENDING;
 
     }
 
-    public Reservation(long idReserv, Date date, int heureDebut, int heureFin, Statut statut, long idUser) {
+    public Reservation(long idReserv, LocalDate date, int heureDebut, int heureFin, Statut statut, long idUser) {
         this.idReserv = idReserv;
         this.date = date;
         this.heureDebut = heureDebut;
@@ -62,11 +67,11 @@ public class Reservation {
         this.idReserv = idReserv;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

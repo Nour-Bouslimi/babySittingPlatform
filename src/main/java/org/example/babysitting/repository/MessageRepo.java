@@ -5,13 +5,14 @@ import org.example.babysitting.entities.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface MessageRepo extends JpaRepository<Message, Long> {
 
     //Named methods
     List<Message> findByIdUser(Long idUser);
-    List<Message> findByDate(Date date);
+    List<Message> findByDate(LocalDate date);
     boolean existsByIdMsg(Long idMsg);
 
 

@@ -6,6 +6,7 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -25,14 +26,22 @@ public class Reponse {
     @CreationTimestamp
     @Column(name = "date", nullable = false, length = 30)
     @JsonProperty("date")
-    private Date date; // Date of the response, can be formatted as needed
+    private LocalDate date; // Date of the response, can be formatted as needed
+
+    // association with User
+    @ManyToOne
+    private User user;
+
+    // association with Message
+    @ManyToOne
+    private Message message;
 
     public Reponse() {
     }
     @PrePersist
     @PreUpdate
     public void setSystemDate() {
-        this.date = new Date(System.currentTimeMillis());
+        //this.date = new Date(System.currentTimeMillis());
     }
 
     public Long getIdReponse() {
@@ -67,11 +76,11 @@ public class Reponse {
         this.idUser = idUser;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 @Service
 public class ReponseImplement implements ReponseInterface {
@@ -34,7 +35,7 @@ public class ReponseImplement implements ReponseInterface {
     }
 
     @Override
-    public Reponse updateReponse(long id, Reponse reponse) {
+    public Reponse updateReponse(Long id, Reponse reponse) {
         Reponse r= getReponseById(id);
         if (r != null) {
             r.setContent(reponse.getContent());
@@ -68,7 +69,7 @@ public class ReponseImplement implements ReponseInterface {
     }
 
     @Override
-    public List<Reponse> getReponsesByDate(Date date) {
+    public List<Reponse> getReponsesByDate(LocalDate date) {
         return reponseRepo.findByDate(date);
     }
 
@@ -78,12 +79,12 @@ public class ReponseImplement implements ReponseInterface {
     }
 
     @Override
-    public List<Reponse> getReponsesByIdMsgAndDate(Long idMsg, Date date) {
+    public List<Reponse> getReponsesByIdMsgAndDate(Long idMsg, LocalDate date) {
         return reponseRepo.findByIdMsgAndDate(idMsg, date);
     }
 
     @Override
-    public List<Reponse> getReponsesByIdUserAndDate(Long idUser, Date date) {
+    public List<Reponse> getReponsesByIdUserAndDate(Long idUser, LocalDate date) {
         return reponseRepo.findByIdUserAndDate(idUser, date);
     }
 }

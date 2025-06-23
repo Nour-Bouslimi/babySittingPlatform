@@ -7,7 +7,9 @@ import org.example.babysitting.service.ReservationInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 @Service
 public class ReservationImplement implements ReservationInterface {
@@ -37,7 +39,7 @@ public class ReservationImplement implements ReservationInterface {
 
 
     @Override
-    public Reservation updateReservation(long id, Reservation reservation) {
+    public Reservation updateReservation(Long id, Reservation reservation) {
         Reservation r = getReservationById(id);
         if (r != null) {
             r.setDate(reservation.getDate());
@@ -52,7 +54,7 @@ public class ReservationImplement implements ReservationInterface {
     }
 
     @Override
-    public Reservation updateStatusReservation(long id, String status) {
+    public Reservation updateStatusReservation(Long id, String status) {
         Reservation r = getReservationById(id);
         if (r != null) {
             r.setStatut(Statut.valueOf(status));
@@ -78,12 +80,17 @@ public class ReservationImplement implements ReservationInterface {
     }
 
     @Override
-    public List<Reservation> getReservationByDate(Date date) {
+    public List<Reservation> getReservationByDate(LocalDate date) {
         return reservationRepo.findByDate(date);
     }
 
     @Override
     public List<Reservation> getReservationByTimeRange(int heureDebut, int heureFin) {
         return reservationRepo.findByHeureDebutBetween(heureDebut, heureFin);
+    }
+
+    @Override
+    public List<Reservation> getReservationByStatut(Statut statut) {
+       return reservationRepo.findByStatut(statut);
     }
 }

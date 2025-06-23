@@ -4,6 +4,7 @@ import org.example.babysitting.entities.Message;
 import org.example.babysitting.entities.Notification;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface NotificationInterface {
@@ -18,7 +19,7 @@ public interface NotificationInterface {
     List<Notification> getUnreadNotificationsByIdUser(Long idUser); //ajout de la méthode pour récupérer les notifications non lues par l'ID de l'utilisateur
     void markNotificationAsRead(Long id); //ajout de la méthode pour marquer une notification comme lue
     void markAllNotificationsAsRead(Long idUser); //ajout de la méthode pour marquer toutes les notifications comme lues
-    List<Notification> getNotificationsByDate(Date date); //ajout de la méthode pour récupérer les notifications par date
+    List<Notification> getNotificationsByDate(LocalDate date); //ajout de la méthode pour récupérer les notifications par date
 
 
 }

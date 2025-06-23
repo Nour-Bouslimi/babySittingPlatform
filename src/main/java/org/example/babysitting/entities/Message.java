@@ -6,6 +6,8 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -22,18 +24,25 @@ public class Message {
     @CreationTimestamp
     @Column(name = "date", nullable = false, length = 30)
     @JsonProperty("date")
-    private Date date;
+    private LocalDate date;
 
     @Column(name = "idUser", nullable = false)
     @JsonProperty("idUser")
-    private long idUser;
+    private Long idUser;
+    // Association avec User
+    @ManyToOne
+    private User user;
+    // Association avec Reponse
+    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Reponse> reponses;
+
 
     public Message() {
     }
     @PrePersist
     @PreUpdate
     public void setSystemDate() {
-        this.date = new Date(System.currentTimeMillis());
+        //this.date = new Date(System.currentTimeMillis());
     }
 
     public Long getIdMsg() {
@@ -52,11 +61,11 @@ public class Message {
         this.content = content;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

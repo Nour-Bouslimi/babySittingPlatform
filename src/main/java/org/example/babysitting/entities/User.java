@@ -8,7 +8,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
+
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 @Entity
 @Data// Lombok will generate getters, setters, toString, equals, and hashCode methods
@@ -63,7 +65,7 @@ public class User {
     private String photo;
     @JsonProperty("dateOfBirth")
  @Column( name = "dateOfBirth")
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     @JsonProperty("nbChildren")
  @Column( name = "nbChildren")
     private int nbChildren;
@@ -114,9 +116,31 @@ public class User {
     private float tarifHoraire;
     //private List<Disponibilite> disponibilites;
 
+    //association with Annonce
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Annonce> annonces;
+
+    //association with Disponibilite
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Disponibilite> disponibilites;
 
     public User() {
     }
+    //association with Reservation
+    @OneToMany(mappedBy = "user", cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Reservation> reservations;
+
+
+    //association with Message
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch= FetchType.LAZY)
+    private List<Message> messages;
+    //association with Notification
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Notification> notifications;
+
+    //association with Reponse
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Reponse> reponses;
 
     public Long getIdUser() {
         return idUser;
@@ -207,11 +231,12 @@ public class User {
         this.photo = photo;
     }
 
-    public Date getDateOfBirth() {
+
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

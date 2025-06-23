@@ -5,19 +5,21 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertTrue;
 import lombok.Data;
 
-import java.sql.Date;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 @Entity
 @Data
 public class Disponibilite {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private  long idDispo;
+    private  Long idDispo;
     @Column(name = "date", nullable = false, length = 30)
     @JsonProperty("date")
-    private Date date;
+    private LocalDate date;
     @Column(name = "heureDebut", nullable = false)
     @JsonProperty("heureDebut")
     private int heureDebut;
@@ -26,7 +28,11 @@ public class Disponibilite {
     private int heureFin;
     @Column(name = "idUser", nullable = false)
     @JsonProperty("idUser")
-    private long idUser;
+    private Long idUser;
+
+    // Association avec l'entité User
+    @ManyToOne
+    private User user; // Association avec l'entité User
 
     public Disponibilite() {
     }
@@ -39,11 +45,11 @@ public class Disponibilite {
         this.idDispo = idDispo;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -75,30 +81,28 @@ public class Disponibilite {
     @AssertTrue(message = "The date must be greater than the current date or comply with the time constraints.")
 
 
+
     public boolean isDateAndTimeValid() {
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
 
-        LocalDate inputDate = date.toLocalDate();
+        LocalDate inputDate = date; // Pas besoin de conversion, car date est déjà un LocalDate
         LocalTime inputStartTime = LocalTime.of(heureDebut, 0);
         LocalTime inputEndTime = LocalTime.of(heureFin, 0);
 
-        // Vérification de la date
         if (inputDate.isAfter(currentDate)) {
-            return true; // La date est valide si elle est après la date actuelle
+            return true;
         } else if (inputDate.isEqual(currentDate)) {
-            // Vérification des heures
             if (heureDebut < heureFin) {
-                // Plage horaire normale
                 return inputStartTime.isAfter(currentTime) &&
                         inputEndTime.isAfter(currentTime) &&
                         inputStartTime.isBefore(inputEndTime);
             } else {
-                // Plage horaire traversant minuit
                 return inputStartTime.isAfter(currentTime) ||
                         inputEndTime.isAfter(currentTime);
             }
         }
-        return false; // La date est invalide si elle est avant la date actuelle
+        return false;
     }
+
 }

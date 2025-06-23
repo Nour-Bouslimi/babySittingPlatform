@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -35,7 +36,7 @@ public class AnnonceImplement implements AnnonceInterface {
     }
 
     @Override
-    public Annonce updateAnnonce(long id, Annonce annonce) {
+    public Annonce updateAnnonce(Long id, Annonce annonce) {
         Annonce a =getAnnonceById(id);
         if (a != null) {
             a.setTitre(annonce.getTitre());
@@ -64,7 +65,7 @@ public class AnnonceImplement implements AnnonceInterface {
     }
 
     @Override
-    public List<Annonce> getAnnoncesByDate(Date date) {
+    public List<Annonce> getAnnoncesByDate(LocalDate date) {
         return annonceRepo.findByDate(date);
     }
 

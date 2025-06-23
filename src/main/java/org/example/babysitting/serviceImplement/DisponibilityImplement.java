@@ -6,7 +6,9 @@ import org.example.babysitting.service.DisponibilityInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 @Service
 public class DisponibilityImplement implements DisponibilityInterface {
@@ -34,7 +36,7 @@ public class DisponibilityImplement implements DisponibilityInterface {
     }
 
     @Override
-    public Disponibilite updateDisponibilite(long id, Disponibilite disponibilite) {
+    public Disponibilite updateDisponibilite(Long id, Disponibilite disponibilite) {
         Disponibilite d = getDisponibiliteById(id);
         if (d != null) {
             d.setDate(disponibilite.getDate());
@@ -58,7 +60,7 @@ public class DisponibilityImplement implements DisponibilityInterface {
         return disponibilityRepo.findAll();
     }
     @Override
-    public List<Disponibilite> getDisponibiliteByDate(Date date) {
+    public List<Disponibilite> getDisponibiliteByDate(LocalDate date) {
         return disponibilityRepo.findByDate(date);
 
     }
