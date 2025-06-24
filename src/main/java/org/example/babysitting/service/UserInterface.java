@@ -2,6 +2,7 @@ package org.example.babysitting.service;
 
 import org.example.babysitting.entities.User;
 import org.example.babysitting.entities.UserRole;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,8 +21,8 @@ public interface UserInterface {
     List<User> getUserSWT(String firstName); //ajout de la méthode pour récupérer les utilisateurs dont le prénom commence par une certaine chaîne de caractères
     List<User> getUserByEmailDomain(String domaine); //ajout de la méthode pour récupérer les utilisateurs dont l'email contient un certain domaine
     List<User> getUsersByRole(UserRole role); //ajout de la méthode pour récupérer les utilisateurs par leur rôle
-
-
+    String saveImage(MultipartFile file); //ajout de la méthode pour enregistrer une image
+    byte[] afficherImage(String filename); //ajout de la méthode pour afficher une image
 
 
 

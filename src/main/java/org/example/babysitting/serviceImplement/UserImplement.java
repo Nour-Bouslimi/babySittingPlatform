@@ -1,21 +1,43 @@
 package org.example.babysitting.serviceImplement;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.example.babysitting.entities.User;
 import org.example.babysitting.entities.UserRole;
 import org.example.babysitting.repository.UserRepo;
 import org.example.babysitting.service.UserInterface;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
-
+@Slf4j
 @Service
 public class UserImplement implements UserInterface {
     @Autowired //najem nesta3mel @Ressource elly hya injection par valeur
     UserRepo userRepo;
 
+    //nasen3ou logger
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserImplement.class.getName());
+ BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Override
     public User addUser(User user) {
+        // Hash the password before saving
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
+        // verify if the user already exists by email
+        if (userRepo.existsByEmail(user.getEmail())) {
+            LOGGER.warn("User with email {} already exists", user.getEmail());
+            throw new RuntimeException("User with this email already exists");
+        }
+
         return userRepo.save(user);
     }
 
@@ -116,6 +138,33 @@ public class UserImplement implements UserInterface {
     public List<User> getUsersByRole(UserRole role) {
         return userRepo.findByRole(role);
 
+    }
+    Path imagePath = Paths.get("uploads/img");
+
+    @Override
+    public String saveImage(MultipartFile file) {
+        String originalFileName = file.getOriginalFilename();
+        String extension = originalFileName != null ? originalFileName.substring(originalFileName.lastIndexOf('.')) : "";
+        String randomName = RandomStringUtils.randomAlphanumeric(10) + extension;
+        try{
+            Files.copy(file.getInputStream(),
+                    imagePath.resolve(randomName));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return randomName; // retourne le nom de l'image enregistrée
+    }
+
+    @Override
+    public byte[] afficherImage(String filename) {
+        try{
+            Path filePath =imagePath.resolve(filename);
+            return Files.readAllBytes(filePath);
+        } catch (IOException e) {
+            LOGGER.error("Error reading image file: {}", e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
 

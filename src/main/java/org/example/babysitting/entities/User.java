@@ -41,8 +41,8 @@ public class User {
     @JsonProperty("password")
     private String password;
     @Column( name = "phoneNumber",nullable = false, length = 20)
-    @Pattern(regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10,15}$",
-             message = "Phone number should be valid")
+    /*@Pattern(regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10,15}$",
+             message = "Phone number should be valid")*/
     @JsonProperty("phoneNumber")
     private String phoneNumber;
     @Column(name = "address", nullable = false, length = 150)
@@ -114,7 +114,7 @@ public class User {
     @JsonProperty("tarifHoraire")
     @Column(name="tarifHoraire")
     private float tarifHoraire;
-    //private List<Disponibilite> disponibilites;
+
 
     //association with Annonce
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -125,6 +125,7 @@ public class User {
     List<Disponibilite> disponibilites;
 
     public User() {
+
     }
     //association with Reservation
     @OneToMany(mappedBy = "user", cascade=CascadeType.ALL,fetch = FetchType.LAZY)
