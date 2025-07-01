@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,11 +19,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-@Slf4j
+@Slf4j //n7otha bch nasen3ou logger
 @Service
 public class UserImplement implements UserInterface {
     @Autowired //najem nesta3mel @Ressource elly hya injection par valeur
     UserRepo userRepo;
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     //nasen3ou logger
     private static final Logger LOGGER = LoggerFactory.getLogger(UserImplement.class.getName());
@@ -73,7 +76,7 @@ public class UserImplement implements UserInterface {
             u.setFirstName(user.getFirstName());
             u.setLastName(user.getLastName());
             u.setEmail(user.getEmail());
-            u.setPassword(user.getPassword());
+            u.setPassword(passwordEncoder.encode(user.getPassword())); // Hash le mot de passe avant de le sauvegarder
             u.setAddress(user.getAddress());
             u.setPhoneNumber(user.getPhoneNumber());
             u.setAgeChildren(user.getAgeChildren());
@@ -122,6 +125,17 @@ public class UserImplement implements UserInterface {
         return userRepo.existsByEmail(email);
     }
 
+    @Override
+    public User getUserByEmailUser(String email) {
+        return userRepo.findByEmail(email); // retourne l'utilisateur dont l'email correspond à la chaîne de caractères donnée
+    }
+
+    @Override
+    public User getUserByCin(String cin) {
+        return userRepo.findByCin(cin); // retourne l'utilisateur dont le numéro de carte d'identité nationale correspond à la chaîne de caractères donnée
+
+    }
+
 
     @Override
     public List<User> getUserSWT(String firstName) {
@@ -165,6 +179,55 @@ public class UserImplement implements UserInterface {
             LOGGER.error("Error reading image file: {}", e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    //send email method
+    public void sendEmail(String email, String subject, String message) {
+        emailSenderService.sendEmail(email, subject, message);
+    }
+    @Override
+    public String forgotPassword(String email) {
+        User user = userRepo.findByEmail(email);
+        if(user == null){
+            LOGGER.warn("User with email {} not found", email);
+            return "User not found";
+        }
+        String newPassword = RandomStringUtils.randomAlphanumeric(8); // Générer un mot de passe aléatoire de 8 caractères
+        user.setPassword(passwordEncoder.encode(newPassword)); // Hash le nouveau mot de passe
+        userRepo.save(user); // Sauvegarder l'utilisateur avec le nouveau mot de passe
+        // Envoyer le nouveau mot de passe par email
+        String subject = "Password Reset";
+        // check the gender of the user to customize the message
+        String salutation = user.getGenre().equals("Male") ? "Mr." : "Mrs.";
+        String name = user.getFirstName() != null ? user.getFirstName() : "User";
+        String message = "Hello "+salutation +name + "Your new password is: " + newPassword + "\nPlease change it after logging in.";
+        sendEmail(email, subject, message);
+
+        LOGGER.info("Password for user with email {} has been reset", email);
+        return "New password has been set and sent to your email"; // Retourner un message de succès
+
+    }
+
+    @Override
+    public User updateUserPassword(Long id,String currentPassword, String newPassword) {
+        User user = getUserById(id);
+        if (user == null) {
+            LOGGER.warn("User with id {} not found", id);
+            return null; // Retourner null si l'utilisateur n'existe pas
+
+        }
+        // Vérifier l'ancien mot de passe
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            LOGGER.warn("Old Password incorrect for user {}", id);
+            throw new IllegalArgumentException("Old Password incorrect.");
+        }
+        if(!newPassword.matches("^(?=.*[A-Za-z])(?=.*\\d).{8,}$")) {
+            LOGGER.warn("New password does not meet the requirements");
+            throw new IllegalArgumentException("Password must contain at least 8 characters, one letter and one digit.");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword)); // Hash le nouveau mot de passe
+        return userRepo.save(user); // Sauvegarder l'utilisateur avec le nouveau mot de passe
     }
 
 

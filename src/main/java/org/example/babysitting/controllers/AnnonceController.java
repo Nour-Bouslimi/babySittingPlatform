@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/annonces")
+@CrossOrigin(origins= "*",allowedHeaders = "*") // Allows all origins, you can specify a specific origin if needed
 public class AnnonceController {
     @Autowired
     AnnonceInterface annonceInterface;

@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/disponibility") // This will map all requests starting with /disponibility to this controller
+@CrossOrigin(origins= "*",allowedHeaders = "*") // Allows all origins, you can specify a specific origin if needed
 public class DisponibilityController {
     @Autowired
      DisponibilityInterface disponibilityInterface;

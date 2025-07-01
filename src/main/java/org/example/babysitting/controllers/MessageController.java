@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/messages")
+@CrossOrigin(origins= "*",allowedHeaders = "*") // Allows all origins, you can specify a specific origin if needed
 public class MessageController {
     @Autowired
      MessageInterface messageInterface;

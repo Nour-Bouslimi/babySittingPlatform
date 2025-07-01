@@ -35,14 +35,18 @@ public class User {
     @JsonProperty("email")
     private String email;
     @Column( name = "password",nullable = false, length = 100)
-    //@Size(min = 8, max = 20, message = "Password must be between 8 and 15 characters")
-    /*@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,20}$",
-             message = "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character")*/
+   // @Size(min = 8, max = 20, message = "Password must be between 8 and 15 characters")
+
+    @Pattern(
+            regexp = "^(?=.*[A-Za-z])(?=.*\\d).{8,}$",
+            message = " Password must contains at least 8 caracters , One letter and one digit. "
+
+    )
+
     @JsonProperty("password")
     private String password;
-    @Column( name = "phoneNumber",nullable = false, length = 20)
-    /*@Pattern(regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10,15}$",
-             message = "Phone number should be valid")*/
+    @Column(name = "phoneNumber", nullable = false, length = 20)
+    @Pattern(regexp = "^\\+?\\d{8,20}$", message = "The phone number must contain only digits, with an optional + at the beginning")
     @JsonProperty("phoneNumber")
     private String phoneNumber;
     @Column(name = "address", nullable = false, length = 150)
@@ -50,6 +54,11 @@ public class User {
              message = "Address should be valid")*/
     @JsonProperty("address")
     private String address;
+
+    @Column(name = "cin", nullable = false, length = 8, unique = true)
+    @Pattern(regexp = "^[0-9]{8}$", message = "CIN must be exactly 8digits")
+    @JsonProperty("cin")
+    private String cin;
     @Column( name = "genre",nullable = false, length = 20)
     @JsonProperty("genre")
     private String genre;
@@ -69,9 +78,13 @@ public class User {
     @JsonProperty("nbChildren")
  @Column( name = "nbChildren")
     private int nbChildren;
+    @Pattern(
+            regexp = "^(\\d{1,2})\\s?(mois|ans)$",
+            message = "ageChildren must be in the format 'X mois' or 'X ans'"
+    )
     @JsonProperty("ageChildren")
- @Column( name = "ageChildren",nullable = true)
-    private int ageChildren;
+    @Column( name = "ageChildren")
+    private String ageChildren;
     @JsonProperty("etatCivil")
     @Column(name = "etatCivil", length = 30)
     private String etatCivil;
@@ -151,8 +164,7 @@ public class User {
         this.idUser = idUser;
     }
 
-    public @Pattern(regexp = "^[a-zA-Z]+$",
-            message = "First name should contain only letters") String getFirstName() {
+    public String getFirstName() {
         return firstName;
     }
 
@@ -238,6 +250,10 @@ public class User {
     }
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
+        if (dateOfBirth != null && dateOfBirth.isAfter(LocalDate.now().minusYears(19))) {
+            throw new IllegalArgumentException("User must be at least 19 years old (born in 2006 or before)");
+        }
+
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -249,11 +265,13 @@ public class User {
         this.nbChildren = nbChildren;
     }
 
-    public int getAgeChildren() {
+    public String getAgeChildren() {
         return ageChildren;
     }
 
-    public void setAgeChildren(int ageChildren) {
+    public void setAgeChildren(String ageChildren) {
+
+
         this.ageChildren = ageChildren;
     }
 

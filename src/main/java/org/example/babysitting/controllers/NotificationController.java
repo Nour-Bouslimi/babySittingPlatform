@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/notifications")
+@CrossOrigin(origins= "*",allowedHeaders = "*") // Allows all origins, you can specify a specific origin if needed
 public class NotificationController {
     @Autowired
      NotificationInterface notificationInterface;

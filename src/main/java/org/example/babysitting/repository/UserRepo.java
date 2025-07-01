@@ -17,10 +17,12 @@ public interface UserRepo extends JpaRepository<User, Long> {
 
     //named methods: on y7ot esm el methode w Spring y3refha w y3ref chnowa bch y5dem biha
     List<User> findByEmailAndFirstNameStartingWith(String email, String firstName);
+    User findByEmail(String email);
     boolean existsByEmail(String email); //vérifie si l'email existe déjà dans la base de données
     boolean existsByFirstName(String firstName); //vérifie si le prénom existe déjà dans la base de données
-
+    boolean existsByRole(UserRole role);
     User findByFirstName(String firstName); //trouve un utilisateur par son prénom
+    User findByCin(String cin); //trouve un utilisateur par son numéro de carte d'identité nationale
     List<User> findByRole(UserRole role); //trouve les utilisateurs par leur rôle
     // JPQL methods: requete 3al entity fy wost spring boot
 

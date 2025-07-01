@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user") //tetsama global api: ma3neha bch ye5ou nafs les api te3 les controller lkol ama yabdew b /user/esm l'api exp hnee /user/afficher
+@CrossOrigin(origins= "*",allowedHeaders = "*") // Allows all origins, you can specify a specific origin if needed
 public class UserController {
 
         @Autowired
@@ -76,6 +77,10 @@ public class UserController {
     public List<User> getUserByEmailDomain(@PathVariable String domaine) {
         return userInterface.getUserByEmailDomain(domaine);
     }
+    @GetMapping("getUserByEmailUser/{email}")
+    public User getUserByEmailUser(@PathVariable String email) {
+        return userInterface.getUserByEmailUser(email);
+    }
     @GetMapping("getUsersByRole/{role}")
     public List<User> getUsersByRole(@PathVariable String role) {
          UserRole roleEnum = UserRole.valueOf(role.toUpperCase());
@@ -84,6 +89,10 @@ public class UserController {
     @GetMapping("getUserByEmail/{email}")
     public boolean getUserByEmail(@PathVariable String email) {
         return userInterface.getUserByEmail(email);
+    }
+    @GetMapping("getUserByCin/{cin}")
+    public User getUserByCin(@PathVariable String cin) {
+        return userInterface.getUserByCin(cin);
     }
     //ajout de la méthode pour enregistrer une image dans le dossier uploads/img
     @PostMapping("saveImage")
@@ -185,5 +194,24 @@ public class UserController {
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(mimeType))
                     .body(imageData);
+    }
+
+    //ajout de la méthode pour récupérer le mot de passe oublié
+    @GetMapping("forgotPassword/{email}")
+    public ResponseEntity<String> forgotPassword(@PathVariable String email) {
+        String response = userInterface.forgotPassword(email);
+        if (response.equals("User not found")) {
+            return ResponseEntity.status(404).body(response);
+        }
+        return ResponseEntity.ok(response);
+    }
+    //ajout de la méthode pour mettre à jour le mot de passe d'un utilisateur
+    @PutMapping("updateUserPassword/{id}/{currentPassword}/{newPassword}")
+    public ResponseEntity<User> updateUserPassword(@PathVariable Long id, @PathVariable String currentPassword,@PathVariable String newPassword) {
+        User updatedUser = userInterface.updateUserPassword(id, currentPassword,newPassword);
+        if (updatedUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updatedUser);
     }
 }
