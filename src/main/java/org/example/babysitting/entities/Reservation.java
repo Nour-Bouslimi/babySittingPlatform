@@ -37,26 +37,53 @@ public class Reservation {
     @NotNull(message = "Statut cannot be null")
     private Statut statut;
 
-    @Column(name = "idUser", nullable = false)
+    /*@Column(name = "idUser", nullable = false)
     @JsonProperty("idUser")
-    private Long idUser;
+    private Long idUser;*/
 
     //association avec User
     @ManyToOne
-    private User user;
+    @JoinColumn(name="parent", nullable = false)
+    private User parent;
+
+    @ManyToOne
+    @JoinColumn(name="nounou", nullable = false)
+    private User nounou;
 
     public Reservation() {
         this.statut = Statut.PENDING;
 
     }
 
-    public Reservation(long idReserv, LocalDate date, int heureDebut, int heureFin, Statut statut, long idUser) {
+    public void setIdReserv(Long idReserv) {
+        this.idReserv = idReserv;
+    }
+
+    public User getParent() {
+        return parent;
+    }
+
+    public void setParent(User parent) {
+        this.parent = parent;
+    }
+
+    public User getNounou() {
+        return nounou;
+    }
+
+    public void setNounou(User nounou) {
+        this.nounou = nounou;
+    }
+
+    public Reservation(long idReserv, LocalDate date, int heureDebut, int heureFin, Statut statut, User parent,User nounou) {
         this.idReserv = idReserv;
         this.date = date;
         this.heureDebut = heureDebut;
         this.heureFin = heureFin;
         this.statut = statut;
-        this.idUser = idUser;
+        this.parent.setIdUser(parent.getIdUser());
+        this.nounou.setIdUser(nounou.getIdUser());
+
     }
 
     public long getIdReserv() {
@@ -99,13 +126,31 @@ public class Reservation {
         this.statut = statut;
     }
 
-    public long getIdUser() {
-        return idUser;
+
+    public Long getParent_idUser() {
+        if (parent != null) {
+            return parent.getIdUser();
+        } else {
+            return null;
+        }
     }
-
-    public void setIdUser(long idUser) {
-        this.idUser = idUser;
+    public void setParent_idUser(Long user_idUser) {
+        if (parent == null) {
+            parent = new User();
+        }
+        parent.setIdUser(user_idUser);
     }
-
-
+    public Long getNounou_idUser() {
+        if (nounou != null) {
+            return nounou.getIdUser();
+        } else {
+            return null;
+        }
+    }
+    public void setNounou_idUser(Long user_idUser) {
+        if (nounou == null) {
+            nounou = new User();
+        }
+        nounou.setIdUser(user_idUser);
+    }
 }

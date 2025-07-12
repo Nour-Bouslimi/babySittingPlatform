@@ -17,12 +17,8 @@ public class Reponse {
     @Column(name = "content", nullable = false, length = 500)
     @JsonProperty("content")
     private String content;
-    @Column(name = "idMsg", nullable = false)
-@JsonProperty("idMsg")
-    private Long idMsg; // ID of the message this response is associated with
-    @Column(name = "idUser", nullable = false)
-    @JsonProperty("idUser")
-    private Long idUser; // ID of the user who made the response
+
+
     @CreationTimestamp
     @Column(name = "date", nullable = false, length = 30)
     @JsonProperty("date")
@@ -30,8 +26,11 @@ public class Reponse {
 
     // association with User
     @ManyToOne
-    private User user;
-
+    @JoinColumn(name="sender_id", nullable = false)
+    private User sender;
+    @ManyToOne
+    @JoinColumn(name="receiver_id", nullable = false)
+    private User receiver;
     // association with Message
     @ManyToOne
     private Message message;
@@ -42,6 +41,22 @@ public class Reponse {
     @PreUpdate
     public void setSystemDate() {
         //this.date = new Date(System.currentTimeMillis());
+    }
+
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
+    }
+
+    public Message getMessage() {
+        return message;
+    }
+
+    public void setMessage(Message message) {
+        this.message = message;
     }
 
     public Long getIdReponse() {
@@ -59,21 +74,38 @@ public class Reponse {
     public void setContent(String content) {
         this.content = content;
     }
-
-    public Long getIdMsg() {
-        return idMsg;
+    public User getSender() {
+        return sender;
+    }
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+    public Long getSender_idUser() {
+        return sender.getIdUser();
+    }
+    public void setSender_idUser(Long sender_idUser) {
+        if (this.sender == null) {
+            this.sender = new User();
+        }
+        this.sender.setIdUser(sender_idUser);
     }
 
-    public void setIdMsg(Long idMsg) {
-        this.idMsg = idMsg;
-    }
 
-    public Long getIdUser() {
-        return idUser;
-    }
 
-    public void setIdUser(Long idUser) {
-        this.idUser = idUser;
+    public Message getMsg() {
+        return message;
+    }
+    public void setMsg(Message message) {
+        this.message = message;
+    }
+    public Message getMessage_idMsg() {
+        return message;
+    }
+    public void setMessage_idMsg(Message message) {
+        if (this.message == null) {
+            this.message = new Message();
+        }
+        this.message.setIdMsg(message.getIdMsg());
     }
 
     public LocalDate getDate() {

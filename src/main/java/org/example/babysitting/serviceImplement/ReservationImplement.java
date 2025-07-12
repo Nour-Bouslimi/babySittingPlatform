@@ -45,7 +45,7 @@ public class ReservationImplement implements ReservationInterface {
             r.setDate(reservation.getDate());
             r.setHeureDebut(reservation.getHeureDebut());
             r.setHeureFin(reservation.getHeureFin());
-            r.setIdUser(reservation.getIdUser());
+            r.setParent_idUser(reservation.getParent().getIdUser());
             return reservationRepo.save(r);
         } else {
             return null;
@@ -75,8 +75,8 @@ public class ReservationImplement implements ReservationInterface {
     }
 
     @Override
-    public List<Reservation> getReservationByIdUser(Long idUser) {
-        return reservationRepo.findByIdUser(idUser);
+    public List<Reservation> getReservationByParent_idUser(Long user_idUser) {
+        return reservationRepo.findByParent_IdUser(user_idUser);
     }
 
     @Override
@@ -92,5 +92,33 @@ public class ReservationImplement implements ReservationInterface {
     @Override
     public List<Reservation> getReservationByStatut(Statut statut) {
        return reservationRepo.findByStatut(statut);
+    }
+
+    @Override
+    public List<Reservation> getReservationByNounou_idUser(Long user_idUser) {
+        return reservationRepo.findByNounou_IdUser(user_idUser);
+    }
+
+    @Override
+    public void markReservationAsAccepted(Long id) {
+        Reservation reservation = getReservationById(id);
+        if (reservation != null) {
+            reservation.setStatut(Statut.ACCEPTED);
+            reservationRepo.save(reservation);
+        } else {
+            throw new RuntimeException("Reservation with id " + id + " does not exist");
+        }
+    }
+
+    @Override
+    public void markReservationAsRejected(Long id) {
+        Reservation reservation = getReservationById(id);
+        if (reservation != null) {
+            reservation.setStatut(Statut.REJECTED);
+            reservationRepo.save(reservation);
+        } else {
+            throw new RuntimeException("Reservation with id " + id + " does not exist");
+        }
+
     }
 }

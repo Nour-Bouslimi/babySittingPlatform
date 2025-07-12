@@ -16,10 +16,10 @@ public interface DisponibilityInterface {
     Disponibilite updateDisponibilite(Long id, Disponibilite disponibilite); //ajout de la méthode pour mettre à jour une disponibilité
     List<Disponibilite> getAllDisponibilites(); //ajout de la méthode pour récupérer toutes les disponibilités
     Disponibilite getDisponibiliteById(Long id); //ajout de la méthode pour récupérer une disponibilité par son ID
-    List<Disponibilite> getDisponibiliteByIdUser(Long IdUser); //ajout de la méthode pour récupérer les disponibilités par l'ID de l'utilisateur
+    List<Disponibilite> getDisponibiliteByUser_idUser(Long IdUser); //ajout de la méthode pour récupérer les disponibilités par l'ID de l'utilisateur
     List<Disponibilite> getDisponibiliteByDate(LocalDate date); //ajout de la méthode pour récupérer les disponibilités par date
     List<Disponibilite> getDisponibiliteByTimeRange(int heureDebut, int heureFin); //ajout de la méthode pour récupérer les disponibilités par plage horaire
-
+    List<Disponibilite> getDisponibiliteByUser_idUserAndDate(Long idUser, LocalDate date); //ajout de la méthode pour récupérer les disponibilités par l'ID de l'utilisateur et la date
 
 
 

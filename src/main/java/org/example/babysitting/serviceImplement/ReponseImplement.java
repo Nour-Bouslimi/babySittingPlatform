@@ -1,7 +1,11 @@
 package org.example.babysitting.serviceImplement;
 
+import org.example.babysitting.entities.Message;
 import org.example.babysitting.entities.Reponse;
+import org.example.babysitting.entities.User;
+import org.example.babysitting.repository.MessageRepo;
 import org.example.babysitting.repository.ReponseRepo;
+import org.example.babysitting.repository.UserRepo;
 import org.example.babysitting.service.ReponseInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,10 @@ import java.util.List;
 public class ReponseImplement implements ReponseInterface {
     @Autowired
     ReponseRepo reponseRepo;
+    @Autowired
+    private UserRepo userRepo;
+    @Autowired
+    private MessageRepo messageRepo;
 
     @Override
     public Reponse addReponse(Reponse reponse) {
@@ -40,8 +48,9 @@ public class ReponseImplement implements ReponseInterface {
         if (r != null) {
             r.setContent(reponse.getContent());
             r.setDate(reponse.getDate());
-            r.setIdMsg(reponse.getIdMsg());
-            r.setIdUser(reponse.getIdUser());
+            r.setMessage_idMsg(reponse.getMessage_idMsg());
+            r.setSender_idUser(reponse.getSender_idUser());
+
             return reponseRepo.save(r);
         } else {
             throw new IllegalArgumentException("Reponse with id " + id + " does not exist.");
@@ -59,13 +68,13 @@ public class ReponseImplement implements ReponseInterface {
     }
 
     @Override
-    public List<Reponse> getReponsesByIdMsg(Long idMsg) {
-        return reponseRepo.findByIdMsg(idMsg);
+    public List<Reponse> getReponsesByMessage_idMsg(Long idMsg) {
+        return reponseRepo.findByMessage_idMsg(idMsg);
     }
 
     @Override
-    public List<Reponse> getReponsesByIdUser(Long idUser) {
-        return reponseRepo.findByIdUser(idUser);
+    public List<Reponse> getReponsesBySender_idUser(Long idUser) {
+        return reponseRepo.findBySender_idUser(idUser);
     }
 
     @Override
@@ -74,17 +83,34 @@ public class ReponseImplement implements ReponseInterface {
     }
 
     @Override
-    public List<Reponse> getReponsesByIdMsgAndIdUser(Long idMsg, Long idUser) {
-        return reponseRepo.findByIdMsgAndIdUser(idMsg, idUser);
+    public List<Reponse> getReponsesByMessage_idMsgAndSender_idUser(Long idMsg, Long idUser) {
+        return reponseRepo.findByMessage_idMsgAndSender_idUser(idMsg, idUser);
     }
 
     @Override
-    public List<Reponse> getReponsesByIdMsgAndDate(Long idMsg, LocalDate date) {
-        return reponseRepo.findByIdMsgAndDate(idMsg, date);
+    public List<Reponse> getReponsesByMessage_idMsgAndDate(Long idMsg, LocalDate date) {
+        return reponseRepo.findByMessage_idMsgAndDate(idMsg, date);
     }
 
     @Override
-    public List<Reponse> getReponsesByIdUserAndDate(Long idUser, LocalDate date) {
-        return reponseRepo.findByIdUserAndDate(idUser, date);
+    public List<Reponse> getReponsesBySender_idUserAndDate(Long idUser, LocalDate date) {
+        return reponseRepo.findBySender_idUserAndDate(idUser, date);
+    }
+
+    @Override
+    public Reponse sendMessageAsResponse(Long senderId,Long receiverId, Long messageId, String content) {
+        User sender = userRepo.findById(senderId).orElse(null);
+        User receiver = userRepo.findById(receiverId).orElse(null);
+        Message msg = messageRepo.findByIdMsg(messageId);
+
+        Reponse  reponse = new Reponse();
+
+        reponse.setSender(sender);
+        reponse.setReceiver(receiver);
+        reponse.setContent(content);
+        reponse.setMessage_idMsg(msg);
+        reponse.setDate(LocalDate.now());
+        return reponseRepo.save(reponse);
+
     }
 }

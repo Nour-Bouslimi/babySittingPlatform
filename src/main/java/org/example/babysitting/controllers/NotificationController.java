@@ -42,11 +42,11 @@ public class NotificationController {
     }
     @GetMapping("/getNotificationsByIdUser/{idUser}")
     public List<Notification> getNotificationsByIdUser(@PathVariable Long idUser) {
-        return notificationInterface.getNotificationsByIdUser(idUser);
+        return notificationInterface.getNotificationsByUser_idUser(idUser);
     }
     @GetMapping("/getUnreadNotificationsByIdUser/{idUser}")
     public List<Notification> getUnreadNotificationsByIdUser(@PathVariable Long idUser) {
-        return notificationInterface.getUnreadNotificationsByIdUser(idUser);
+        return notificationInterface.getUnreadNotificationsByUser_idUser(idUser);
     }
     @PutMapping("/markNotificationAsRead/{id}")
     public void markNotificationAsRead(@PathVariable Long id) {

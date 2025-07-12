@@ -10,13 +10,14 @@ import java.util.List;
 
 public interface ReponseRepo extends JpaRepository<Reponse, Long> {
     //Named methods
-    List<Reponse> findByIdMsg(Long idMsg);
-    List<Reponse> findByIdUser(Long idUser);
+    List<Reponse> findByMessage_idMsg(Long idMsg);
+    List<Reponse> findBySender_idUser(Long idUser);
     List<Reponse> findByDate(LocalDate date);
+    Reponse findByIdReponse(Long idReponse); //ajout de la méthode pour récupérer une réponse par son ID
     boolean existsByIdReponse(Long idReponse);
-    List<Reponse> findByIdMsgAndIdUser(Long idMsg, Long idUser); //ajout de la méthode pour récupérer les réponses par l'ID du message et l'ID de l'utilisateur
-    List<Reponse> findByIdMsgAndDate(Long idMsg, LocalDate date); //ajout de la méthode pour récupérer les réponses par l'ID du message et la date
-    List<Reponse> findByIdUserAndDate(Long idUser, LocalDate date); //ajout de la méthode pour récupérer les réponses par l'ID de l'utilisateur et la date
+    List<Reponse> findByMessage_idMsgAndSender_idUser(Long idMsg, Long idUser); //ajout de la méthode pour récupérer les réponses par l'ID du message et l'ID de l'utilisateur
+    List<Reponse> findByMessage_idMsgAndDate(Long idMsg, LocalDate date); //ajout de la méthode pour récupérer les réponses par l'ID du message et la date
+    List<Reponse> findBySender_idUserAndDate(Long idUser, LocalDate date); //ajout de la méthode pour récupérer les réponses par l'ID de l'utilisateur et la date
 
 
 

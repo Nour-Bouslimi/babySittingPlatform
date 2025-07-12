@@ -24,13 +24,13 @@ public class Annonce {
     @Column(name = "date", nullable = false, length = 30)
     @JsonProperty("date")
     private LocalDate date;
-    @Column(name = "img")
-    @JsonProperty("img")
-    private String img;
-    @Column(name = "idUser", nullable = false)
+
+    /*@Column(name = "idUser", nullable = false)
     @JsonProperty("idUser")
     private Long idUser; // ID of the user who created the announcement
+    */
     // Association with User
+
     @ManyToOne
     private User user;
 
@@ -75,19 +75,21 @@ public class Annonce {
         this.description = description;
     }
 
-    public String getImg() {
-        return img;
-    }
 
-    public void setImg(String img) {
-        this.img = img;
-    }
 
-    public long getIdUser() {
-        return idUser;
+    public User getUser() {
+        return user;
     }
-
-    public void setIdUser(long idUser) {
-        this.idUser = idUser;
+    public void setUser(User user) {
+        this.user = user;
+    }
+    public Long getUser_idUser() {
+        return user != null ? user.getIdUser() : null;
+    }
+    public void setUser_idUser(Long user_idUser) {
+        if (this.user == null) {
+            this.user = new User();
+        }
+        this.user.setIdUser(user_idUser);
     }
 }

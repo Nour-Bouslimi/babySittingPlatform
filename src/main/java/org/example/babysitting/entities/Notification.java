@@ -24,15 +24,16 @@ public class Notification {
     @Column(name = "date", nullable = false, length = 30)
     @JsonProperty("date")
     private LocalDate date; // Date of the notification, automatically set to current date
-    @Column(name = "idUser", nullable = false)
+    /*@Column(name = "idUser", nullable = false)
     @JsonProperty("idUser")
     private Long idUser; // ID of the user who receives the notification
-
+*/
     // Association with User
     @ManyToOne
     private User user;
 
     public Notification() {
+
     }
     @PrePersist
     @PreUpdate
@@ -62,13 +63,22 @@ public class Notification {
         this.message = message;
     }
 
-    public long getIdUser() {
-        return idUser;
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+    public Long getUser_idUser() {
+        return user != null ? user.getIdUser() : null;
+    }
+    public void setUser_idUser(Long user_idUser) {
+        if (this.user == null) {
+            this.user = new User();
+        }
+        this.user.setIdUser(user_idUser);
     }
 
-    public void setIdUser(long idUser) {
-        this.idUser = idUser;
-    }
     public boolean isRead() {
         return isRead;
     }

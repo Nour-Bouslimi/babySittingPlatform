@@ -1,6 +1,7 @@
 package org.example.babysitting.controllers;
 
 import org.example.babysitting.entities.Annonce;
+import org.example.babysitting.entities.User;
 import org.example.babysitting.service.AnnonceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,11 @@ public class AnnonceController {
 
     @PostMapping("/addAnnonce")
     public Annonce addAnnonce(@RequestBody Annonce annonce){
+       if(annonce.getUser() == null && annonce.getUser_idUser() != null) {
+            // Si l'utilisateur est null mais l'ID de l'utilisateur existe, on crée un objet User temporaire
+
+           annonce.setUser_idUser(annonce.getUser_idUser());
+        }
         return annonceInterface.addAnnonce(annonce);
 
     }
@@ -43,7 +49,7 @@ public class AnnonceController {
     }
     @GetMapping("/getAnnoncesByIdUser/{idUser}")
     public List<Annonce> getAnnoncesByIdUser(@PathVariable Long idUser) {
-        return annonceInterface.getAnnoncesByIdUser(idUser);
+        return annonceInterface.getAnnoncesByUser_idUser(idUser);
     }
     @GetMapping("/getAnnoncesByDate/{date}")
     public List<Annonce> getAnnoncesByDate(@PathVariable String date) {

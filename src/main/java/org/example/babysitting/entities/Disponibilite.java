@@ -26,9 +26,7 @@ public class Disponibilite {
     @Column(name = "heureFin", nullable = false)
     @JsonProperty("heureFin")
     private int heureFin;
-    @Column(name = "idUser", nullable = false)
-    @JsonProperty("idUser")
-    private Long idUser;
+
 
     // Association avec l'entité User
     @ManyToOne
@@ -69,12 +67,21 @@ public class Disponibilite {
         this.heureFin = heureFin;
     }
 
-    public long getIdUser() {
-        return idUser;
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void setIdUser(long idUser) {
-        this.idUser = idUser;
+    public Long getUser_idUser() {
+        return user != null ? user.getIdUser() : null; // Retourne l'ID de l'utilisateur ou null si l'utilisateur est null
+    }
+    public void setUser_idUser(Long user_idUser) {
+        if (this.user == null) {
+            this.user = new User(); // Crée un nouvel objet User si user est null
+        }
+        this.user.setIdUser(user_idUser); // Définit l'ID de l'utilisateur
     }
 
     //controle de saisie sur la date, heureDebut et heureFin

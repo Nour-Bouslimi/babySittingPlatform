@@ -77,7 +77,7 @@ public class User {
     private LocalDate dateOfBirth;
     @JsonProperty("nbChildren")
  @Column( name = "nbChildren")
-    private int nbChildren;
+    private Integer nbChildren;
     @Pattern(
             regexp = "^(\\d{1,2})\\s?(mois|ans)$",
             message = "ageChildren must be in the format 'X mois' or 'X ans'"
@@ -121,12 +121,16 @@ public class User {
     @JsonProperty("imgIdent2")
     @Column(name="imgIdent2")
     private String imgIdent2;
-    @JsonProperty("zoneDeDispo")
+    /*@JsonProperty("zoneDeDispo")
     @Column(name="zoneDeDispo", length = 100)
-    private String zoneDeDispo;
+    private String zoneDeDispo;*/
     @JsonProperty("tarifHoraire")
     @Column(name="tarifHoraire")
     private float tarifHoraire;
+    //pour la géolocalisation
+    //ils ne sont pas remplies par l'utilisateur mais par le développeur
+    private Double latitude;
+    private Double longitude;
 
 
     //association with Annonce
@@ -141,23 +145,104 @@ public class User {
 
     }
     //association with Reservation
-    @OneToMany(mappedBy = "user", cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Reservation> reservations;
+    @OneToMany(mappedBy = "parent", cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Reservation> reservationsParent;
+
+    @OneToMany(mappedBy = "nounou", cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Reservation> reservationsNounou;
 
 
     //association with Message
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch= FetchType.LAZY)
-    private List<Message> messages;
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL,fetch= FetchType.LAZY)
+    private List<Message> messagesSent;
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL,fetch= FetchType.LAZY)
+    private List<Message> messagesReceived;
     //association with Notification
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Notification> notifications;
 
     //association with Reponse
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Reponse> reponses;
+    @OneToMany(mappedBy = "sender",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Reponse> reponsesSent;
+
+    @OneToMany(mappedBy = "receiver",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Reponse> reponsesReceived;
 
     public Long getIdUser() {
         return idUser;
+    }
+
+    public List<Annonce> getAnnonces() {
+        return annonces;
+    }
+
+    public void setAnnonces(List<Annonce> annonces) {
+        this.annonces = annonces;
+    }
+
+    public List<Disponibilite> getDisponibilites() {
+        return disponibilites;
+    }
+
+    public void setDisponibilites(List<Disponibilite> disponibilites) {
+        this.disponibilites = disponibilites;
+    }
+
+
+    public List<Reservation> getReservationsParent() {
+        return reservationsParent;
+    }
+
+    public void setReservationsParent(List<Reservation> reservationsParent) {
+        this.reservationsParent = reservationsParent;
+    }
+
+    public List<Reservation> getReservationsNounou() {
+        return reservationsNounou;
+    }
+
+    public void setReservationsNounou(List<Reservation> reservationsNounou) {
+        this.reservationsNounou = reservationsNounou;
+    }
+
+    public List<Message> getMessagesSent() {
+        return messagesSent;
+    }
+
+    public void setMessagesSent(List<Message> messagesSent) {
+        this.messagesSent = messagesSent;
+    }
+
+    public List<Message> getMessagesReceived() {
+        return messagesReceived;
+    }
+
+    public void setMessagesReceived(List<Message> messagesReceived) {
+        this.messagesReceived = messagesReceived;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public List<Reponse> getReponsesSent() {
+        return reponsesSent;
+    }
+
+    public void setReponsesSent(List<Reponse> reponsesSent) {
+        this.reponsesSent = reponsesSent;
+    }
+
+    public List<Reponse> getReponsesReceived() {
+        return reponsesReceived;
+    }
+
+    public void setReponsesReceived(List<Reponse> reponsesReceived) {
+        this.reponsesReceived = reponsesReceived;
     }
 
     public void setIdUser(Long idUser) {
@@ -206,6 +291,30 @@ public class User {
 
     public String getAddress() {
         return address;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public @Pattern(regexp = "^[0-9]{8}$", message = "CIN must be exactly 8digits") String getCin() {
+        return cin;
+    }
+
+    public void setCin(@Pattern(regexp = "^[0-9]{8}$", message = "CIN must be exactly 8digits") String cin) {
+        this.cin = cin;
     }
 
     public void setAddress(String address) {
@@ -257,11 +366,11 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public int getNbChildren() {
+    public Integer getNbChildren() {
         return nbChildren;
     }
 
-    public void setNbChildren(int nbChildren) {
+    public void setNbChildren(Integer nbChildren) {
         this.nbChildren = nbChildren;
     }
 
@@ -371,14 +480,14 @@ public class User {
         this.imgIdent2 = imgIdent2;
     }
 
-    public String getZoneDeDispo() {
+    /*public String getZoneDeDispo() {
         return zoneDeDispo;
     }
 
     public void setZoneDeDispo(String zoneDeDispo) {
         this.zoneDeDispo = zoneDeDispo;
     }
-
+*/
     public float getTarifHoraire() {
         return tarifHoraire;
     }

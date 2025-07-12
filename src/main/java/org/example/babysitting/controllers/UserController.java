@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.example.babysitting.entities.User;
 import org.example.babysitting.entities.UserRole;
+import org.example.babysitting.repository.UserRepo;
 import org.example.babysitting.service.UserInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,6 +23,7 @@ public class UserController {
 
         @Autowired
         UserInterface userInterface;
+        UserRepo userRepo; //pour la géolocalisation des nourrices
 
         @PostMapping("addUser")
         public User addUser(@RequestBody User user){ // @RequestBody y5ou el objet te3 user mil body fyl postman
@@ -214,4 +216,16 @@ public class UserController {
         }
         return ResponseEntity.ok(updatedUser);
     }
+
+    //ajout de la méthode pour la géolocalisation des nourrices
+    @GetMapping("/nearby-nannies/{parentCin}")
+    public ResponseEntity<?> getNearbyNannies(@PathVariable String parentCin) {
+        User parent = userInterface.getUserByCin(parentCin);
+        if (parent == null || parent.getLatitude() == null || parent.getLongitude() == null) {
+            return ResponseEntity.badRequest().body("Parent non trouvé ou géolocalisation absente.");
+        }
+        List<User> nearby = userInterface.findNearbyNannies(parent.getLatitude(), parent.getLongitude(), 20.0); // 20.0 hya distance max elli lezem ykoun fyha nounou b3yd 3al parent Akther m distance heki ma yjibli 7atta nounou
+        return ResponseEntity.ok(nearby);
+    }
+
 }

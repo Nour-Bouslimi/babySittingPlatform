@@ -32,7 +32,7 @@ public class NotificationImplement implements NotificationInterface {
 
     @Override
     public void deleteAllNotifications(Long idUser) {
-        List<Notification> notifications = notificationRepo.findByIdUser(idUser);
+        List<Notification> notifications = notificationRepo.findByUser_idUser(idUser);
         if (!notifications.isEmpty()) {
             notificationRepo.deleteAll(notifications);
         } else {
@@ -58,13 +58,13 @@ public class NotificationImplement implements NotificationInterface {
     }
 
     @Override
-    public List<Notification> getNotificationsByIdUser(Long idUser) {
-        return notificationRepo.findByIdUser(idUser);
+    public List<Notification> getNotificationsByUser_idUser(Long idUser) {
+        return notificationRepo.findByUser_idUser(idUser);
     }
 
     @Override
-    public List<Notification> getUnreadNotificationsByIdUser(Long idUser) {
-        return notificationRepo.findByIdUserAndIsRead(idUser, false);
+    public List<Notification> getUnreadNotificationsByUser_idUser(Long idUser) {
+        return notificationRepo.findByUser_idUserAndIsRead(idUser, false);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class NotificationImplement implements NotificationInterface {
 
     @Override
     public void markAllNotificationsAsRead(Long idUser) {
-        List<Notification> notifications = notificationRepo.findByIdUserAndIsRead(idUser, false);
+        List<Notification> notifications = notificationRepo.findByUser_idUserAndIsRead(idUser, false);
         for (Notification notification : notifications) {
             notification.setRead(true);
         }

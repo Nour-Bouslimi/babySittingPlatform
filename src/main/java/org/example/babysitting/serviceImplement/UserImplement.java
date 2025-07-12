@@ -19,11 +19,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j //n7otha bch nasen3ou logger
 @Service
 public class UserImplement implements UserInterface {
     @Autowired //najem nesta3mel @Ressource elly hya injection par valeur
     UserRepo userRepo;
+    @Autowired
+    private GeoService geolocationService;
     @Autowired
     private EmailSenderService emailSenderService;
 
@@ -39,6 +43,12 @@ public class UserImplement implements UserInterface {
         if (userRepo.existsByEmail(user.getEmail())) {
             LOGGER.warn("User with email {} already exists", user.getEmail());
             throw new RuntimeException("User with this email already exists");
+        }
+        // Enrich user with coordinates if address is provided
+        try {
+            geolocationService.enrichUserWithCoordinates(user);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return userRepo.save(user);
@@ -61,6 +71,12 @@ public class UserImplement implements UserInterface {
         if (userRepo.existsByEmail(user.getEmail())) {
             ch = "Email already exists";
         } else {
+            // Enrich user with coordinates if address is provided
+            try {
+                geolocationService.enrichUserWithCoordinates(user);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             userRepo.save(user);
             ch = "User added successfully";
         }
@@ -71,36 +87,64 @@ public class UserImplement implements UserInterface {
 
     @Override
     public User updateUser(Long id, User user) {
-       User u= getUserById(id);
+        User u = getUserById(id);
         if (u != null) {
-            u.setFirstName(user.getFirstName());
-            u.setLastName(user.getLastName());
-            u.setEmail(user.getEmail());
-            u.setPassword(passwordEncoder.encode(user.getPassword())); // Hash le mot de passe avant de le sauvegarder
-            u.setAddress(user.getAddress());
-            u.setPhoneNumber(user.getPhoneNumber());
-            u.setAgeChildren(user.getAgeChildren());
-            u.setCentreInteret(user.getCentreInteret());
-            u.setDateOfBirth(user.getDateOfBirth());
-            u.setDomaineEtude(user.getDomaineEtude());
-            u.setExperience(user.getExperience());
-            u.setEtatCivil(user.getEtatCivil());
-            u.setFumer(user.getFumer());
-            u.setGenre(user.getGenre());
-            u.setImgEtude(user.getImgEtude());
-            u.setImgIdent1(user.getImgIdent1());
-            u.setImgIdent2(user.getImgIdent2());
-            u.setPhoto(user.getPhoto());
-            u.setNiveau(user.getNiveau());
-            u.setNbChildren(user.getNbChildren());
-            u.setLangue(user.getLangue());
-            u.setMotorise(user.getMotorise());
-            u.setNiveauEtude(user.getNiveauEtude());
+            // Gestion des champs selon le rôle
+            if (u.getRole() == UserRole.NOUNOU) {
+                u.setNbChildren(null);
+                u.setAgeChildren(null);
+            }
+            if (u.getRole() == UserRole.PARENT) {
+               // u.setZoneDeDispo(null);
+                u.setMotorise(null);
+                u.setNiveauEtude(null);
+                u.setFumer(null);
+                u.setNiveau(null);
+                u.setImgIdent1(null);
+                u.setImgIdent2(null);
+                u.setImgEtude(null);
+                u.setExperience(null);
+                u.setCentreInteret(null);
+                u.setLangue(null);
+                //u.setTarifHoraire(null);
+            }
+            // Mise à jour partielle des champs
+            if (user.getFirstName() != null) u.setFirstName(user.getFirstName());
+            if (user.getLastName() != null) u.setLastName(user.getLastName());
+            if (user.getEmail() != null && !user.getEmail().isEmpty()) u.setEmail(user.getEmail());
+            if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+                u.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
+            if (user.getAddress() != null) u.setAddress(user.getAddress());
+            //if (user.getZoneDeDispo() != null) u.setZoneDeDispo(user.getZoneDeDispo());
+            if (user.getPhoneNumber() != null) u.setPhoneNumber(user.getPhoneNumber());
+            if (user.getAgeChildren() != null) u.setAgeChildren(user.getAgeChildren());
+            if (user.getCentreInteret() != null) u.setCentreInteret(user.getCentreInteret());
+            if (user.getDateOfBirth() != null) u.setDateOfBirth(user.getDateOfBirth());
+            if (user.getDomaineEtude() != null) u.setDomaineEtude(user.getDomaineEtude());
+            if (user.getExperience() != null) u.setExperience(user.getExperience());
+            if (user.getEtatCivil() != null) u.setEtatCivil(user.getEtatCivil());
+            if (user.getFumer() != null) u.setFumer(user.getFumer());
+            if (user.getGenre() != null) u.setGenre(user.getGenre());
+            if (user.getImgEtude() != null) u.setImgEtude(user.getImgEtude());
+            if (user.getImgIdent1() != null) u.setImgIdent1(user.getImgIdent1());
+            if (user.getImgIdent2() != null) u.setImgIdent2(user.getImgIdent2());
+            if (user.getPhoto() != null) u.setPhoto(user.getPhoto());
+            if (user.getNiveau() != null) u.setNiveau(user.getNiveau());
+            if (user.getNbChildren() != null) u.setNbChildren(user.getNbChildren());
+            if (user.getLangue() != null) u.setLangue(user.getLangue());
+            if (user.getMotorise() != null) u.setMotorise(user.getMotorise());
+            if (user.getNiveauEtude() != null) u.setNiveauEtude(user.getNiveauEtude());
 
-            return userRepo.save(u); // on sauvegarde l'utilisateur mis à jour
+            // Mise à jour des coordonnées si adresse modifiée
+            try {
+                geolocationService.enrichUserWithCoordinates(u);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return userRepo.save(u);
         }
-        return null; // retourne null si l'utilisateur n'existe pas
-
+        return null;
     }
 
     @Override
@@ -228,6 +272,28 @@ public class UserImplement implements UserInterface {
 
         user.setPassword(passwordEncoder.encode(newPassword)); // Hash le nouveau mot de passe
         return userRepo.save(user); // Sauvegarder l'utilisateur avec le nouveau mot de passe
+    }
+// Pour la géolocalisation des nourrices
+    @Override
+    public List<User> findNearbyNannies(double lat, double lon, double radiusKm) {
+        List<User> nannies = userRepo.findByRole(UserRole.NOUNOU); // ou un champ booléen
+        return nannies.stream()
+                .filter(nanny -> {
+                    if (nanny.getLatitude() == null || nanny.getLongitude() == null) return false;
+                    double distance = calculateDistance(lat, lon, nanny.getLatitude(), nanny.getLongitude());
+                    return distance <= radiusKm;
+                })
+                .collect(Collectors.toList());
+    }
+    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        final int R = 6371; // Rayon de la Terre en km
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(dLon/2) * Math.sin(dLon/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
     }
 
 

@@ -42,7 +42,8 @@ public class DisponibilityImplement implements DisponibilityInterface {
             d.setDate(disponibilite.getDate());
             d.setHeureDebut(disponibilite.getHeureDebut());
             d.setHeureFin(disponibilite.getHeureFin());
-            d.setIdUser(disponibilite.getIdUser());
+            d.setUser_idUser(disponibilite.getUser_idUser());
+
             return disponibilityRepo.save(d);
         } else {
             return null;
@@ -68,14 +69,19 @@ public class DisponibilityImplement implements DisponibilityInterface {
 
 
     @Override
-    public List<Disponibilite> getDisponibiliteByIdUser(Long IdUser) {
-        return disponibilityRepo.findByIdUser(IdUser);
+    public List<Disponibilite> getDisponibiliteByUser_idUser(Long IdUser) {
+        return disponibilityRepo.findByUser_idUser(IdUser);
     }
 
 
     @Override
     public List<Disponibilite> getDisponibiliteByTimeRange(int heureDebut, int heureFin) {
         return disponibilityRepo.findByHeureDebutAndHeureFin(heureDebut, heureFin);
+    }
+
+    @Override
+    public List<Disponibilite> getDisponibiliteByUser_idUserAndDate(Long idUser, LocalDate date) {
+        return disponibilityRepo.findByUser_idUserAndDate(idUser, date);
     }
 
 }

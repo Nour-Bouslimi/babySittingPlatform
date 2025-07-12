@@ -11,11 +11,13 @@ import java.util.List;
 public interface ReservationRepo extends JpaRepository<Reservation, Long> {
 
     //Named methods
-    List<Reservation> findByIdUser(Long idUser);
+    List<Reservation> findByParent_IdUser(Long user_idUser);
 
     List<Reservation> findByDate(LocalDate date);
 
     List<Reservation> findByHeureDebutBetween(int heureDebut, int heureFin);
     boolean existsByIdReserv(Long idReserv);
     List<Reservation> findByStatut(Statut statut);
+    List<Reservation> findByNounou_IdUser(Long user_idUser);
+
 }

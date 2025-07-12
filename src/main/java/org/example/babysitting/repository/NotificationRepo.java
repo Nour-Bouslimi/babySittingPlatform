@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface NotificationRepo extends JpaRepository<Notification, Long> {
 
-    List<Notification> findByIdUser(Long idUser);
+    List<Notification> findByUser_idUser(Long user_idUser);
     boolean existsByIdNotif(Long idNotif);
     List<Notification> findByDate(LocalDate date);
-    List<Notification> findByIdUserAndIsRead(Long idUser, boolean isRead);
+    List<Notification> findByUser_idUserAndIsRead(Long idUser, boolean isRead);
 
 
 

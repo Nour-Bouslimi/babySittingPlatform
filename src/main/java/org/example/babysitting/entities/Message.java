@@ -26,12 +26,14 @@ public class Message {
     @JsonProperty("date")
     private LocalDate date;
 
-    @Column(name = "idUser", nullable = false)
-    @JsonProperty("idUser")
-    private Long idUser;
+
     // Association avec User
     @ManyToOne
-    private User user;
+    @JoinColumn(name="sender_id", nullable = false)
+    private User sender;
+    @ManyToOne
+    @JoinColumn(name="receiver_id", nullable = false)
+    private User receiver;
     // Association avec Reponse
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Reponse> reponses;
@@ -43,6 +45,30 @@ public class Message {
     @PreUpdate
     public void setSystemDate() {
         //this.date = new Date(System.currentTimeMillis());
+    }
+
+    public User getSender() {
+        return sender;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
+    }
+
+    public void setReponses(List<Reponse> reponses) {
+        this.reponses = reponses;
+    }
+
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public List<Reponse> getReponses() {
+        return reponses;
     }
 
     public Long getIdMsg() {
@@ -69,11 +95,5 @@ public class Message {
         this.date = date;
     }
 
-    public long getIdUser() {
-        return idUser;
-    }
 
-    public void setIdUser(long idUser) {
-        this.idUser = idUser;
-    }
 }

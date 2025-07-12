@@ -29,7 +29,8 @@ public interface UserInterface {
     String forgotPassword(String email); //ajout de la méthode pour récupérer le mot de passe oublié
     // update user password
     User updateUserPassword(Long id,String currentPassword, String newPassword); //ajout de la méthode pour mettre à jour le mot de passe d'un utilisateur
-
+    //pour la geolocalisation des nourrices
+    public List<User> findNearbyNannies(double lat, double lon, double radiusKm);
 
 
 

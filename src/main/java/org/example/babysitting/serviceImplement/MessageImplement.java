@@ -2,7 +2,9 @@ package org.example.babysitting.serviceImplement;
 
 import org.example.babysitting.entities.Message;
 import org.example.babysitting.entities.Reservation;
+import org.example.babysitting.entities.User;
 import org.example.babysitting.repository.MessageRepo;
+import org.example.babysitting.repository.UserRepo;
 import org.example.babysitting.service.MessageInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ public class MessageImplement implements MessageInterface {
 
     @Autowired
     MessageRepo messageRepo;
+    @Autowired
+    private UserRepo userRepo;
+
     @Override
     public Message addMessage(Message message) {
         return messageRepo.save(message);
@@ -43,7 +48,8 @@ public class MessageImplement implements MessageInterface {
         if (m != null) {
             m.setContent(message.getContent());
             m.setDate(message.getDate());
-            m.setIdUser(message.getIdUser());
+            m.setSender(message.getSender());
+            m.setReceiver(message.getReceiver());
             return messageRepo.save(m);
         } else {
             return null;
@@ -60,13 +66,31 @@ public class MessageImplement implements MessageInterface {
         return messageRepo.findById(id).orElse(null);
     }
 
-    @Override
+    /*@Override
     public List<Message> getMessagesByIdUSer(Long idUser) {
         return messageRepo.findByIdUser(idUser);
-    }
+    }*/
 
     @Override
     public List<Message> getMessagesByDate(LocalDate date) {
         return messageRepo.findByDate(date);
+    }
+
+    @Override
+    public Message sendMessage(Long senderId, Long receiverId, String content) {
+        User sender = userRepo.findById(senderId).orElse(null);
+        User receiver = userRepo.findById(receiverId).orElse(null);
+
+        Message msg = new Message();
+        msg.setSender(sender);
+        msg.setReceiver(receiver);
+        msg.setContent(content);
+        msg.setDate(LocalDate.now());
+        return messageRepo.save(msg);
+    }
+
+    @Override
+    public List<Message> getConversation(Long userId1, Long userId2) {
+        return messageRepo.getConversation(userId1, userId2);
     }
 }

@@ -42,7 +42,7 @@ public class AnnonceImplement implements AnnonceInterface {
             a.setTitre(annonce.getTitre());
             a.setDescription(annonce.getDescription());
             a.setDate(annonce.getDate());
-            a.setIdUser(annonce.getIdUser());
+            a.setUser_idUser(annonce.getUser_idUser());
             return annonceRepo.save(a);
         } else {
             throw new IllegalArgumentException("Annonce with id " + id + " does not exist.");
@@ -60,8 +60,8 @@ public class AnnonceImplement implements AnnonceInterface {
     }
 
     @Override
-    public List<Annonce> getAnnoncesByIdUser(Long idUser) {
-        return annonceRepo.findByIdUser(idUser);
+    public List<Annonce> getAnnoncesByUser_idUser(Long idUser) {
+        return annonceRepo.findByUser_idUser(idUser);
     }
 
     @Override

@@ -44,8 +44,8 @@ public class DisponibilityController {
         return disponibilityInterface.getDisponibiliteById(id);
     }
     @GetMapping("/getDisponibilityByUserId/{userId}")
-    public List<Disponibilite> getDisponibilityByUserId(@PathVariable Long IdUser) {
-        return disponibilityInterface.getDisponibiliteByIdUser(IdUser);
+    public List<Disponibilite> getDisponibilityByUser_idUser(@PathVariable Long IdUser) {
+        return disponibilityInterface.getDisponibiliteByUser_idUser(IdUser);
     }
     @GetMapping("/getDisponibilityByDate/{date}")
     public List<Disponibilite> getDisponibilityByDate(@PathVariable String date) {
@@ -60,5 +60,14 @@ public class DisponibilityController {
     @GetMapping("/getDisponibilityByTimeRange")
     public List<Disponibilite> getDisponibilityByTimeRange(@RequestParam int heureDebut, @RequestParam int heureFin) {
         return disponibilityInterface.getDisponibiliteByTimeRange(heureDebut, heureFin);
+    }
+    @GetMapping("/getDisponibilityByUserIdAndDate/{userId}/{date}")
+    public List<Disponibilite> getDisponibilityByUser_idUserAndDate(@PathVariable Long userId, @PathVariable String date) {
+        try {
+            LocalDate parsedDate = LocalDate.parse(date); // Conversion de la chaîne en LocalDate
+            return disponibilityInterface.getDisponibiliteByUser_idUserAndDate(userId, parsedDate);
+        } catch (DateTimeParseException e) {
+            throw new RuntimeException("Format de date invalide. Utilisez 'yyyy-MM-dd'.");
+        }
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface AnnonceRepo extends JpaRepository<Annonce, Long> {
     //Named methods
-    List<Annonce> findByIdUser(Long idUser);
+    List<Annonce> findByUser_idUser(Long idUser);
     List<Annonce> findByDate(LocalDate date);
     boolean existsByIdAnnonce(Long idAnnonce);
     List<Annonce> findByTitreContaining(String titre); // Method to find annonces by title containing a specific string
