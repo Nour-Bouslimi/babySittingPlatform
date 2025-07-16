@@ -1,0 +1,255 @@
+<!-- Modal profile nanny start -->
+
+<div class="modal fade" id="profileNannyModal" tabindex="-1" aria-labelledby="profileNannyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content rounded-0" style="background:rgba(255,255,255,0.85) !important; box-shadow:none;">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="col-lg-2"></div>
+      <div class="col-lg-8 d-flex align-items-center justify-content-center">
+        <div class="p-4 bg-light rounded w-100" style="max-width: 900px; position:relative;">
+          <!-- Top right action buttons -->
+          <div class="d-flex justify-content-end align-items-center mb-3" style="gap: 10px;">
+
+            <!-- Delete Account -->
+            <button class="btn btn-outline-danger btn-sm" style="border-radius:20px;" title="Delete my account">
+              <i class="fa fa-trash"></i> Delete my account
+            </button>
+
+            <!-- Logout Button -->
+            <button class="btn btn-outline-secondary btn-sm" style="border-radius: 20px;" title="Logout">
+              <i class="fas fa-sign-out-alt text-primary"></i>
+            </button>
+
+            <!-- Notifications & Messages -->
+            <div class="d-flex gap-2 position-relative">
+
+              <!-- Notification -->
+              <button class="btn btn-light btn-sm position-relative animate-shake" title="Notifications"
+                      data-bs-toggle="modal" data-bs-target="#notifModal">
+                <i class="fa fa-bell text-primary"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:10px;">14</span>
+              </button>
+              <!-- Message -->
+              <button class="btn btn-light btn-sm animate-pulse" title="Messages"
+                      data-bs-toggle="modal" data-bs-target="#msgModal">
+                <i class="fa fa-envelope text-primary"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:10px;">14</span>
+              </button>
+            </div>
+          </div>
+          <div class="mx-auto text-center" style="max-width: 700px;">
+            <h4 class="text-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">Profile</h4>
+            <h1 class="display-3" style="font-size: 32px;">Your Profile</h1>
+            <p class="mb-4">View and edit your profile informations here.</p>
+            <!-- Circular user photo with edit icon -->
+            <div class="position-relative d-inline-block mb-4">
+              <img id="profileNannyPhotoPreview" src="/assets/img/default-user.png" alt="User Photo" class="rounded-circle border border-primary" style="width:120px; height:120px; object-fit:cover;">
+              <input type="file" id="profileNannyPhotoInput" accept="image/*" style="display:none;">
+              <button type="button" onclick="document.getElementById('profileNannyPhotoInput').click()" class="btn btn-primary btn-sm rounded-circle position-absolute" style="bottom:0; right:0;">
+                <i class="fa fa-pen"></i>
+              </button>
+            </div>
+          </div>
+          <!-- Profile form (same inputs as signupNanny.html) -->
+          <form id="multiStepForm" enctype="multipart/form-data">
+            <!-- Step 1 -->
+            <div class="form-step" id="step1">
+              <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                  <label class="mb-2">Last Name:</label>
+                  <input type="text" class="form-control" placeholder="Last Name" name="lastname" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="mb-2">First Name:</label>
+                  <input type="text" class="form-control" placeholder="First Name" name="firstname" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="mb-2">Address:</label>
+                  <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="fas fa-map-marker-alt fa-2x text-primary"></i>
+                  </span>
+                    <input type="text" class="form-control" placeholder="Address" name="address" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="mb-2">Phone:</label>
+                  <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="fa fa-phone-alt fa-2x text-primary me-4"></i>
+                  </span>
+                    <input type="tel" class="form-control" placeholder="Phone" name="phone" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="mb-2">Gender:</label>
+                  <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="fa fa-venus-mars fa-2x text-primary me-4"></i>
+                  </span>
+                    <div>
+                      <input type="radio" class="form-check-input" name="gender" id="genderFe" value="Female" required>
+                      <label for="genderF" class="me-3">Female</label>
+                      <input type="radio" class="form-check-input" name="gender" id="genderMa" value="Male">
+                      <label for="genderM">Male</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="mb-2">Email:</label>
+                  <div class="input-group">
+                  <span class="input-group-text">
+                   <i class="fas fa-envelope fa-2x text-primary me-4"></i>
+                  </span>
+                    <input type="email" class="form-control" placeholder="Email" name="email" required>
+                  </div>
+                </div>
+                <div class="col-md-6 position-relative">
+                  <label class="mb-2">Password:</label>
+                  <input id="passwordInputP" type="password" class="form-control" placeholder="Password" name="password"  required>
+                  <span id="togglePasswordP" style="position:absolute; top:30%; right:15px; transform:translateY(-50%); cursor:pointer; z-index:2;">
+                                <i id="eyeIconP" class="fa fa-eye-slash" ></i>
+                            </span>
+                </div>
+                <div class="col-md-6">
+                  <label class="mb-2">Birth Date:</label>
+                  <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="fa fa-calendar-alt fa-2x text-primary me-4"></i>
+                  </span>
+                    <input type="date" class="form-control" name="birthdate" required>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-primary" (click)="nextStep(2)">Next</button>
+              </div>
+            </div>
+            <!-- Step 2 -->
+            <div class="form-step d-none" id="step2">
+              <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                  <label class="mb-2">Marital Status:</label>
+                  <div>
+                    <input type="radio" class="form-check-input" name="maritalStatus" id="single" value="Single" required>
+                    <label for="single" class="me-3">Single</label>
+                    <input type="radio" class="form-check-input" name="maritalStatus" id="married" value="Married">
+                    <label for="married" class="me-3">Married</label>
+                    <input type="radio" class="form-check-input" name="maritalStatus" id="divorced" value="Divorced">
+                    <label for="divorced">Divorced</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="mb-2">Education Level:</label>
+                  <select class="form-select" name="educationLevel" required>
+                    <option value="">Select</option>
+                    <option value="bac">High School</option>
+                    <option value="bac+1">1 Year Post-High School</option>
+                    <option value="bac+2">2 Years Post-High School</option>
+                    <option value="bac+3">3 Years Post-High School</option>
+                    <option value="bac+4">4 Years Post-High School</option>
+                    <option value="bac+5">5 Years Post-High School</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="mb-2">Field of Study:</label>
+                  <input type="text" class="form-control" placeholder="Field of Study" name="fieldOfStudy" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="mb-2">Diploma Image:</label>
+                  <input type="file" class="form-control" name="diplomaImage" id="diplomaImage" accept="image/*" (change)="previewAndBase64($event, 'diplomaImagePreview', 'diplomaImageBase64')">
+                  <img id="diplomaImagePreview" src="" alt="Preview" style="display:none; max-width:100px; margin-top:10px;"/>
+                  <input type="hidden" id="diplomaImageBase64" name="diplomaImageBase64">
+                </div>
+                <div class="col-md-6">
+                  <label class="mb-2">Language:</label>
+                  <select class="form-select" name="language" id="languageSelect" (change)="toggleOtherLanguage($event)">
+                    <option value="french">French</option>
+                    <option value="english">English</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <input type="text" class="form-control mt-2 d-none" id="otherLanguageInput" name="otherLanguage" placeholder="Specify language">
+                </div>
+                <div class="col-md-6">
+                  <label class="mb-2">Language Level:</label>
+                  <select class="form-select" name="languageLevel" required>
+                    <option value="">Select</option>
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                    <option value="bilingual">Bilingual</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="mb-2">Interests:</label>
+                  <input type="text" class="form-control" placeholder="Interests (Like Music , dance ,reading...)" name="interests">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="mb-2">Motorized:</label>
+                  <div>
+                    <input type="radio" class="form-check-input" name="motorized" id="motorizedYes" value="yes" required>
+                    <label for="motorizedYes" class="me-3">Yes</label>
+                    <input type="radio" class="form-check-input" name="motorized" id="motorizedNo" value="no">
+                    <label for="motorizedNo">No</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="mb-2">Smoker:</label>
+                  <div>
+                    <input type="radio" class="form-check-input" name="smoker" id="smokerYes" value="yes" required>
+                    <label for="smokerYes" class="me-3">Yes</label>
+                    <input type="radio" class="form-check-input" name="smoker" id="smokerNo" value="no">
+                    <label for="smokerNo">No</label>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary" (click)="nextStep(1)">Previous</button>
+                <button type="button" class="btn btn-primary" (click)="nextStep(3)">Next</button>
+              </div>
+            </div>
+            <!-- Step 3 -->
+            <div class="form-step d-none" id="step3">
+              <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                  <label class="mb-2">ID Card image side 1:</label>
+                  <input type="file" class="form-control" name="idImage1" id="idImage1" accept="image/*"
+                         (change)="previewAndBase64($event, 'idImage1Preview', 'idImage1Base64')">
+                  <img id="idImage1Preview" src="" alt="Preview" style="display:none; max-width:100px; margin-top:10px;"/>
+                  <input type="hidden" id="idImage1Base64" name="idImage1Base64">
+                </div>
+                <div class="col-md-4">
+                  <label class="mb-2">ID Card image side 2:</label>
+                  <input type="file" class="form-control" name="idImage2" id="idImage2" accept="image/*"
+                         (change)="previewAndBase64($event, 'idImage2Preview', 'idImage2Base64')">
+                  <img id="idImage2Preview" src="" alt="Preview" style="display:none; max-width:100px; margin-top:10px;"/>
+                  <input type="hidden" id="idImage2Base64" name="idImage2Base64">
+                </div>
+                <div class="col-md-4">
+                  <label class="mb-2">Profile Photo:</label>
+                  <input type="file" class="form-control" name="photo" id="photo" accept="image/*"
+                         (change)="previewAndBase64($event, 'photoPreview', 'photoBase64')">
+                  <img id="photoPreview" src="" alt="Preview" style="display:none; max-width:100px; margin-top:10px;"/>
+                  <input type="hidden" id="photoBase64" name="photoBase64">
+                </div>
+                <div class="col-md-6">
+                  <label class="mb-2">Hourly Rate (DT):</label>
+                  <input type="number" class="form-control" placeholder="Hourly Rate (DT)" name="hourlyRate" min="0" step="0.01">
+                </div>
+              </div>
+              <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary" (click)="nextStep(2)">Previous</button>
+                <button type="submit" class="btn btn-success">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal profile nanny end -->

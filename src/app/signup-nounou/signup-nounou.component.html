@@ -1,0 +1,191 @@
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-5 wow fadeIn" data-wow-delay="0.1s">
+  <div class="container text-center py-5">
+    <h1 class="display-2 text-white mb-4">Sign Up Nannies</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a ></li>
+        <li class="breadcrumb-item text-white" aria-current="page">Signup Nannies</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+<!-- Page Header End -->
+
+
+<!-- signup Start -->
+
+<!-- signup Start -->
+<div class="container-fluid py-5">
+  <div class="container py-5">
+    <div class="p-5 bg-light rounded">
+      <div class="mx-auto text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
+        <h4 class="text-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">Get Started Now</h4>
+        <h6 class="display-3" style="font-size: 34px;">Looking to help families with your babysitting skills?</h6>
+        <p class="mb-5">Create your account and connect with parents who need you nearby.</p>
+      </div>
+      <form id="multiStepForm" enctype="multipart/form-data">
+        <!-- Step 1 -->
+        <div class="form-step" id="step1">
+          <div class="row g-4 mb-4">
+            <div class="col-md-6">
+              <input type="text" class="form-control" placeholder="Last Name" name="lastname" required>
+            </div>
+            <div class="col-md-6">
+              <input type="text" class="form-control" placeholder="First Name" name="firstname" required>
+            </div>
+            <div class="col-md-6">
+              <input type="text" class="form-control" placeholder="Address" name="address" required>
+            </div>
+            <div class="col-md-6">
+              <input type="tel" class="form-control" placeholder="Phone" name="phone" required>
+            </div>
+            <div class="col-md-6">
+              <label class="mb-2">Gender:</label>
+              <div>
+                <input type="radio" class="form-check-input" name="gender" id="genderF" value="Female" required>
+                <label for="genderF" class="me-3">Female</label>
+                <input type="radio" class="form-check-input" name="gender" id="genderM" value="Male">
+                <label for="genderM">Male</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <input type="email" class="form-control" placeholder="Email" name="email" required>
+            </div>
+            <div class="col-md-6 position-relative">
+              <input type="password" class="form-control" placeholder="Password" name="password" id="passwordInput" required>
+              <span id="togglePassword" style="position:absolute; top:30%; right:15px; transform:translateY(-50%); cursor:pointer; z-index:2;">
+                                <i class="fa fa-eye-slash" id="eyeIcon"></i>
+                            </span>
+            </div>
+            <div class="col-md-6">
+              <label class="mb-2">Birth Date:</label>
+              <input type="date" class="form-control" name="birthdate" required>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-primary" (click)="nextStep(2)">Next</button>
+          </div>
+        </div>
+        <!-- Step 2 -->
+        <div class="form-step d-none" id="step2">
+          <div class="row g-4 mb-4">
+            <div class="col-md-6">
+              <label class="mb-2">Marital Status:</label>
+              <div>
+                <input type="radio" class="form-check-input" name="maritalStatus" id="single" value="Single" required>
+                <label for="single" class="me-3">Single</label>
+                <input type="radio" class="form-check-input" name="maritalStatus" id="married" value="Married">
+                <label for="married" class="me-3">Married</label>
+                <input type="radio" class="form-check-input" name="maritalStatus" id="divorced" value="Divorced">
+                <label for="divorced">Divorced</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="mb-2">Education Level:</label>
+              <select class="form-select" name="educationLevel" required>
+                <option value="">Select</option>
+                <option value="bac">High School</option>
+                <option value="bac+1">1 Year Post-High School</option>
+                <option value="bac+2">2 Years Post-High School</option>
+                <option value="bac+3">3 Years Post-High School</option>
+                <option value="bac+4">4 Years Post-High School</option>
+                <option value="bac+5">5 Years Post-High School</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <input type="text" class="form-control" placeholder="Field of Study" name="fieldOfStudy" required>
+            </div>
+            <div class="col-md-6">
+              <label class="mb-2">Diploma Image:</label>
+              <input type="file" class="form-control" name="diplomaImage" id="diplomaImage" accept="image/*" (change)="previewAndBase64($event, 'diplomaImagePreview', 'diplomaImageBase64')">
+              <img id="diplomaImagePreview" src="" alt="Preview" style="display:none; max-width:100px; margin-top:10px;"/>
+              <input type="hidden" id="diplomaImageBase64" name="diplomaImageBase64">
+            </div>
+            <div class="col-md-6">
+              <label class="mb-2">Language:</label>
+              <select class="form-select" name="language" id="languageSelect" (change)="toggleOtherLanguage($event)">
+                <option value="french">French</option>
+                <option value="english">English</option>
+                <option value="other">Other</option>
+              </select>
+              <input type="text" class="form-control mt-2 d-none" id="otherLanguageInput" name="otherLanguage" placeholder="Specify language">
+            </div>
+            <div class="col-md-6">
+              <label class="mb-2">Language Level:</label>
+              <select class="form-select" name="languageLevel" required>
+                <option value="">Select</option>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+                <option value="bilingual">Bilingual</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <input type="text" class="form-control" placeholder="Interests (Like Music , dance ,reading...)" name="interests">
+            </div>
+
+            <div class="col-md-6">
+              <label class="mb-2">Motorized:</label>
+              <div>
+                <input type="radio" class="form-check-input" name="motorized" id="motorizedYes" value="yes" required>
+                <label for="motorizedYes" class="me-3">Yes</label>
+                <input type="radio" class="form-check-input" name="motorized" id="motorizedNo" value="no">
+                <label for="motorizedNo">No</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="mb-2">Smoker:</label>
+              <div>
+                <input type="radio" class="form-check-input" name="smoker" id="smokerYes" value="yes" required>
+                <label for="smokerYes" class="me-3">Yes</label>
+                <input type="radio" class="form-check-input" name="smoker" id="smokerNo" value="no">
+                <label for="smokerNo">No</label>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary" (click)="nextStep(1)">Previous</button>
+            <button type="button" class="btn btn-primary" (click)="nextStep(3)">Next</button>
+          </div>
+        </div>
+        <!-- Step 3 -->
+        <div class="form-step d-none" id="step3">
+          <div class="row g-4 mb-4">
+            <div class="col-md-4">
+              <label class="mb-2">ID Card image side 1:</label>
+              <input type="file" class="form-control" name="idImage1" id="idImage1" accept="image/*"
+                     (change)="previewAndBase64($event, 'idImage1Preview', 'idImage1Base64')">
+              <img id="idImage1Preview" src="" alt="Preview" style="display:none; max-width:100px; margin-top:10px;"/>
+              <input type="hidden" id="idImage1Base64" name="idImage1Base64">
+            </div>
+            <div class="col-md-4">
+              <label class="mb-2">ID Card image side 2:</label>
+              <input type="file" class="form-control" name="idImage2" id="idImage2" accept="image/*"
+                     (change)="previewAndBase64($event, 'idImage2Preview', 'idImage2Base64')">
+              <img id="idImage2Preview" src="" alt="Preview" style="display:none; max-width:100px; margin-top:10px;"/>
+              <input type="hidden" id="idImage2Base64" name="idImage2Base64">
+            </div>
+            <div class="col-md-4">
+              <label class="mb-2">Profile Photo:</label>
+              <input type="file" class="form-control" name="photo" id="photo" accept="image/*"
+                     (change)="previewAndBase64($event, 'photoPreview', 'photoBase64')">
+              <img id="photoPreview" src="" alt="Preview" style="display:none; max-width:100px; margin-top:10px;"/>
+              <input type="hidden" id="photoBase64" name="photoBase64">
+            </div>
+            <div class="col-md-6">
+              <input type="number" class="form-control" placeholder="Hourly Rate (DT)" name="hourlyRate" min="0" step="0.01">
+            </div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary" (click)="nextStep(2)">Previous</button>
+            <button type="submit" class="btn btn-success">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+

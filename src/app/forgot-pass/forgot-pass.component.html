@@ -1,0 +1,73 @@
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-5 wow fadeIn" data-wow-delay="0.1s">
+  <div class="container text-center py-5">
+    <h1 class="display-2 text-white mb-4">Forgot Password!</h1>
+    <p style="color: white; font-size: 16px;">No worries! We’ll send you a temporary password to log in — make sure to update it once you're back in.</p>
+
+  </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Modal login Start -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content rounded-0">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!--video a coté-->
+      <div class="col-lg-2 wow fadeIn" data-wow-delay="0.1s"></div>
+      <div class="col-lg-8 d-flex align-items-center justify-content-center" >
+        <!--form login centré-->
+        <div class="p-4 bg-light rounded w-100 " style="max-width: 600px;  ">
+
+          <div class="mx-auto text-center" style="max-width: 700px;">
+            <h4 class="text-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">Log In</h4>
+            <h1 class="display-3" style="font-size: 32px;">Welcome back!</h1>
+            <p class="mb-5">Log in to continue your journey with Allo Nounou.</p>
+          </div>
+          <form action="#">
+            <input type="email" class="w-100 form-control py-3 mb-4 border-primary" placeholder="Enter Your Email" style="position:relative;z-index:1061;" />
+            <div class="position-relative">
+              <input id="passwordInput" type="password" class="w-100 form-control py-3 mb-4 border-primary" placeholder="Enter Your Password" style="position:relative;z-index:1061; padding-right: 45px;" />
+              <span id="togglePassword" style="position:absolute; top:50%; right:15px; transform:translateY(-50%); cursor:pointer; z-index:1062;">
+                                    <i class="fa fa-eye-slash" id="eyeIcon"></i>
+                                </span>
+            </div>
+            <a href="#" class="btn btn-primary px-5 py-3 btn-border-radius w-100" style="position:relative;z-index:1061;">Login</a>
+          </form>
+          <p class="text-center mt-4">Don't have an account? <a routerLink="/signup" class="text-primary">Sign Up</a></p>
+          <p class="text-center"><a routerLink="/home/forgotPass" class="text-primary">Forgot Password?</a></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Modal login End -->
+
+<!-- form forgot pass-->
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="bg-white rounded shadow p-4">
+        <div class="mx-auto text-center" style="max-width: 700px;">
+          <h4 class="text-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">Forgot Password</h4>
+          <h1 class="display-3" style="font-size: 32px;">Reset your password</h1>
+          <p class="mb-4">Enter your email address and we'll send you a temporary password to log in. Make sure to update it once you're back in.</p>
+        </div>
+        <form>
+          <input type="email" class="w-100 form-control py-3 mb-4 border-primary" id="forgotEmail" placeholder="Enter Your Email" required />
+          <button type="submit" class="btn btn-primary px-5 py-3 btn-border-radius w-100">Send Temporary Password</button>
+        </form>
+        <p class="text-center mt-4 mb-0">
+          <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Back to Login</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<!--form forgot pass-->
+
+
