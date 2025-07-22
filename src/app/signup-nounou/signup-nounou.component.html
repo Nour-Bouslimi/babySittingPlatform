@@ -1,0 +1,298 @@
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-5 wow fadeIn" data-wow-delay="0.1s">
+  <div class="container text-center py-5">
+    <h1 class="display-2 text-white mb-4">Sign Up Nannies</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a ></li>
+        <li class="breadcrumb-item text-white" aria-current="page">User Nannies</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+<!-- Page Header End -->
+
+
+<!-- signup Start -->
+
+<!-- signup Start -->
+<div class="container-fluid py-5">
+  <div class="container py-5">
+    <div class="p-5 bg-light rounded">
+      <div class="mx-auto text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
+        <h4 class="text-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">Get Started Now</h4>
+        <h6 class="display-3" style="font-size: 34px;">Looking to help families with your babysitting skills?</h6>
+        <p class="mb-5">Create your account and connect with parents who need you nearby.</p>
+      </div>
+      <form id="multiStepForm" [formGroup]="signupForm" (ngSubmit)="onsubmit()">
+        <pre>{{ signupForm.status }}</pre>
+        <pre>{{ signupForm.errors | json }}</pre>
+        <!-- Display success message -->
+        <div class="alert alert-secondary" role="alert" *ngIf="message">
+          <div class="succes-message">
+            {{ message }}
+          </div>
+        </div>
+        <!-- Display error message -->
+        <div class="alert alert-danger" role="alert" *ngIf="error">
+          <div class="error-message">
+            {{ error }}
+          </div>
+        </div>
+        <!-- Step 1 -->
+        <div class="form-step" id="step1">
+          <div class="row g-4 mb-4">
+            <div class="col-md-6">
+              <input formControlName="lastName" type="text" class="form-control" placeholder="Last Name" name="lastname" required>
+              <mat-error *ngIf="signupForm.get('lastName')?.touched && signupForm.get('lastName')?.errors?.['required']" class="text-danger" style="font-size: 14px;">
+                Last name is required.
+              </mat-error>
+              <mat-error *ngIf="signupForm.get('lastName')?.errors?.['minlength']" class="text-danger" style="font-size: 14px;">
+                Minimum 2 characters.
+              </mat-error>
+              <mat-error *ngIf="signupForm.get('lastName')?.errors?.['maxlength']" class="text-danger" style="font-size: 14px;">
+                Maximum 20 characters.
+              </mat-error>
+              <mat-error *ngIf="signupForm.get('lastName')?.errors?.['pattern']" class="text-danger" style="font-size: 14px;">
+                Only letters are allowed.
+              </mat-error>
+
+
+            </div>
+            <div class="col-md-6">
+              <input formControlName="firstName" type="text" class="form-control" placeholder="First Name" name="firstname" required>
+              <mat-error *ngIf="signupForm.get('firstName')?.touched && signupForm.get('firstName')?.errors?.['required']" class="text-danger" style="font-size: 14px;">
+                First name is required.
+              </mat-error>
+              <mat-error *ngIf="signupForm.get('firstName')?.errors?.['minlength']" class="text-danger" style="font-size: 14px;">
+                Minimum 2 characters.
+              </mat-error>
+              <mat-error *ngIf="signupForm.get('firstName')?.errors?.['maxlength']" class="text-danger" style="font-size: 14px;">
+                Maximum 20 characters.
+              </mat-error>
+              <mat-error *ngIf="signupForm.get('firstName')?.errors?.['pattern']" class="text-danger" style="font-size: 14px;">
+                Only letters are allowed.
+              </mat-error>
+            </div>
+            <div class="col-md-6">
+              <input  formControlName="address" type="text" class="form-control" placeholder="Address" name="address" required>
+              <mat-error *ngIf="signupForm.get('address')?.errors?.['required']" class="text-danger" style="font-size: 14px;">Address is required</mat-error>
+            </div>
+            <div class="col-md-6">
+              <input formControlName="phoneNumber" type="tel" class="form-control" placeholder="Phone" name="phone" required>
+              <mat-error *ngIf="signupForm.get('phoneNumber')?.errors?.['required']" class="text-danger" style="font-size: 14px;">
+                Phone number is required.
+              </mat-error>
+              <mat-error *ngIf="signupForm.get('phoneNumber')?.errors?.['pattern']" class="text-danger" style="font-size: 14px;">
+                Invalid phone number format.
+              </mat-error>
+
+            </div>
+            <div class="col-md-6">
+              <input formControlName="cin" type="tel" class="form-control" placeholder="Cin" name="cin" required>
+              <mat-error *ngIf="signupForm.get('cin')?.errors?.['required']" class="text-danger" style="font-size: 14px;">
+                CIN is required.
+              </mat-error>
+              <mat-error *ngIf="signupForm.get('cin')?.errors?.['pattern']" class="text-danger" style="font-size: 14px;">
+                CIN must be exactly 8 digits.
+              </mat-error>
+            </div>
+            <div class="col-md-6">
+              <label class="mb-2">Gender:</label>
+              <div>
+                <input formControlName="genre" type="radio" class="form-check-input" name="gender" id="genderF" value="Female" required>
+                <label for="genderF" class="me-3">Female</label>
+                <input formControlName="genre" type="radio" class="form-check-input" name="gender" id="genderM" value="Male">
+                <label for="genderM">Male</label>
+              </div>
+              <mat-error *ngIf="signupForm.get('genre')?.errors?.['required']" class="text-danger" style="font-size: 14px;"> Gender is required. </mat-error>
+            </div>
+            <div class="col-md-6">
+              <input formControlName="email" type="email" class="form-control" placeholder="Email" name="email" required>
+              <!-- Gestion des erreurs email -->
+              <mat-error *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.errors?.['required']"
+                         class="text-danger" style="font-size: 14px;">
+                Email is required
+              </mat-error>
+
+              <mat-error *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.errors?.['email']"
+                         class="text-danger" style="font-size: 14px;">
+                Invalid email format
+              </mat-error>
+            </div>
+            <div class="col-md-6 position-relative">
+              <input formControlName="password" type="password" class="form-control" placeholder="Password" name="password" id="passwordInput" required>
+              <span id="togglePassword" style="position:absolute; top:30%; right:15px; transform:translateY(-50%); cursor:pointer; z-index:2;">
+                                <i class="fa fa-eye-slash" id="eyeIcon"></i>
+                            </span>
+              <mat-error *ngIf="signupForm.get('password')?.errors?.['required']" class="text-danger" style="font-size: 14px;">
+                Password is required.
+              </mat-error>
+              <mat-error *ngIf="signupForm.get('password')?.errors?.['minlength']" class="text-danger" style="font-size: 14px;">
+                Minimum 8 characters.
+              </mat-error>
+              <mat-error *ngIf="signupForm.get('password')?.errors?.['pattern']" class="text-danger" style="font-size: 14px;">
+                Must contain at least 1 letter and 1 digit.
+              </mat-error>
+            </div>
+            <div class="col-md-6">
+              <label class="mb-2">Birth Date:</label>
+              <input formControlName="dateOfBirth" [max]="maxDate" type="date" class="form-control" name="birthdate" required>
+              <mat-error *ngIf="signupForm.get('dateOfBirth')?.errors?.['required']" class="text-danger" style="font-size: 14px;">
+                Date of birth is required.
+              </mat-error>
+              <mat-error *ngIf="signupForm.get('dateOfBirth')?.errors?.['invalidAge']" class="text-danger" style="font-size: 14px;">
+                You must be at least 19 years old.
+              </mat-error>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-primary" (click)="nextStep(2)">Next</button>
+          </div>
+        </div>
+        <!-- Step 2 -->
+        <div class="form-step d-none" id="step2">
+          <div class="row g-4 mb-4">
+            <div class="col-md-6">
+              <label class="mb-2">Marital Status:</label>
+              <div>
+                <input formControlName="etatCivil" type="radio" class="form-check-input" name="maritalStatus" id="single" value="Single" required>
+                <label for="single" class="me-3">Single</label>
+                <input formControlName="etatCivil" type="radio" class="form-check-input" name="maritalStatus" id="married" value="Married">
+                <label for="married" class="me-3">Married</label>
+                <input formControlName="etatCivil" type="radio" class="form-check-input" name="maritalStatus" id="divorced" value="Divorced">
+                <label for="divorced">Divorced</label>
+              </div>
+              <mat-error *ngIf="signupForm.get('etatCivil')?.errors?.['required']" class="text-danger" style="font-size: 14px;"> Marital status is required. </mat-error>
+            </div>
+            <div class="col-md-6">
+              <label class="mb-2">Education Level:</label>
+              <select formControlName="niveauEtude" class="form-select" name="educationLevel" required>
+                <option value="">Select</option>
+                <option formControlName="niveauEtude" value="bac">High School</option>
+                <option formControlName="niveauEtude" value="bac+1">1 Year Post-High School</option>
+                <option formControlName="niveauEtude" value="bac+2">2 Years Post-High School</option>
+                <option formControlName="niveauEtude" value="bac+3">3 Years Post-High School</option>
+                <option formControlName="niveauEtude" value="bac+4">4 Years Post-High School</option>
+                <option formControlName="niveauEtude" value="bac+5">5 Years Post-High School</option>
+              </select>
+              <mat-error *ngIf="signupForm.get('niveauEtude')?.errors?.['required']" class="text-danger" style="font-size: 14px;"> Education level is required. </mat-error>
+            </div>
+            <div class="col-md-6">
+              <input formControlName="domaineEtude" type="text" class="form-control" placeholder="Field of Study" name="fieldOfStudy" required>
+              <mat-error *ngIf="signupForm.get('domaineEtude')?.errors?.['required']" class="text-danger" style="font-size: 14px;">  Field of Study is required. </mat-error>
+              <mat-error *ngIf="signupForm.get('domaineEtude')?.errors?.['pattern']" class="text-danger" style="font-size: 14px;"> It Should contains only letters. </mat-error>
+            </div>
+            <div class="col-md-6">
+              <input formControlName="experience" type="text" class="form-control" placeholder="Experience" name="experience" required>
+              <mat-error *ngIf="signupForm.get('experience')?.errors?.['required']" class="text-danger" style="font-size: 14px;"> experience is required. </mat-error>
+            </div>
+            <div class="col-md-6">
+              <label class="mb-2">Diploma Image:</label>
+              <input formControlName="imgEtude" type="file" class="form-control" name="diplomaImage" id="diplomaImage" accept="image/*" (change)="onFileSelectedEtude($event) ">
+              <img *ngIf="imgEtudeUrl" [src]="imgEtudeUrl" alt="User Image" class="image-preview"  style="max-width: 100px; max-height: 100px; margin-top: 10px; border-radius: 5px;">
+
+            </div>
+            <div class="col-md-6">
+              <label class="mb-2">Language:</label>
+              <select formControlName="langue" class="form-select" name="language" id="languageSelect" (change)="toggleOtherLanguage($event)">
+                <option formControlName="langue" value="french">French</option>
+                <option formControlName="langue" value="english">English</option>
+                <option formControlName="langue" value="other">Other</option>
+              </select>
+              <mat-error *ngIf="signupForm.get('langue')?.errors?.['required']" class="text-danger" style="font-size: 14px;"> Language is required. </mat-error>
+              <input formControlName="langue" type="text" class="form-control mt-2 d-none" id="otherLanguageInput" name="otherLanguage" placeholder="Specify language">
+              <mat-error *ngIf="signupForm.get('langue')?.errors?.['required']" class="text-danger" style="font-size: 14px;"> Specific Language is required. </mat-error>
+            </div>
+            <div class="col-md-6">
+              <label class="mb-2">Language Level:</label>
+              <select formControlName="niveau" class="form-select" name="languageLevel" required>
+                <option formControlName="niveau" value="">Select</option>
+                <option formControlName="niveau" value="beginner">Beginner</option>
+                <option formControlName="niveau" value="intermediate">Intermediate</option>
+                <option formControlName="niveau" value="advanced">Advanced</option>
+                <option formControlName="niveau" value="bilingual">Bilingual</option>
+              </select>
+              <mat-error *ngIf="signupForm.get('niveau')?.errors?.['required']" class="text-danger" style="font-size: 14px;"> Language level is required. </mat-error>
+            </div>
+            <div class="col-md-6">
+              <input formControlName="centreInteret" type="text" class="form-control" placeholder="Interests (Like Music , dance ,reading...)" name="interests">
+
+              <mat-error *ngIf="signupForm.get('centreInteret')?.errors?.['required']" class="text-danger" style="font-size: 14px;"> Interests is required. </mat-error>
+              <mat-error *ngIf="signupForm.get('centreInteret')?.errors?.['pattern']" class="text-danger" style="font-size: 14px;"> Interests should contain only letters. </mat-error>
+            </div>
+
+            <div class="col-md-6">
+              <label class="mb-2">Motorized:</label>
+              <div>
+                <input formControlName="motorise" type="radio" class="form-check-input" name="motorized" id="motorizedYes" value="yes" required>
+                <label for="motorizedYes" class="me-3">Yes</label>
+                <input formControlName="motorise" type="radio" class="form-check-input" name="motorized" id="motorizedNo" value="no">
+                <label for="motorizedNo">No</label>
+              </div>
+              <mat-error *ngIf="signupForm.get('motorise')?.errors?.['required']" class="text-danger" style="font-size: 14px;"> Motorized is required. </mat-error>
+            </div>
+            <div class="col-md-6">
+              <label class="mb-2">Smoker:</label>
+              <div>
+                <input formControlName="fumer" type="radio" class="form-check-input" name="smoker" id="smokerYes" value="yes" required>
+                <label for="smokerYes" class="me-3">Yes</label>
+                <input formControlName="fumer" type="radio" class="form-check-input" name="smoker" id="smokerNo" value="no">
+                <label for="smokerNo">No</label>
+              </div>
+              <mat-error *ngIf="signupForm.get('fumer')?.errors?.['required']" class="text-danger" style="font-size: 14px;"> Smoker is required. </mat-error>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary" (click)="nextStep(1)">Previous</button>
+            <button type="button" class="btn btn-primary" (click)="nextStep(3)">Next</button>
+          </div>
+        </div>
+        <!-- Step 3 -->
+        <div class="form-step d-none" id="step3">
+          <div class="row g-4 mb-4">
+            <div class="col-md-4">
+              <label class="mb-2">ID Card image side 1:</label>
+              <input formControlName="imgIdent1" type="file" class="form-control" name="idImage1" id="idImage1" accept="image/*"
+                     (change)="onFileSelectedIdent1($event)" required>
+              <img *ngIf="imgIdent1Url" [src]="imgIdent1Url" alt="ID Card image side 1" class="image-preview"  style="max-width: 100px; max-height: 100px; margin-top: 10px; border-radius: 5px;">
+              <mat-error *ngIf="signupForm.get('imgIdent1')?.errors?.['required']" class="text-danger" style="font-size: 14px;">
+                ID Card image side 1 is required.</mat-error>
+            </div>
+            <div class="col-md-4">
+              <label class="mb-2">ID Card image side 2:</label>
+              <input formControlName="imgIdent2" type="file" class="form-control" name="idImage2" id="idImage2" accept="image/*"
+                     (change)="onFileSelectedIdent2($event)" required>
+              <img *ngIf="imgIdent2Url" [src]="imgIdent2Url" alt="ID Card image side 2" class="image-preview"  style="max-width: 100px; max-height: 100px; margin-top: 10px; border-radius: 5px;">
+              <mat-error *ngIf="signupForm.get('imgIdent2')?.errors?.['required']" class="text-danger" style="font-size: 14px;">
+                ID Card image side 2 is required.</mat-error>
+            </div>
+            <div class="col-md-4">
+              <label class="mb-2">Profile Photo:</label>
+              <input formControlName="photo" type="file" class="form-control" name="photo" id="photo" accept="image/*"
+                     (change)="onFileSelected($event)" required>
+              <img *ngIf="imageUrl" [src]="imageUrl" alt="User Image" class="image-preview"  style="max-width: 100px; max-height: 100px; margin-top: 10px; border-radius: 5px;">
+              <mat-error *ngIf="signupForm.get('photo')?.errors?.['required']" class="text-danger" style="font-size: 14px;">
+                Profile photo is required.</mat-error>
+
+            </div>
+            <div class="col-md-6">
+              <input formControlName="tarifHoraire" type="number" class="form-control" placeholder="Hourly Rate (DT)" name="hourlyRate" min="0" step="0.01">
+            </div>
+            <mat-error *ngIf="signupForm.get('tarifHoraire')?.errors?.['required']" class="text-danger" style="font-size: 14px;">
+              Hourly rate is required.</mat-error>
+            <mat-error *ngIf="signupForm.get('tarifHoraire')?.errors?.['min']" class="text-danger" style="font-size: 14px;">
+              Hourly rate must be a positive number.</mat-error>
+          </div>
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary" (click)="nextStep(2)">Previous</button>
+            <button type="submit" class="btn btn-success" [disabled]="!signupForm.valid">Signup</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+

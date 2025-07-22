@@ -1,0 +1,219 @@
+<!-- modal profile parent start -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content rounded-0" style="background:rgba(255,255,255,0.85) !important; box-shadow:none;">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="col-lg-2"></div>
+      <div class="col-lg-8 d-flex align-items-center justify-content-center">
+
+
+        <div class="p-4 bg-light rounded w-100" style="max-width: 900px; position:relative;">
+          <!-- Top right action buttons -->
+          <div class="d-flex justify-content-end align-items-center mb-3" style="gap: 10px;">
+
+            <!-- Delete Account -->
+            <button class="btn btn-outline-danger btn-sm" style="border-radius:20px;" title="Delete my account" (click)="confirmDelete()">
+              <i class="fa fa-trash"></i> Delete my account
+            </button>
+
+            <!-- Logout Button -->
+            <button class="btn btn-outline-secondary btn-sm" style="border-radius: 20px;" title="Logout" (click)="confirmLogout()">
+              <i class="fas fa-sign-out-alt text-primary"></i>
+            </button>
+
+            <!-- Notifications & Messages -->
+            <div class="d-flex gap-2 position-relative">
+
+              <!-- Notification -->
+              <button class="btn btn-light btn-sm position-relative animate-shake" title="Notifications"
+                      data-bs-toggle="modal" data-bs-target="#notifModal">
+                <i class="fa fa-bell text-primary"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:10px;">14</span>
+              </button>
+
+              <!-- Message -->
+              <button class="btn btn-light btn-sm animate-pulse" title="Messages"
+                      data-bs-toggle="modal" data-bs-target="#msgModal">
+                <i class="fa fa-envelope text-primary"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:10px;">14</span>
+              </button>
+
+            </div>
+          </div>
+
+          <div class="mx-auto text-center" style="max-width: 700px;">
+            <h4 class="text-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">Profile</h4>
+            <h1 class="display-3" style="font-size: 32px;">Your Profile</h1>
+            <p class="mb-4">View and edit your profile informations here.</p>
+            <!-- Circular user photo with edit icon -->
+            <div class="position-relative d-inline-block mb-4">
+              <img id="profilePhotoPreview" src="img/default-user.png" alt="User Photo" class="rounded-circle border border-primary" style="width:120px; height:120px; object-fit:cover;">
+              <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;">
+              <button type="button" onclick="document.getElementById('profilePhotoInput').click()" class="btn btn-primary btn-sm rounded-circle position-absolute" style="bottom:0; right:0;">
+                <i class="fa fa-pen"></i>
+              </button>
+            </div>
+          </div>
+          <!-- Profile form (same inputs as signupParent.html) -->
+          <form>
+            <div class="row g-4 mb-4">
+              <div class="col-lg-4">
+                <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
+                  <i class="fas fa-map-marker-alt fa-2x text-primary me-4"></i>
+                  <input type="text" class="form-control border-0 shadow-none" placeholder="Address" name="address" style="background:transparent;">
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
+                  <i class="fas fa-envelope fa-2x text-primary me-4"></i>
+                  <input type="email" class="form-control border-0 shadow-none" placeholder="Email" name="email" style="background:transparent;">
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
+                  <i class="fa fa-phone-alt fa-2x text-primary me-4"></i>
+                  <input type="tel" class="form-control border-0 shadow-none" placeholder="Phone Number" name="phone" style="background:transparent;">
+                </div>
+              </div>
+            </div>
+            <div class="row g-4 mb-4">
+              <div class="col-lg-4">
+                <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white" style="min-height: 48px;">
+                  <i class="fa fa-venus-mars fa-2x text-primary me-4"></i>
+                  <div class="form-check form-check-inline mb-0">
+                    <input class="form-check-input" type="radio" name="gender" id="genderF" value="F">
+                    <label class="form-check-label" for="genderF">Female</label>
+                  </div>
+                  <div class="form-check form-check-inline mb-0 ms-3">
+                    <input class="form-check-input" type="radio" name="gender" id="genderM" value="M">
+                    <label class="form-check-label" for="genderM">Male</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white" style="min-height: 48px;">
+                  <i class="fa fa-calendar-alt fa-2x text-primary me-4"></i>
+                  <input type="date" class="form-control border-0 shadow-none" placeholder="Birth Date" name="birthdate" style="background:transparent;">
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white" style="min-height: 48px; position:relative;">
+                  <i class="fa fa-child fa-2x text-primary me-4"></i>
+                  <div style="width:100%;">
+                    <button type="button" id="toggleAgeDropdown" class="form-control border-0 shadow-none text-start" style="background:transparent; min-height:40px;">
+                      Child's Age <i class="fa fa-caret-down float-end"></i>
+                    </button>
+                    <div id="ageDropdownList" class="border rounded bg-white mt-1" style="display:none; position:absolute; left:55px; right:10px; z-index:10;">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="0-1" id="age0_1">
+                        <label class="form-check-label" for="age0_1">0-1 year</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="1-3" id="age1_3">
+                        <label class="form-check-label" for="age1_3">1-3 year</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="3-6" id="age3_6">
+                        <label class="form-check-label" for="age3_6">3-6 year</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="6-10" id="age6_10">
+                        <label class="form-check-label" for="age6_10">6-10 year</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="10+" id="age10plus">
+                        <label class="form-check-label" for="age10plus">10 year and more</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row g-4 mb-4">
+              <div class="col-lg-4">
+                <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
+                  <i class="fa fa-child fa-2x text-primary me-4"></i>
+                  <input type="tel" class="form-control border-0 shadow-none" placeholder="Number of children" name="childrenCount" style="background:transparent;">
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
+                  <input type="text" class="form-control border-0 shadow-none" placeholder="First Name" name="firstName" style="background:transparent;">
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
+                  <input type="text" class="form-control border-0 shadow-none" placeholder="Last Name" name="lastName" style="background:transparent;">
+                </div>
+              </div>
+            </div>
+            <div class="row g-4 mb-4">
+              <div class="col-lg-4">
+                <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white position-relative">
+                  <input id="passwordInputProfile" type="password" class="form-control border-0 shadow-none" placeholder="Password" name="password" style="background:transparent;">
+                  <span id="togglePasswordProfile" style="position:absolute; right:20px; cursor:pointer;">
+                        <i class="fa fa-eye-slash" id="eyeIconProfile"></i>
+                    </span>
+                </div>
+              </div>
+            </div>
+            <div class="row g-4">
+              <div class="col-lg-12 d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary form-control py-3 border-primary text-white bg-primary" style="max-width:300px;">Save Changes</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal profile parent end -->
+<!-- Modal Notifications -->
+<div class="modal fade" id="notifModal" tabindex="-1" aria-labelledby="notifModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-scrollable modal-top-end">
+    <div class="modal-content custom-modal">
+      <div class="modal-header py-2">
+        <h6 class="modal-title" id="notifModalLabel">Notifications</h6>
+        <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-2">
+        <ul class="list-unstyled mb-0">
+          <li>🔔 Nouvelle mise à jour</li>
+          <li>🔔 Nouveau commentaire</li>
+          <li>🔔 Invitation à un événement</li>
+          <li>🔔 Notification supplémentaire...</li>
+          <li>🔔 Notification supplémentaire...</li>
+          <li>🔔 Notification supplémentaire...</li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Messages -->
+<div class="modal fade" id="msgModal" tabindex="-1" aria-labelledby="msgModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-scrollable modal-top-end">
+    <div class="modal-content custom-modal">
+      <div class="modal-header py-2">
+        <h6 class="modal-title" id="msgModalLabel">Messages</h6>
+        <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-2">
+        <ul class="list-unstyled mb-0">
+          <li>✉️ Nouveau message de Sarah</li>
+          <li>✉️ Rappel de réunion</li>
+          <li>✉️ Message d’Alex</li>
+          <li>✉️ Message supplémentaire...</li>
+          <li>✉️ Message supplémentaire...</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+

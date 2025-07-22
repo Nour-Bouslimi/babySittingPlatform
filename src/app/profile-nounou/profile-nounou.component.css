@@ -1,0 +1,87 @@
+.profile-container {
+  background-color: #ffebee;
+}
+
+.profile-card {
+  background-color: #fff;
+  border-radius: 15px;
+}
+
+.profile-title {
+  color: #d81b60;
+  font-weight: bold;
+  display: inline;
+}
+
+.profile-subtitle {
+  color: #d81b60;
+  font-size: 1.5rem;
+  margin-top: 10px;
+}
+
+.profile-description {
+  color: #757575;
+}
+
+.profile-photo img {
+  border: 3px solid #d81b60;
+}
+
+.input-group {
+  border: 2px solid #d81b60;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #e0e0e0;
+}
+
+.input-icon {
+  background-color: #d81b60;
+  color: #fff;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.form-control, .form-select {
+  border: none;
+  background: transparent;
+  padding: 10px;
+  width: 100%;
+}
+
+.form-control[readonly], .form-select[disabled] {
+  background-color: transparent;
+  color: #000;
+}
+
+.btn-primary {
+  background-color: #d81b60;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+.btn-primary:hover {
+  background-color: #c2185b;
+}
+
+.btn-danger {
+  background-color: #f44336;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+.notification-icons {
+  display: inline-block;
+  margin-left: 10px;
+  position: relative;
+}
+
+.notification-icons .badge {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  font-size: 0.7rem;
+}

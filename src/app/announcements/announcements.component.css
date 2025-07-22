@@ -1,0 +1,18 @@
+.btn-oval {
+  width: 70px;
+  height: 40px;
+  border-radius: 50%; /* Rend le bouton ovale (cercle si width = height) */
+  background-color: #007bff; /* Couleur de fond, ajustez selon vos besoins */
+  border: none;
+  color: #fff; /* Couleur du texte/icon */
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.btn-oval:hover {
+  background-color:#FF4880; /* Couleur au survol */
+}
+

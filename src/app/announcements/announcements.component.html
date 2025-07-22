@@ -1,0 +1,77 @@
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-5 wow fadeIn" data-wow-delay="0.1s">
+  <div class="container text-center py-5">
+    <h1 class="display-2 text-white mb-4">Announcements</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a ></li>
+        <li class="breadcrumb-item text-white" aria-current="page">Announcements</li>
+      </ol>
+    </nav>
+
+  </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Events Start -->
+<div class="container-fluid events py-5 bg-light">
+  <div class="container py-5">
+    <div class="d-flex justify-content-end mt-3">
+      <a class="btn btn-oval" routerLink="/home/createAnnounce"><i class="fas fa-plus"></i></a>
+    </div>
+    <div class="mx-auto text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
+      <h4 class="text-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">Announcements</h4>
+    </div>
+    <div class="row g-5 justify-content-center">
+      <div class="col-md-6 col-lg-6 col-xl-4 wow fadeIn" data-wow-delay="0.1s" *ngFor="let a of filteredAnnonces">
+        <div class="events-item bg-primary rounded">
+          <div class="events-inner position-relative">
+            <div class="events-img overflow-hidden rounded-circle position-relative">
+              <img src="/assets/img/event-1.jpg" class="img-fluid w-100 rounded-circle" alt="Image">
+              <div class="event-overlay" style="display: flex; gap: 15px; align-items: center;">
+                <a href="/assets/img/event-1.jpg" data-lightbox="event-1"><i class="fas fa-search-plus text-white fa-2x"></i></a>
+                <button (click)="deleteAnnonce(a.idAnnonce)" style="border: none; background: none; padding: 0;">
+                  <i class="fas fa-trash-alt text-white fa-2x"></i>
+                </button>
+                <button routerLink="/home/updateAnnounce/{{a.id}}" style="border: none; background: none; padding: 0;">
+                  <i class="fas fa-edit text-white fa-2x"></i>
+                </button>
+              </div>
+            </div>
+            <div class="px-4 py-2 bg-secondary text-white text-center events-rate">{{ a.date }}</div>
+            <div class="d-flex justify-content-between px-4 py-2 bg-secondary">
+              <small class="text-white"><i class="fas fa-calendar me-1 text-primary"></i>{{ a.date }}</small>
+              <small class="text-white"><i class="fas fa-map-marker-alt me-1 text-primary"></i> New York</small>
+            </div>
+          </div>
+          <div class="events-text p-4 border border-primary bg-white border-top-0 rounded-bottom">
+            <a class="h4">{{ a.titre }}</a>
+            <p class="mb-0 mt-3">{{ a.description }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination and View All Button with increased margin -->
+      <div class="d-flex justify-content-center align-items-center mt-6 wow fadeIn" data-wow-delay="0.1s" *ngIf="!isShowingAll">
+        <nav aria-label="Page navigation">
+          <ul class="pagination">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" href="#" (click)="previousPage(); $event.preventDefault()">Previous</a>
+            </li>
+            <li class="page-item" *ngFor="let page of getPageNumbers()" [class.active]="page === currentPage">
+              <a class="page-link" href="#" (click)="goToPage(page); $event.preventDefault()">{{ page }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" href="#" (click)="nextPage(); $event.preventDefault()">Next</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="ms-3">
+          <a class="btn btn-primary px-5 py-3 text-white btn-border-radius" (click)="viewAllAnnonces()">View All Announcements</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Events End -->
+
