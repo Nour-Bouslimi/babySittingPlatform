@@ -1,5 +1,7 @@
 package org.example.babysitting.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
@@ -74,14 +76,14 @@ public class User {
     private String photo;
     @JsonProperty("dateOfBirth")
  @Column( name = "dateOfBirth")
-    private LocalDate dateOfBirth;
+    private Date dateOfBirth;
     @JsonProperty("nbChildren")
  @Column( name = "nbChildren")
     private Integer nbChildren;
-    @Pattern(
-            regexp = "^(\\d{1,2})\\s?(mois|ans)$",
+  /*  @Pattern(
+            regexp = "^(\\d{1,2})\\s?(year)$",
             message = "ageChildren must be in the format 'X mois' or 'X ans'"
-    )
+    )*/
     @JsonProperty("ageChildren")
     @Column( name = "ageChildren")
     private String ageChildren;
@@ -145,27 +147,35 @@ public class User {
 
     }
     //association with Reservation
+    //@JsonManagedReference
     @OneToMany(mappedBy = "parent", cascade=CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Reservation> reservationsParent;
-
+    //@JsonManagedReference
     @OneToMany(mappedBy = "nounou", cascade=CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Reservation> reservationsNounou;
 
 
     //association with Message
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL,fetch= FetchType.LAZY)
+    //@JsonManagedReference
+    @JsonIgnore
     private List<Message> messagesSent;
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL,fetch= FetchType.LAZY)
+    //@JsonManagedReference
+    @JsonIgnore
     private List<Message> messagesReceived;
     //association with Notification
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    //@JsonManagedReference
     private List<Notification> notifications;
 
     //association with Reponse
     @OneToMany(mappedBy = "sender",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //@JsonManagedReference
     private List<Reponse> reponsesSent;
 
     @OneToMany(mappedBy = "receiver",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //@JsonManagedReference
     private List<Reponse> reponsesReceived;
 
     public Long getIdUser() {
@@ -354,14 +364,12 @@ public class User {
     }
 
 
-    public LocalDate getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        if (dateOfBirth != null && dateOfBirth.isAfter(LocalDate.now().minusYears(19))) {
-            throw new IllegalArgumentException("User must be at least 19 years old (born in 2006 or before)");
-        }
+    public void setDateOfBirth(Date dateOfBirth) {
+
 
         this.dateOfBirth = dateOfBirth;
     }

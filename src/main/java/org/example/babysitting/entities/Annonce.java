@@ -1,5 +1,7 @@
 package org.example.babysitting.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -32,6 +34,8 @@ public class Annonce {
     // Association with User
 
     @ManyToOne
+    @JoinColumn(name = "user_idUser")
+    @JsonIgnore
     private User user;
 
 

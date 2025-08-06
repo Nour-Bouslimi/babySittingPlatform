@@ -3,6 +3,8 @@ package org.example.babysitting.controllers;
 import org.example.babysitting.entities.Annonce;
 import org.example.babysitting.entities.User;
 import org.example.babysitting.service.AnnonceInterface;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,12 +14,25 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/annonces")
-@CrossOrigin(origins= "*",allowedHeaders = "*") // Allows all origins, you can specify a specific origin if needed
+@CrossOrigin(origins = "http://localhost:4200")  // autorise uniquement le front Angular
 public class AnnonceController {
     @Autowired
     AnnonceInterface annonceInterface;
 
+    private static final Logger logger = LoggerFactory.getLogger(AnnonceController.class);
+
     @PostMapping("/addAnnonce")
+    public Annonce addAnnonce(@RequestBody Annonce annonce) {
+        logger.info("Received Annonce: {}", annonce);
+        if (annonce.getUser() == null && annonce.getUser_idUser() != null) {
+            User tempUser = new User();
+            tempUser.setIdUser(annonce.getUser_idUser());
+            annonce.setUser(tempUser);
+            logger.info("Set temporary User with ID: {}", annonce.getUser_idUser());
+        }
+        return annonceInterface.addAnnonce(annonce);
+    }
+   /* @PostMapping("/addAnnonce")
     public Annonce addAnnonce(@RequestBody Annonce annonce){
        if(annonce.getUser() == null && annonce.getUser_idUser() != null) {
             // Si l'utilisateur est null mais l'ID de l'utilisateur existe, on crée un objet User temporaire
@@ -26,7 +41,7 @@ public class AnnonceController {
         }
         return annonceInterface.addAnnonce(annonce);
 
-    }
+    }*/
     @PostMapping("/addListAnnonces")
     public List<Annonce> addListAnnonces(@RequestBody List<Annonce> annonces) {
         return annonceInterface.addListAnnonces(annonces);

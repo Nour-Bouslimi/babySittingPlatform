@@ -17,6 +17,7 @@ public class NotificationImplement implements NotificationInterface {
 
     @Override
     public Notification addNotification(Notification notification) {
+        System.out.println("✅ Notification enregistrée en base pour user_idUser = " + notification.getUser_idUser());
         return notificationRepo.save(notification);
     }
 

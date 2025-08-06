@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 @Service
 public class DisponibilityImplement implements DisponibilityInterface {
@@ -75,8 +75,8 @@ public class DisponibilityImplement implements DisponibilityInterface {
 
 
     @Override
-    public List<Disponibilite> getDisponibiliteByTimeRange(int heureDebut, int heureFin) {
-        return disponibilityRepo.findByHeureDebutAndHeureFin(heureDebut, heureFin);
+    public List<Disponibilite> getDisponibiliteByTimeRange(LocalDate date,int heureDebut, int heureFin) {
+        return disponibilityRepo.findByDateAndHeureDebutAndHeureFin(date,heureDebut, heureFin);
     }
 
     @Override

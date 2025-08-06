@@ -1,5 +1,7 @@
 package org.example.babysitting.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -29,9 +31,11 @@ public class Message {
 
     // Association avec User
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="sender_id", nullable = false)
     private User sender;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="receiver_id", nullable = false)
     private User receiver;
     // Association avec Reponse

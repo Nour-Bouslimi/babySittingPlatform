@@ -13,7 +13,7 @@ public interface ReservationRepo extends JpaRepository<Reservation, Long> {
     //Named methods
     List<Reservation> findByParent_IdUser(Long user_idUser);
 
-    List<Reservation> findByDate(LocalDate date);
+    List<Reservation> findByDate(Date date);
 
     List<Reservation> findByHeureDebutBetween(int heureDebut, int heureFin);
     boolean existsByIdReserv(Long idReserv);

@@ -8,16 +8,16 @@ import org.example.babysitting.serviceImplement.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping("/reservations")
-@CrossOrigin(origins= "*",allowedHeaders = "*") // Allows all origins, you can specify a specific origin if needed
+@CrossOrigin(origins = "http://localhost:4200")  // autorise uniquement le front Angular
 public class ReservationController {
     @Autowired
      ReservationInterface reservationInterface;
@@ -25,7 +25,6 @@ public class ReservationController {
     private NotificationService notificationService;
     @PostMapping("/addReservation/{idParent}/{idNounou}")
     public Reservation addReservation(@PathVariable Long idParent,@PathVariable Long idNounou,@RequestBody Reservation reservation) {
-
 
             User parent = new User();
             parent.setIdUser(idParent);
@@ -52,7 +51,8 @@ public class ReservationController {
     }
     @DeleteMapping("/deleteReservation/{id}")
     public void deleteReservation(@PathVariable Long id) {
-        reservationInterface.deleteReservation(id);
+
+            reservationInterface.deleteReservation(id);
     }
     @PutMapping("/updateReservation/{id}")
     public Reservation updateReservation(@PathVariable Long id,@RequestBody Reservation reservation) {
@@ -65,10 +65,21 @@ public class ReservationController {
     @PutMapping("/markReservationAsAccepted/{id}")
     public void markReservationAsAccepted(@PathVariable Long id) {
         reservationInterface.markReservationAsAccepted(id);
+        // Envoi de la notification
+        Reservation reservation = reservationInterface.getReservationById(id);
+        Long parentId = reservation.getParent().getIdUser();
+        //Long nounouId = reservation.getNounou().getIdUser();
+        notificationService.sendNotification(parentId, "Your Reservation has been accepted by the Nounou !");
+
     }
     @PutMapping("/markReservationAsRejected/{id}")
     public void markReservationAsRejected(@PathVariable Long id) {
         reservationInterface.markReservationAsRejected(id);
+        // Envoi de la notification
+        Reservation reservation = reservationInterface.getReservationById(id);
+        Long parentId = reservation.getParent().getIdUser();
+        //Long nounouId = reservation.getNounou().getIdUser();
+        notificationService.sendNotification(parentId, "Your Reservation has been rejected by the Nounou !");
     }
     @GetMapping("/getAllReservations")
     public List<Reservation> getAllReservations() {
@@ -85,9 +96,10 @@ public class ReservationController {
     @GetMapping("/getReservationByDate/{date}")
     public List<Reservation> getReservationByDate(@PathVariable String date) {
         try {
-            LocalDate parsedDate = LocalDate.parse(date); // Conversion de la chaîne en LocalDate
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsedDate = formatter.parse(date); // Conversion de la chaîne en java.util.Date
             return reservationInterface.getReservationByDate(parsedDate);
-        } catch (DateTimeParseException e) {
+        } catch (ParseException e) {
             throw new RuntimeException("Format de date invalide. Utilisez 'yyyy-MM-dd'.");
         }
     }

@@ -1,5 +1,7 @@
 package org.example.babysitting.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertTrue;
@@ -30,6 +32,7 @@ public class Disponibilite {
 
     // Association avec l'entité User
     @ManyToOne
+    @JsonIgnore
     private User user; // Association avec l'entité User
 
     public Disponibilite() {
@@ -85,11 +88,11 @@ public class Disponibilite {
     }
 
     //controle de saisie sur la date, heureDebut et heureFin
-    @AssertTrue(message = "The date must be greater than the current date or comply with the time constraints.")
+    //@AssertTrue(message = "The date must be greater than the current date or comply with the time constraints.")
 
 
 
-    public boolean isDateAndTimeValid() {
+  /*  public boolean isDateAndTimeValid() {
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
 
@@ -110,6 +113,6 @@ public class Disponibilite {
             }
         }
         return false;
-    }
+    }*/
 
 }

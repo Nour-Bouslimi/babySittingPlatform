@@ -1,5 +1,7 @@
 package org.example.babysitting.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -26,13 +28,18 @@ public class Reponse {
 
     // association with User
     @ManyToOne
+   // @JsonBackReference
+    @JsonIgnore
     @JoinColumn(name="sender_id", nullable = false)
     private User sender;
     @ManyToOne
+   // @JsonBackReference
+    @JsonIgnore
     @JoinColumn(name="receiver_id", nullable = false)
     private User receiver;
     // association with Message
     @ManyToOne
+    @JsonIgnore
     private Message message;
 
     public Reponse() {
@@ -50,7 +57,7 @@ public class Reponse {
     public void setReceiver(User receiver) {
         this.receiver = receiver;
     }
-
+    @JsonIgnore
     public Message getMessage() {
         return message;
     }
@@ -91,13 +98,14 @@ public class Reponse {
     }
 
 
-
+    @JsonIgnore
     public Message getMsg() {
         return message;
     }
     public void setMsg(Message message) {
         this.message = message;
     }
+    @JsonIgnore
     public Message getMessage_idMsg() {
         return message;
     }

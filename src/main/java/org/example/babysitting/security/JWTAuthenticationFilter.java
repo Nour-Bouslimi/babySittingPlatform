@@ -20,9 +20,16 @@ import java.io.IOException;
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JWTGenerator tokenGenerator;
+    @Autowired
     private CustomUserDetailsService userDetailsService;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // Ignorer le filtre pour /api/auth/login
+        if (request.getServletPath().equals("/api/auth/login")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // Récupérer le token JWT de l'en-tête Authorization
         String token = getJWTFromRequest(request);
         if(StringUtils.hasText(token) && tokenGenerator.validateToken(token)){
@@ -36,13 +43,12 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             // Mettre l'authentification dans le contexte de sécurité
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            // faire le filtrage de la requête
-            filterChain.doFilter(request, response);
+
         }
-        else {
+
             // Si le token n'est pas valide, passer au filtre suivant sans authentification
             filterChain.doFilter(request, response);
-        }
+
     }
 
     private String getJWTFromRequest(HttpServletRequest request) {

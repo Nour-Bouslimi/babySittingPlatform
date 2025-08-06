@@ -19,7 +19,7 @@ public interface ReservationInterface {
     List<Reservation> getAllReservations(); //ajout de la méthode pour récupérer toutes les réservations
     Reservation getReservationById(Long id); //ajout de la méthode pour récupérer une réservation par son ID
     List<Reservation> getReservationByParent_idUser(Long user_idUser); //ajout de la méthode pour récupérer les réservations par l'ID de l'utilisateur
-    List<Reservation> getReservationByDate(LocalDate date); //ajout de la méthode pour récupérer les réservations par date
+    List<Reservation> getReservationByDate(Date date); //ajout de la méthode pour récupérer les réservations par date
     List<Reservation> getReservationByTimeRange(int heureDebut, int heureFin); //ajout de la méthode pour récupérer les réservations par plage horaire
     List<Reservation> getReservationByStatut(Statut statut); //ajout de la méthode pour récupérer les réservations par statut
    List<Reservation> getReservationByNounou_idUser(Long user_idUser); //ajout de la méthode pour récupérer les réservations par l'ID de la nounou

@@ -285,6 +285,33 @@ public class UserImplement implements UserInterface {
                 })
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void blockUser(Long id) {
+        User user = getUserById(id);
+        if (user != null) {
+            user.setIsBlocked(1); // Mettre à jour le statut de blocage
+            userRepo.save(user); // Sauvegarder les modifications
+            LOGGER.info("User with id {} has been blocked", id);
+        } else {
+            LOGGER.warn("User with id {} not found", id);
+            throw new RuntimeException("User not found");
+        }
+    }
+
+    @Override
+    public void unblockUser(Long id) {
+        User user = getUserById(id);
+        if (user != null) {
+            user.setIsBlocked(0); // Mettre à jour le statut de blocage
+            userRepo.save(user); // Sauvegarder les modifications
+            LOGGER.info("User with id {} has been unblocked", id);
+        } else {
+            LOGGER.warn("User with id {} not found", id);
+            throw new RuntimeException("User not found");
+        }
+    }
+
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371; // Rayon de la Terre en km
         double dLat = Math.toRadians(lat2 - lat1);

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/auth")
-@CrossOrigin(origins= "*",allowedHeaders = "*") // Allows all origins, you can specify a specific origin if needed
+@CrossOrigin(origins = "http://localhost:4200")  // autorise uniquement le front Angular
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserRepo userRepo;
@@ -43,6 +43,7 @@ public class AuthController {
             admin.setPhoneNumber("12345678");
             admin.setAddress("123 Admin Street");
             admin.setGenre("Male");
+            admin.setCin("12345678");
             admin.setEmail("admin@gmail.com");
             admin.setPassword(passwordEncoder.encode("admin123"));
             admin.setRole(UserRole.ADMIN);
@@ -53,6 +54,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
+        System.out.println("Attempting login for email: " + loginDto.getEmail());
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword())
@@ -62,6 +64,7 @@ public class AuthController {
             AuthResponseDto authResponseDto = new AuthResponseDto(token, "Bearer");
             return new ResponseEntity<>(authResponseDto, HttpStatus.OK);
         } catch (AuthenticationException e) {
+            System.out.println("Authentication failed for email: " + loginDto.getEmail() + " - " + e.getMessage());
             return new ResponseEntity<>("Email ou mot de passe incorrect", HttpStatus.UNAUTHORIZED);
         }
     }

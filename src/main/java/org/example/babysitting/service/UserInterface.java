@@ -32,6 +32,10 @@ public interface UserInterface {
     //pour la geolocalisation des nourrices
     public List<User> findNearbyNannies(double lat, double lon, double radiusKm);
 
+    //block user by id
+    void blockUser(Long id); //ajout de la méthode pour bloquer un utilisateur
 
+    //unblock user by id
+    void unblockUser(Long id); //ajout de la méthode pour débloquer un utilisateur
 
 }

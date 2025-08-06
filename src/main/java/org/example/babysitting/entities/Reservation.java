@@ -1,5 +1,8 @@
 package org.example.babysitting.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertTrue;
@@ -11,6 +14,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 
 
 @Entity
@@ -19,10 +23,11 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long idReserv;
-    @CreationTimestamp
+    //@CreationTimestamp
     @Column(name = "date", nullable = false, length = 30)
     @JsonProperty("date")
-    private LocalDate date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date date;
 
     @Column(name = "heureDebut", nullable = false)
     @JsonProperty("heureDebut")
@@ -43,10 +48,12 @@ public class Reservation {
 
     //association avec User
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="parent", nullable = false)
     private User parent;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="nounou", nullable = false)
     private User nounou;
 
@@ -75,30 +82,19 @@ public class Reservation {
         this.nounou = nounou;
     }
 
-    public Reservation(long idReserv, LocalDate date, int heureDebut, int heureFin, Statut statut, User parent,User nounou) {
-        this.idReserv = idReserv;
-        this.date = date;
-        this.heureDebut = heureDebut;
-        this.heureFin = heureFin;
-        this.statut = statut;
-        this.parent.setIdUser(parent.getIdUser());
-        this.nounou.setIdUser(nounou.getIdUser());
 
-    }
 
     public long getIdReserv() {
         return idReserv;
     }
 
-    public void setIdReserv(long idReserv) {
-        this.idReserv = idReserv;
-    }
 
-    public LocalDate getDate() {
+
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

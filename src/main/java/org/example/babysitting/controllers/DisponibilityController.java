@@ -5,16 +5,17 @@ import org.example.babysitting.service.DisponibilityInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping("/disponibility") // This will map all requests starting with /disponibility to this controller
-@CrossOrigin(origins= "*",allowedHeaders = "*") // Allows all origins, you can specify a specific origin if needed
+@CrossOrigin(origins = "http://localhost:4200")  // autorise uniquement le front Angular
 public class DisponibilityController {
     @Autowired
      DisponibilityInterface disponibilityInterface;
@@ -43,29 +44,38 @@ public class DisponibilityController {
     public Disponibilite getDisponibilityById(@PathVariable Long id) {
         return disponibilityInterface.getDisponibiliteById(id);
     }
-    @GetMapping("/getDisponibilityByUserId/{userId}")
-    public List<Disponibilite> getDisponibilityByUser_idUser(@PathVariable Long IdUser) {
-        return disponibilityInterface.getDisponibiliteByUser_idUser(IdUser);
+    @GetMapping("/getDisponibilityByUserId/{idUser}")
+    public List<Disponibilite> getDisponibilityByUser_idUser(@PathVariable Long idUser) {
+        return disponibilityInterface.getDisponibiliteByUser_idUser(idUser);
     }
     @GetMapping("/getDisponibilityByDate/{date}")
     public List<Disponibilite> getDisponibilityByDate(@PathVariable String date) {
         try {
-            LocalDate parsedDate = LocalDate.parse(date); // Conversion de la chaîne en LocalDate
-            return disponibilityInterface.getDisponibiliteByDate(parsedDate);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localDate = LocalDate.parse(date, formatter);
+            return disponibilityInterface.getDisponibiliteByDate(localDate);
         } catch (DateTimeParseException e) {
             throw new RuntimeException("Format de date invalide. Utilisez 'yyyy-MM-dd'.");
         }
 
     }
-    @GetMapping("/getDisponibilityByTimeRange")
-    public List<Disponibilite> getDisponibilityByTimeRange(@RequestParam int heureDebut, @RequestParam int heureFin) {
-        return disponibilityInterface.getDisponibiliteByTimeRange(heureDebut, heureFin);
+    @GetMapping("/getDisponibilityByTimeRange/{date}/{heureDebut}/{heureFin}")
+    public List<Disponibilite> getDisponibilityByTimeRange(@PathVariable String date,@PathVariable int heureDebut, @PathVariable int heureFin) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localDate = LocalDate.parse(date, formatter);
+            return disponibilityInterface.getDisponibiliteByTimeRange(localDate, heureDebut, heureFin);
+        } catch (DateTimeParseException e) {
+            throw new RuntimeException("Format de date invalide. Utilisez 'yyyy-MM-dd'.");
+        }
+
     }
     @GetMapping("/getDisponibilityByUserIdAndDate/{userId}/{date}")
     public List<Disponibilite> getDisponibilityByUser_idUserAndDate(@PathVariable Long userId, @PathVariable String date) {
         try {
-            LocalDate parsedDate = LocalDate.parse(date); // Conversion de la chaîne en LocalDate
-            return disponibilityInterface.getDisponibiliteByUser_idUserAndDate(userId, parsedDate);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localDate = LocalDate.parse(date, formatter);
+            return disponibilityInterface.getDisponibiliteByUser_idUserAndDate(userId, localDate);
         } catch (DateTimeParseException e) {
             throw new RuntimeException("Format de date invalide. Utilisez 'yyyy-MM-dd'.");
         }

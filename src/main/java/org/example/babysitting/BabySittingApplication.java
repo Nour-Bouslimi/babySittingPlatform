@@ -16,6 +16,7 @@ public class BabySittingApplication {
     public static void main(String[] args) {
 
         SpringApplication.run(BabySittingApplication.class, args);
+
        // System.out.println("OpenCV version: " + Core.VERSION);
     }
 

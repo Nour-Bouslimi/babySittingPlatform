@@ -80,7 +80,7 @@ public class ReservationImplement implements ReservationInterface {
     }
 
     @Override
-    public List<Reservation> getReservationByDate(LocalDate date) {
+    public List<Reservation> getReservationByDate(Date date) {
         return reservationRepo.findByDate(date);
     }
 

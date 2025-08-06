@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/notifications")
-@CrossOrigin(origins= "*",allowedHeaders = "*") // Allows all origins, you can specify a specific origin if needed
+@CrossOrigin(origins = "http://localhost:4200")  // autorise uniquement le front Angular
 public class NotificationController {
     @Autowired
      NotificationInterface notificationInterface;
