@@ -21,6 +21,33 @@
       <h4 class="text-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">Nanny Profiles</h4>
       <h1 class="mb-5 display-3">Meet Our Amazing Nannies</h1>
     </div>
+    <br>
+    <!-- Search Bar Start -->
+    <div class="row g-3 justify-content-center mb-4">
+      <div class="col-md-6 col-lg-5">
+        <input
+          type="text"
+          class="custom-input"
+          placeholder="Search by name, address, or marital status"
+          [(ngModel)]="searchQuery"
+          (input)="filterNannies()" />
+      </div>
+
+      <div class="col-md-4 col-lg-4">
+        <select
+          class="custom-input"
+          [(ngModel)]="selectedSortOption"
+          (change)="sortNannies()">
+          <option value="firstName">Sort by Name</option>
+          <option value="address">Sort by Address</option>
+          <option value="tarifHoraire">Sort by Hourly Rate</option>
+        </select>
+      </div>
+    </div>
+
+    <br><br>
+    <!-- Search Bar End -->
+
     <div class="row g-5 justify-content-center">
       <!-- Flip Card Start -->
       <div class="col-md-6 col-lg-6 col-xl-4 wow fadeIn" data-wow-delay="0.1s"  *ngFor="let n of filteredNannies; let i = index">
@@ -29,9 +56,22 @@
             <!-- Front -->
             <div class="flip-card-front blog-item rounded-bottom">
               <div class="blog-img overflow-hidden position-relative img-border-radius fixed-card-height">
+                <!--  bouton messagerie -->
+                <div class="message-button-hover">
+                  <button
+                    class="animate-pulse"
+                    style="border: none; background: none; padding: 0;"
+                    (click)="goToChat(n.idUser)">
+                    <i class="fa fa-envelope text-primary fa-2x"></i>
+                  </button>
+
+
+                </div>
                 <img [src]="'http://localhost:8081/user/displayImage/'+n.imgEtude" class="img-fluid w-100  fixed-img-size" alt="Image" >
                 <!--<img src="/assets/img/blog-2.jpg" class="img-fluid w-100" alt="Image">-->
+
               </div>
+
               <div class="d-flex justify-content-between px-4 py-3 bg-light border-bottom border-primary blog-date-comments">
                 <small class="text-dark"><i class="fas fa-calendar me-1 text-dark"></i> {{n.dateOfBirth}}</small>
                 <small class="text-dark"><i class="fas fa-map-marker-alt me-1 text-dark"></i> {{ n.address }}</small>
@@ -42,17 +82,44 @@
                   <img [src]="'http://localhost:8081/user/displayImage/' + n.photo" class="img-fluid rounded-circle p-2 rounded-top" alt="Image" style="width: 70px; height: 70px; border-style: dotted; border-color: var(--bs-primary) !important;" >
 
                 </div>
-                <div class="ms-3">
-                  <h6 class="text-primary">{{ n.firstName + ' ' + n.lastName }} </h6>
-                  <p class="text-muted">{{ n.niveauEtude }}</p>
+                <div class="d-flex justify-content-between align-items-center w-100">
+                  <div class="ms-3">
+                    <h6 class="text-primary mb-0">
+                      {{ n.firstName + ' ' + n.lastName }}
+                    </h6>
+                    <p class="text-muted mb-0">{{ n.niveauEtude }}</p>
+                  </div>
+
+                  <!-- Badge de disponibilité -->
+                  <div class="me-3">
+    <span
+      class="badge"
+      [ngClass]="n['isAvailableNow'] ? 'bg-success' : 'bg-danger'"
+    >
+      {{ n['isAvailableNow'] ? 'Available' : 'Unavailable' }}
+    </span>
+                  </div>
                 </div>
-              </div>
+
+
+              </div >
               <div class="px-4 pb-4 bg-light rounded-bottom">
+               <div class="d-flex justify-content-between align-items-center w-100" >
                 <div class="blog-text-inner">
                   <a href="#" class="h4">My contact :</a>
                   <p class="mt-3 mb-4">{{n.phoneNumber}}</p>
                   <p class="mt-3 mb-4">{{n.email}}</p>
                 </div>
+                <!--booked today!-->
+                <div class="mt-2" *ngIf="n['bookedSlotsToday']?.length > 0">
+                  <small class="text-muted">📅 Booked today:</small>
+                  <ul class="mb-0 ps-3">
+                    <li *ngFor="let slot of n['bookedSlotsToday']" class="text-danger small">
+                      🕒 {{ slot }}
+                    </li>
+                  </ul>
+                </div>
+               </div>
                 <div class="text-center">
                   <button class="btn btn-primary text-white px-4 py-2 mb-3 btn-border-radius"
                           (click)="flipCard(i)">View Details</button>
@@ -66,6 +133,22 @@
                 <h4>More About {{ n.firstName + ' ' + n.lastName }}</h4>
 
                 <div class="text-start mt-3 ps-3">
+                  <!--disponibility-->
+                  <div class="mt-3 text-start ps-3">
+                    <h5 class="text-primary">Availability</h5>
+                    <ng-container *ngIf="getDisponibilitesFor(n.idUser).length > 0; else noDispo">
+
+                    <ul class="mb-0">
+                        <li *ngFor="let dispo of getDisponibilitesFor(n.idUser)">
+                          📅 {{ dispo.date }} | 🕒 {{ dispo.heureDebut }}h - {{ dispo.heureFin }}h
+                        </li>
+                      </ul>
+                    </ng-container>
+                    <ng-template #noDispo>
+                      <p class="text-muted fst-italic">No Availability recorded.</p>
+                    </ng-template>
+                  </div>
+
                   <p><strong>Marital Status:</strong> {{ n.etatCivil }}</p>
                   <p><strong>Education Level:</strong> {{ n.niveauEtude }}</p>
                   <p><strong>Experience:</strong> {{ n.experience }}</p>
@@ -82,7 +165,7 @@
                   <button class="btn btn-primary text-white px-4 py-2 mb-2 btn-border-radius" (click)="unflipCard(i)">
                     Back
                   </button>
-                  <button class="btn btn-secondary text-white px-4 py-2 btn-border-radius">
+                  <button  class="btn btn-secondary text-white px-4 py-2 btn-border-radius" (click)="openReservationModal(n.idUser)" [disabled]="!n['isAvailableNow']">
                     Reserve
                   </button>
                 </div>
@@ -97,67 +180,99 @@
 
 
 <!-- Flip Card End -->
-<!--
-      <div class="col-md-6 col-lg-6 col-xl-4 wow fadeIn" data-wow-delay="0.3s">
-        <div class="blog-item rounded-bottom">
-          <div class="blog-img overflow-hidden position-relative img-border-radius">
-            <img src="/assets/img/blog-2.jpg" class="img-fluid w-100" alt="Image">
-          </div>
-          <div class="d-flex justify-content-between px-4 py-3 bg-light border-bottom border-primary blog-date-comments">
-            <small class="text-dark"><i class="fas fa-calendar me-1 text-dark"></i> 29 Nov 2023</small>
-            <small class="text-dark"><i class="fas fa-comment-alt me-1 text-dark"></i> Comments (15)</small>
-          </div>
-          <div class="blog-content d-flex align-items-center px-4 py-3 bg-light">
-            <div class="overflow-hidden rounded-circle rounded-top border border-primary">
-              <img src="/assets/img/program-teacher.jpg" class="img-fluid rounded-circle p-2 rounded-top" alt="" style="width: 70px; height: 70px; border-style: dotted; border-color: var(--bs-primary) !important;">
-            </div>
-            <div class="ms-3">
-              <h6 class="text-primary">Mary Mordern</h6>
-              <p class="text-muted">Baby Care</p>
-            </div>
-          </div>
-          <div class="px-4 pb-4 bg-light rounded-bottom">
-            <div class="blog-text-inner">
-              <a href="#" class="h4">Play outdoor sports with your child</a>
-              <p class="mt-3 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed purus</p>
-            </div>
-            <div class="text-center">
-              <a   class="btn btn-primary text-white px-4 py-2 mb-3 btn-border-radius">View Details</a>
-            </div>
+      <!-- Reservation Modal -->
+      <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <form (ngSubmit)="submitReservation()">
+              <div class="modal-header">
+                <h5 class="modal-title" id="reservationModalLabel">Make a Reservation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+              </div>
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label>Date</label>
+                  <input  type="date" class="form-control" [(ngModel)]="reservationData.date" name="date" [min]="todayDate" required>
+                </div>
+                <div class="mb-3">
+                  <label>Start Time</label>
+                  <input type="number" min="0" max="23" class="form-control" [(ngModel)]="reservationData.heureDebut" name="heureDebut" required>
+                </div>
+                <div class="mb-3">
+                  <label>End Time</label>
+                  <input type="number" min="1" max="23" class="form-control" [(ngModel)]="reservationData.heureFin" name="heureFin" required>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button  type="submit" class="btn btn-primary">Reserve</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-      <div class="col-md-6 col-lg-6 col-xl-4 wow fadeIn" data-wow-delay="0.5s">
-        <div class="blog-item rounded-bottom">
-          <div class="blog-img overflow-hidden position-relative img-border-radius">
-            <img src="/assets/img/blog-3.jpg" class="img-fluid w-100" alt="Image">
-          </div>
-          <div class="d-flex justify-content-between px-4 py-3 bg-light border-bottom border-primary blog-date-comments">
-            <small class="text-dark"><i class="fas fa-calendar me-1 text-dark"></i> 29 Nov 2023</small>
-            <small class="text-dark"><i class="fas fa-comment-alt me-1 text-dark"></i> Comments (15)</small>
-          </div>
-          <div class="blog-content d-flex align-items-center px-4 py-3 bg-light">
-            <div class="overflow-hidden rounded-circle rounded-top border border-primary">
-              <img src="/assets/img/program-teacher.jpg" class="img-fluid rounded-circle p-2 rounded-top" alt="" style="width: 70px; height: 70px; border-style: dotted; border-color: var(--bs-primary) !important;">
-            </div>
-            <div class="ms-3">
-              <h6 class="text-primary">Mary Mordern</h6>
-              <p class="text-muted">Baby Care</p>
-            </div>
-          </div>
 
-          <div class="px-4 pb-4 bg-light rounded-bottom">
-            <div class="blog-text-inner">
-              <a href="#" class="h4">How to make time for your kids?</a>
-              <p class="mt-3 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed purus</p>
+      <!--
+            <div class="col-md-6 col-lg-6 col-xl-4 wow fadeIn" data-wow-delay="0.3s">
+              <div class="blog-item rounded-bottom">
+                <div class="blog-img overflow-hidden position-relative img-border-radius">
+                  <img src="/assets/img/blog-2.jpg" class="img-fluid w-100" alt="Image">
+                </div>
+                <div class="d-flex justify-content-between px-4 py-3 bg-light border-bottom border-primary blog-date-comments">
+                  <small class="text-dark"><i class="fas fa-calendar me-1 text-dark"></i> 29 Nov 2023</small>
+                  <small class="text-dark"><i class="fas fa-comment-alt me-1 text-dark"></i> Comments (15)</small>
+                </div>
+                <div class="blog-content d-flex align-items-center px-4 py-3 bg-light">
+                  <div class="overflow-hidden rounded-circle rounded-top border border-primary">
+                    <img src="/assets/img/program-teacher.jpg" class="img-fluid rounded-circle p-2 rounded-top" alt="" style="width: 70px; height: 70px; border-style: dotted; border-color: var(--bs-primary) !important;">
+                  </div>
+                  <div class="ms-3">
+                    <h6 class="text-primary">Mary Mordern</h6>
+                    <p class="text-muted">Baby Care</p>
+                  </div>
+                </div>
+                <div class="px-4 pb-4 bg-light rounded-bottom">
+                  <div class="blog-text-inner">
+                    <a href="#" class="h4">Play outdoor sports with your child</a>
+                    <p class="mt-3 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed purus</p>
+                  </div>
+                  <div class="text-center">
+                    <a   class="btn btn-primary text-white px-4 py-2 mb-3 btn-border-radius">View Details</a>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="text-center">
-              <a href="#" class="btn btn-primary text-white px-4 py-2 mb-3 btn-border-radius">View Details</a>
+            <div class="col-md-6 col-lg-6 col-xl-4 wow fadeIn" data-wow-delay="0.5s">
+              <div class="blog-item rounded-bottom">
+                <div class="blog-img overflow-hidden position-relative img-border-radius">
+                  <img src="/assets/img/blog-3.jpg" class="img-fluid w-100" alt="Image">
+                </div>
+                <div class="d-flex justify-content-between px-4 py-3 bg-light border-bottom border-primary blog-date-comments">
+                  <small class="text-dark"><i class="fas fa-calendar me-1 text-dark"></i> 29 Nov 2023</small>
+                  <small class="text-dark"><i class="fas fa-comment-alt me-1 text-dark"></i> Comments (15)</small>
+                </div>
+                <div class="blog-content d-flex align-items-center px-4 py-3 bg-light">
+                  <div class="overflow-hidden rounded-circle rounded-top border border-primary">
+                    <img src="/assets/img/program-teacher.jpg" class="img-fluid rounded-circle p-2 rounded-top" alt="" style="width: 70px; height: 70px; border-style: dotted; border-color: var(--bs-primary) !important;">
+                  </div>
+                  <div class="ms-3">
+                    <h6 class="text-primary">Mary Mordern</h6>
+                    <p class="text-muted">Baby Care</p>
+                  </div>
+                </div>
+
+                <div class="px-4 pb-4 bg-light rounded-bottom">
+                  <div class="blog-text-inner">
+                    <a href="#" class="h4">How to make time for your kids?</a>
+                    <p class="mt-3 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed purus</p>
+                  </div>
+                  <div class="text-center">
+                    <a href="#" class="btn btn-primary text-white px-4 py-2 mb-3 btn-border-radius">View Details</a>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
--->
+      -->
     </div>
   </div>
 </div>

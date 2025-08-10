@@ -1,0 +1,31 @@
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-5 wow fadeIn" data-wow-delay="0.1s">
+  <div class="container text-center py-5">
+    <h1 class="display-2 text-white mb-4">Chat List</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a ></li>
+        <li class="breadcrumb-item text-white" aria-current="page">Chat List</li>
+      </ol>
+    </nav>
+
+  </div>
+</div>
+<!-- Page Header End -->
+
+<div class="chat-list">
+  <div *ngFor="let conv of conversations" class="chat-item" [routerLink]="['/home/chat', conv.otherUserId]">
+    <img
+      [src]="conv.photo?.startsWith('http') ? conv.photo : 'http://localhost:8081/user/displayImage/' + conv.photo"
+      class="avatar" alt="parent photo">
+    <div class="chat-info">
+      <div class="chat-header">
+        <!-- si nom complet déjà dans conv.nom -->
+        <span class="name">{{ conv.nom || (conv.firstName + ' ' + conv.lastName) }}</span>
+        <span class="date">{{ conv.date | date:'short' }}</span>
+      </div>
+      <div class="last-message">{{ conv.lastMessage }}</div>
+    </div>
+  </div>
+</div>
+

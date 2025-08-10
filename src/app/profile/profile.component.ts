@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import Swal from "sweetalert2";
 import {UserService} from "../services/user.service";
 import {Router} from "@angular/router";
+import {AuthService} from "../services/auth.service";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {Notification} from "../models/notification";
+import {NotificationService} from "../services/notification.service";
 
 declare var $: any;
 @Component({
@@ -9,9 +13,74 @@ declare var $: any;
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
+  profileForm!: FormGroup;
+  //pour les notifs
+  notifications: Notification[] = [];
+  unreadCount: number = 0;
+  userId!: number;
   constructor( private userService: UserService,
-               private router: Router) {}
+               private router: Router,private fb: FormBuilder, private authService: AuthService,private notificationService:NotificationService) {}
+
+
+// Méthode pour charger les notifications de l'utilisateur connecté
+  loadNotifications(): void {
+    this.notificationService.getNotificationsByIdUser(this.userId).subscribe({
+      next: (res) => {
+        this.notifications = res.sort((a, b) => (b.date! > a.date! ? 1 : -1));
+        console.log('notifications: ' ,this.notifications);
+        this.unreadCount = this.notifications.filter(n => !n.isRead).length;
+      },
+      error: (err) => console.error("❌ Failed to load notifications", err)
+    });
+  }
+
+  markAllAsRead(): void {
+    this.notificationService.markAllNotificationsAsRead(this.userId).subscribe({
+      next: () => {
+        this.notifications.forEach(n => n.isRead = true);
+        this.unreadCount = 0;
+      },
+      error: (err) => console.error("❌ Failed to mark as read", err)
+    });
+  }
+  deleteNotification(id: number): void {
+    this.notificationService.deleteNotification(id).subscribe({
+      next: () => {
+        this.notifications = this.notifications.filter(n => n.idNotif !== id);
+      },
+      error: (err) => console.error("❌ Failed to delete notification", err)
+    });
+  }
+  ngOnInit(): void {
+    const user = this.authService.decodedToken(); // récupérer les infos du token (user connecté)
+console.log("User from token:", user);
+//load notif
+    this.loadNotifications();
+    this.profileForm = this.fb.group({
+      address: [user?.address || ''],
+      email: [user?.sub || ''], // ou user?.email
+      phoneNumber: [user?.phoneNumber || ''],
+      genre: [user?.genre || ''],
+      ageChildren: [user?.ageChildren || ''],
+      nbChildren: [user?.nbChildren || 0],
+      dateOfBirth: [user?.dateOfBirth || ''],
+      firstName: [user?.firstName || ''],
+      lastName: [user?.lastName || ''],
+      password: [''] // jamais pré-rempli pour des raisons de sécurité
+    });
+  }
+
+  //modifier le profil de l'utilisateur connecté
+  onSubmit(): void {
+    console.log(this.profileForm.value);
+    // ici tu peux envoyer les données pour les modifier si tu veux
+  }
+
+
+
+
+
 
   // Confirmation de suppression de compte pour l'utilisateur connecté
   confirmDelete() {

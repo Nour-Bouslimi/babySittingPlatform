@@ -43,13 +43,17 @@
         <div class="navbar-nav mx-auto">
           <a routerLink="/home" class="nav-item nav-link " routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" >Home</a>
           <a routerLink="/home/about" class="nav-item nav-link" routerLinkActive="active">About</a>
-          <a routerLink="/home/disponibilities" class="nav-item nav-link" routerLinkActive="active">Disponibilities</a>
-          <a routerLink="/home/reservations" class="nav-item nav-link" routerLinkActive="active">Reservations</a>
+          <a  *ngIf="role === 'ROLE_NOUNOU'" routerLink="/home/disponibilities" class="nav-item nav-link" routerLinkActive="active">Disponibilities</a>
+          <a *ngIf="role === 'ROLE_NOUNOU'" routerLink="/home/reservations" class="nav-item nav-link" routerLinkActive="active">Reservations</a>
           <a routerLink="/home/announcements" class="nav-item nav-link" routerLinkActive="active">Announcements</a>
           <div class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
             <div class="dropdown-menu m-0 bg-secondary rounded-0">
-              <a routerLink="/home/nannies" class="dropdown-item" routerLinkActive="active">Nannies</a>
+              <a *ngIf="role === 'ROLE_PARENT'" routerLink="/home/nannies" class="dropdown-item" routerLinkActive="active">Nannies</a>
+              <a *ngIf="role === 'ROLE_PARENT'" routerLink="/home/myReservations" class="dropdown-item" routerLinkActive="active">My Reservations</a>
+              <a *ngIf="role === 'ROLE_NOUNOU'"  class="dropdown-item"  routerLink="/home/chat-list"  routerLinkActive="active">Chat</a>
+
+
               <a href="team.html" class="dropdown-item" routerLinkActive="active">Our Team</a>
               <a href="testimonial.html" class="dropdown-item" routerLinkActive="active">Testimonial</a>
               <a href="404.html" class="dropdown-item">404 Page</a>
@@ -59,7 +63,7 @@
         </div>
         <div class="d-flex me-4">
           <div id="phone-tada" class="d-flex align-items-center justify-content-center">
-            <button style="border: none; background: none;" data-bs-toggle="modal" data-bs-target="#profileModal">
+            <button *ngIf="role === 'ROLE_PARENT'" style="border: none; background: none;" data-bs-toggle="modal" data-bs-target="#profileModal">
                                     <span class="position-relative wow tada" data-wow-delay=".9s">
                                         <i class="fa fa-user-alt text-primary fa-2x me-4"></i>
                                         <div class="position-absolute" style="top: -7px; left: 20px;">
@@ -67,7 +71,7 @@
                                         </div>
                                     </span>
             </button>
-            <button style="border: none; background: none;" data-bs-toggle="modal" data-bs-target="#profileNannyModal">
+            <button *ngIf="role === 'ROLE_NOUNOU'" style="border: none; background: none;" data-bs-toggle="modal" data-bs-target="#profileNannyModal">
                                     <span class="position-relative wow tada" data-wow-delay=".9s">
                                        <i class="fa fa-female text-primary fa-2x me-4"></i>
                                         <div class="position-absolute" style="top: -7px; left: 20px;">
@@ -81,7 +85,7 @@
 
           </div>
         </div>
-        <button class="btn-search btn btn-primary  rounded-circle " data-bs-toggle="modal" data-bs-target="#loginModal">LogIn</button>
+        <button *ngIf="!loggedIn" class="btn-search btn btn-primary  rounded-circle " data-bs-toggle="modal" data-bs-target="#loginModal">LogIn</button>
       </div>
     </nav>
   </div>
@@ -106,15 +110,21 @@
             <h1 class="display-3">Welcome back!</h1>
             <p class="mb-5"> Log in to continue your journey with Allo Nounou.</p>
           </div>
-          <form action="#">
-            <input type="email" class="w-100 form-control py-3 mb-4 border-primary" placeholder="Enter Your Email" style="position:relative;z-index:1061;" />
+          <form [formGroup]="authForm" (ngSubmit)="authenticate()">
+            <input type="email" formControlName="email" class="w-100 form-control py-3 mb-4 border-primary" placeholder="Enter Your Email" style="position:relative;z-index:1061;" />
+            <mat-error *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched" class="text-danger">
+              <small *ngIf="authForm.get('email')?.errors?.['required']">Email is required.</small>
+              <small *ngIf="authForm.get('email')?.errors?.['email']">Please enter a valid email address.</small></mat-error>
             <div class="position-relative">
-              <input id="passwordInput" type="password" class="w-100 form-control py-3 mb-4 border-primary" placeholder="Enter Your Password" style="position:relative;z-index:1061; padding-right: 45px;" />
-              <span id="togglePassword" style="position:absolute; top:50%; right:15px; transform:translateY(-50%); cursor:pointer; z-index:1062;">
+              <input id="passwordInputL" type="password" formControlName="password" class="w-100 form-control py-3 mb-4 border-primary" placeholder="Enter Your Password" style="position:relative;z-index:1061; padding-right: 45px;" />
+              <span id="togglePasswordL" style="position:absolute; top:50%; right:15px; transform:translateY(-50%); cursor:pointer; z-index:1062;">
                                     <i class="fa fa-eye-slash" id="eyeIcon"></i>
                                 </span>
+              <mat-error *ngIf="authForm.get('password')?.invalid && authForm.get('password')?.touched" class="text-danger">
+                <small *ngIf="authForm.get('password')?.errors?.['required']">Password is required.</small>
+                <small *ngIf="authForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters long.</small></mat-error>
             </div>
-            <a href="#" class="btn btn-primary px-5 py-3 btn-border-radius w-100" style="position:relative;z-index:1061;">Login</a>
+            <button type="submit" class="btn btn-primary px-5 py-3 btn-border-radius w-100" style="position:relative;z-index:1061;">Login</button>
           </form>
           <p class="text-center mt-4">Don't have an account? <a  routerLink="/signup" class="text-primary">Sign Up</a></p>
           <p class="text-center"><a (click)="goToForgotPass()"  class="text-primary">Forgot Password?</a></p>
@@ -158,8 +168,13 @@
               <button class="btn btn-light btn-sm position-relative animate-shake" title="Notifications"
                       data-bs-toggle="modal" data-bs-target="#notifModal">
                 <i class="fa fa-bell text-primary"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:10px;">14</span>
+                <span *ngIf="unreadCount > 0"
+                      class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                      style="font-size:10px;">
+    {{ unreadCount }}
+  </span>
               </button>
+
 
               <!-- Message -->
               <button class="btn btn-light btn-sm animate-pulse" title="Messages"
@@ -170,39 +185,52 @@
 
             </div>
           </div>
+          <!-- Profile form (same inputs as signupParent.html) -->
+          <form *ngIf="profileForm" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
 
           <div class="mx-auto text-center" style="max-width: 700px;">
             <h4 class="text-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">Profile</h4>
             <h1 class="display-3" style="font-size: 32px;">Your Profile</h1>
             <p class="mb-4">View and edit your profile informations here.</p>
             <!-- Circular user photo with edit icon -->
-            <div class="position-relative d-inline-block mb-4">
-              <img id="profilePhotoPreview" src="img/default-user.png" alt="User Photo" class="rounded-circle border border-primary" style="width:120px; height:120px; object-fit:cover;">
-              <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;">
+            <div class="position-relative d-inline-block mb-4 ">
+              <!--<input formControlName="photo" type="file" id="userImage" (change)="onFileSelected($event)" accept="image/*" class="form-control border-0 shadow-none" style="background:transparent; min-height: 5px;">-->
+              <input type="file" id="profilePhotoInput" (change)="onFileSelected($event)" accept="image/*" style="display:none;">
+              <!-- Si imageUrl est définie (prévisualisation ou déjà chargée), on l'affiche -->
+              <img *ngIf="imageUrl" [src]="imageUrl" alt="User Image" class="image-preview rounded-circle border border-primary" style="width:120px; height:120px; object-fit:cover;">
+
+              <!-- Sinon, afficher l'image de l'utilisateur depuis le backend -->
+              <img *ngIf="!imageUrl && profileForm.get('photo')?.value"
+                   [src]="'http://localhost:8081/user/displayImage/' + profileForm.get('photo')?.value"
+                   alt="User Photo"
+                   class="image-preview rounded-circle border border-primary"
+                   style="width:120px; height:120px; object-fit:cover;">
+
+
               <button type="button" onclick="document.getElementById('profilePhotoInput').click()" class="btn btn-primary btn-sm rounded-circle position-absolute" style="bottom:0; right:0;">
                 <i class="fa fa-pen"></i>
               </button>
             </div>
           </div>
-          <!-- Profile form (same inputs as signupParent.html) -->
-          <form>
+
+
             <div class="row g-4 mb-4">
               <div class="col-lg-4">
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
                   <i class="fas fa-map-marker-alt fa-2x text-primary me-4"></i>
-                  <input type="text" class="form-control border-0 shadow-none" placeholder="Address" name="address" style="background:transparent;">
+                  <input type="text" formControlName="address" class="form-control border-0 shadow-none" placeholder="Address" name="address" style="background:transparent;">
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
                   <i class="fas fa-envelope fa-2x text-primary me-4"></i>
-                  <input type="email" class="form-control border-0 shadow-none" placeholder="Email" name="email" style="background:transparent;">
+                  <input type="email" formControlName="email" class="form-control border-0 shadow-none" placeholder="Email" name="email" style="background:transparent;">
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
                   <i class="fa fa-phone-alt fa-2x text-primary me-4"></i>
-                  <input type="tel" class="form-control border-0 shadow-none" placeholder="Phone Number" name="phone" style="background:transparent;">
+                  <input type="tel" formControlName="phoneNumber" class="form-control border-0 shadow-none" placeholder="Phone Number" name="phone" style="background:transparent;">
                 </div>
               </div>
             </div>
@@ -211,11 +239,11 @@
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white" style="min-height: 48px;">
                   <i class="fa fa-venus-mars fa-2x text-primary me-4"></i>
                   <div class="form-check form-check-inline mb-0">
-                    <input class="form-check-input" type="radio" name="gender" id="genderF" value="F">
+                    <input class="form-check-input" type="radio" formControlName="genre" name="genre" id="genderF" value="Female">
                     <label class="form-check-label" for="genderF">Female</label>
                   </div>
                   <div class="form-check form-check-inline mb-0 ms-3">
-                    <input class="form-check-input" type="radio" name="gender" id="genderM" value="M">
+                    <input class="form-check-input" type="radio" formControlName="genre" name="genre" id="genderM" value="Male">
                     <label class="form-check-label" for="genderM">Male</label>
                   </div>
                 </div>
@@ -223,7 +251,7 @@
               <div class="col-lg-4">
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white" style="min-height: 48px;">
                   <i class="fa fa-calendar-alt fa-2x text-primary me-4"></i>
-                  <input type="date" class="form-control border-0 shadow-none" placeholder="Birth Date" name="birthdate" style="background:transparent;">
+                  <input type="date" formControlName="dateOfBirth" class="form-control border-0 shadow-none" placeholder="Birth Date" name="birthdate" style="background:transparent;">
                 </div>
               </div>
               <div class="col-lg-4">
@@ -233,28 +261,17 @@
                     <button type="button" id="toggleAgeDropdown" class="form-control border-0 shadow-none text-start" style="background:transparent; min-height:40px;">
                       Child's Age <i class="fa fa-caret-down float-end"></i>
                     </button>
-                    <div id="ageDropdownList" class="border rounded bg-white mt-1" style="display:none; position:absolute; left:55px; right:10px; z-index:10;">
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="0-1" id="age0_1">
-                        <label class="form-check-label" for="age0_1">0-1 year</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="1-3" id="age1_3">
-                        <label class="form-check-label" for="age1_3">1-3 year</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="3-6" id="age3_6">
-                        <label class="form-check-label" for="age3_6">3-6 year</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="6-10" id="age6_10">
-                        <label class="form-check-label" for="age6_10">6-10 year</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="10+" id="age10plus">
-                        <label class="form-check-label" for="age10plus">10 year and more</label>
+                    <div id="ageDropdownList" class="border rounded bg-white mt-1" style=" position:absolute; left:55px; right:10px; z-index:10;" formArrayName="ageChildren">
+                      <div *ngFor="let age of ['0-1', '1-3', '3-6', '6-10', '10+']; let i = index" class="form-check">
+                        <input
+                          type="checkbox"
+                          class="form-check-input"
+                          [formControlName]="i"
+                          [id]="'age' + i">
+                        <label class="form-check-label" [for]="'age' + i">{{ age }} year</label>
                       </div>
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -263,24 +280,24 @@
               <div class="col-lg-4">
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
                   <i class="fa fa-child fa-2x text-primary me-4"></i>
-                  <input type="tel" class="form-control border-0 shadow-none" placeholder="Number of children" name="childrenCount" style="background:transparent;">
+                  <input type="tel" formControlName="nbChildren" class="form-control border-0 shadow-none" placeholder="Number of children" name="childrenCount" style="background:transparent;">
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
-                  <input type="text" class="form-control border-0 shadow-none" placeholder="First Name" name="firstName" style="background:transparent;">
+                  <input type="text" formControlName="firstName" class="form-control border-0 shadow-none" placeholder="First Name" name="firstName" style="background:transparent;">
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
-                  <input type="text" class="form-control border-0 shadow-none" placeholder="Last Name" name="lastName" style="background:transparent;">
+                  <input type="text" formControlName="lastName" class="form-control border-0 shadow-none" placeholder="Last Name" name="lastName" style="background:transparent;">
                 </div>
               </div>
             </div>
             <div class="row g-4 mb-4">
               <div class="col-lg-4">
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white position-relative">
-                  <input id="passwordInputProfile" type="password" class="form-control border-0 shadow-none" placeholder="Password" name="password" style="background:transparent;">
+                  <input id="passwordInputProfile" formControlName="password" type="password" class="form-control border-0 shadow-none" placeholder="Password" name="password" style="background:transparent;">
                   <span id="togglePasswordProfile" style="position:absolute; right:20px; cursor:pointer;">
                         <i class="fa fa-eye-slash" id="eyeIconProfile"></i>
                     </span>
@@ -328,13 +345,18 @@
 
             <!-- Notifications & Messages -->
             <div class="d-flex gap-2 position-relative">
-
               <!-- Notification -->
               <button class="btn btn-light btn-sm position-relative animate-shake" title="Notifications"
-                      data-bs-toggle="modal" data-bs-target="#notifModal">
+                      (click)="openNotifModal()">
                 <i class="fa fa-bell text-primary"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:10px;">14</span>
+                <span *ngIf="unreadCount > 0"
+                      class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                      style="font-size:10px;">
+    {{ unreadCount }}
+  </span>
               </button>
+
+
               <!-- Message -->
               <button class="btn btn-light btn-sm animate-pulse" title="Messages"
                       data-bs-toggle="modal" data-bs-target="#msgModal">
@@ -347,27 +369,39 @@
             <h4 class="text-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">Profile</h4>
             <h1 class="display-3" style="font-size: 32px;">Your Profile</h1>
             <p class="mb-4">View and edit your profile informations here.</p>
+
+          </div>
+          <!-- Profile form (same inputs as signupNanny.html) -->
+          <form id="multiStepForm" *ngIf="profileNounouForm" [formGroup]="profileNounouForm" (ngSubmit)="onSubmitNounou()">
+
             <!-- Circular user photo with edit icon -->
             <div class="position-relative d-inline-block mb-4">
-              <img id="profileNannyPhotoPreview" src="/assets/img/default-user.png" alt="User Photo" class="rounded-circle border border-primary" style="width:120px; height:120px; object-fit:cover;">
-              <input type="file" id="profileNannyPhotoInput" accept="image/*" style="display:none;">
+             <input type="file" id="profileNannyPhotoInput" (change)="onFileSelectedNounou($event)" accept="image/*" style="display:none;" >
+              <!-- Si imageUrl est définie (prévisualisation ou déjà chargée), on l'affiche -->
+              <img *ngIf="imageUrlNounou" [src]="imageUrlNounou" alt="User Image" class="image-preview rounded-circle border border-primary" style="width:120px; height:120px; object-fit:cover;">
+
+              <!-- Sinon, afficher l'image de l'utilisateur depuis le backend -->
+              <img *ngIf="!imageUrlNounou && profileNounouForm.get('photo')?.value"
+                   [src]="'http://localhost:8081/user/displayImage/' + profileNounouForm.get('photo')?.value"
+                   alt="User Photo"
+                   class="image-preview rounded-circle border border-primary"
+                   style="display: none; width:120px; height:120px; object-fit:cover;">
+              <!--<img id="profileNannyPhotoPreview" src="/assets/img/default-user.png" alt="User Photo" class="rounded-circle border border-primary" style="width:120px; height:120px; object-fit:cover;">
+              <input type="file" id="profileNannyPhotoInput" accept="image/*" style="display:none;">-->
               <button type="button" onclick="document.getElementById('profileNannyPhotoInput').click()" class="btn btn-primary btn-sm rounded-circle position-absolute" style="bottom:0; right:0;">
                 <i class="fa fa-pen"></i>
               </button>
             </div>
-          </div>
-          <!-- Profile form (same inputs as signupNanny.html) -->
-          <form id="multiStepForm" enctype="multipart/form-data">
             <!-- Step 1 -->
             <div class="form-step" id="step1">
               <div class="row g-4 mb-4">
                 <div class="col-md-6">
                   <label class="mb-2">Last Name:</label>
-                  <input type="text" class="form-control" placeholder="Last Name" name="lastname" required>
+                  <input formControlName="lastName" type="text" class="form-control" placeholder="Last Name" name="lastname" required>
                 </div>
                 <div class="col-md-6">
                   <label class="mb-2">First Name:</label>
-                  <input type="text" class="form-control" placeholder="First Name" name="firstname" required>
+                  <input formControlName="firstName" type="text" class="form-control" placeholder="First Name" name="firstname" required>
                 </div>
                 <div class="col-md-6">
                   <label class="mb-2">Address:</label>
@@ -375,7 +409,7 @@
                   <span class="input-group-text">
                     <i class="fas fa-map-marker-alt fa-2x text-primary"></i>
                   </span>
-                    <input type="text" class="form-control" placeholder="Address" name="address" required>
+                    <input formControlName="address" type="text" class="form-control" placeholder="Address" name="address" required>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -384,7 +418,7 @@
                   <span class="input-group-text">
                     <i class="fa fa-phone-alt fa-2x text-primary me-4"></i>
                   </span>
-                  <input type="tel" class="form-control" placeholder="Phone" name="phone" required>
+                  <input formControlName="phoneNumber" type="tel" class="form-control" placeholder="Phone" name="phone" required>
                 </div>
                 </div>
                 <div class="col-md-6">
@@ -394,9 +428,9 @@
                     <i class="fa fa-venus-mars fa-2x text-primary me-4"></i>
                   </span>
                   <div>
-                    <input type="radio" class="form-check-input" name="gender" id="genderFe" value="Female" required>
+                    <input formControlName="genre" type="radio" class="form-check-input" name="genre" id="genderFe" value="Female" required>
                     <label for="genderF" class="me-3">Female</label>
-                    <input type="radio" class="form-check-input" name="gender" id="genderMa" value="Male">
+                    <input formControlName="genre" type="radio" class="form-check-input" name="genre" id="genderMa" value="Male">
                     <label for="genderM">Male</label>
                   </div>
                   </div>
@@ -407,12 +441,12 @@
                   <span class="input-group-text">
                    <i class="fas fa-envelope fa-2x text-primary me-4"></i>
                   </span>
-                  <input type="email" class="form-control" placeholder="Email" name="email" required>
+                  <input formControlName="email" type="email" class="form-control" placeholder="Email" name="email" required>
                 </div>
                 </div>
                 <div class="col-md-6 position-relative">
                   <label class="mb-2">Password:</label>
-                  <input id="passwordInputP" type="password" class="form-control" placeholder="Password" name="password"  required>
+                  <input formControlName="password" id="passwordInputP" type="password" class="form-control" placeholder="Password" name="password"  required>
                   <span id="togglePasswordP" style="position:absolute; top:30%; right:15px; transform:translateY(-50%); cursor:pointer; z-index:2;">
                                 <i id="eyeIconP" class="fa fa-eye-slash" ></i>
                             </span>
@@ -423,7 +457,7 @@
                   <span class="input-group-text">
                     <i class="fa fa-calendar-alt fa-2x text-primary me-4"></i>
                   </span>
-                  <input type="date" class="form-control" name="birthdate" required>
+                  <input [max]="maxDate" formControlName="dateOfBirth" type="date" class="form-control" name="dateOfBirth" required>
                 </div>
                 </div>
               </div>
@@ -437,75 +471,83 @@
                 <div class="col-md-6">
                   <label class="mb-2">Marital Status:</label>
                   <div>
-                    <input type="radio" class="form-check-input" name="maritalStatus" id="single" value="Single" required>
+                    <input formControlName="etatCivil" type="radio" class="form-check-input" name="etatCivil" id="single" value="Single" required>
                     <label for="single" class="me-3">Single</label>
-                    <input type="radio" class="form-check-input" name="maritalStatus" id="married" value="Married">
+                    <input formControlName="etatCivil" type="radio" class="form-check-input" name="etatCivil" id="married" value="Married">
                     <label for="married" class="me-3">Married</label>
-                    <input type="radio" class="form-check-input" name="maritalStatus" id="divorced" value="Divorced">
+                    <input formControlName="etatCivil" type="radio" class="form-check-input" name="etatCivil" id="divorced" value="Divorced">
                     <label for="divorced">Divorced</label>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <label class="mb-2">Education Level:</label>
-                  <select class="form-select" name="educationLevel" required>
+                  <select class="form-select"  formControlName="niveauEtude" name="niveauEtude" required>
                     <option value="">Select</option>
                     <option value="bac">High School</option>
-                    <option value="bac+1">1 Year Post-High School</option>
-                    <option value="bac+2">2 Years Post-High School</option>
-                    <option value="bac+3">3 Years Post-High School</option>
-                    <option value="bac+4">4 Years Post-High School</option>
-                    <option value="bac+5">5 Years Post-High School</option>
+                    <option  value="bac+1">1 Year Post-High School</option>
+                    <option  value="bac+2">2 Years Post-High School</option>
+                    <option  value="bac+3">3 Years Post-High School</option>
+                    <option  value="bac+4">4 Years Post-High School</option>
+                    <option  value="bac+5">5 Years Post-High School</option>
                   </select>
                 </div>
                 <div class="col-md-6">
                   <label class="mb-2">Field of Study:</label>
-                  <input type="text" class="form-control" placeholder="Field of Study" name="fieldOfStudy" required>
+                  <input formControlName="domaineEtude" type="text" class="form-control" placeholder="Field of Study" name="domaineEtude" required>
                 </div>
                 <div class="col-md-6">
                   <label class="mb-2">Diploma Image:</label>
-                  <input type="file" class="form-control" name="diplomaImage" id="diplomaImage" accept="image/*" (change)="previewAndBase64($event, 'diplomaImagePreview', 'diplomaImageBase64')">
+                  <img *ngIf="imgEtudeUrl" [src]="imgEtudeUrl" alt="User Image" class="image-preview border border-primary" style="width:120px; height:120px; object-fit:cover;">
+
+                  <img *ngIf="!imgEtudeUrl && profileNounouForm.get('imgEtude')?.value"
+                       [src]="'http://localhost:8081/user/displayImage/' + profileNounouForm.get('imgEtude')?.value"
+                       alt="User Photo"
+
+                       style=" max-width:100px; margin-top:10px;">
+
+                 <!-- <input type="file" class="form-control" name="diplomaImage" id="diplomaImage" accept="image/*" (change)="previewAndBase64($event, 'diplomaImagePreview', 'diplomaImageBase64')">
                   <img id="diplomaImagePreview" src="" alt="Preview" style="display:none; max-width:100px; margin-top:10px;"/>
-                  <input type="hidden" id="diplomaImageBase64" name="diplomaImageBase64">
+                  <input type="hidden" id="diplomaImageBase64" name="diplomaImageBase64">-->
                 </div>
                 <div class="col-md-6">
                   <label class="mb-2">Language:</label>
-                  <select class="form-select" name="language" id="languageSelect" (change)="toggleOtherLanguage($event)">
-                    <option value="french">French</option>
-                    <option value="english">English</option>
+                  <select class="form-select" formControlName="langue" name="langue" id="languageSelect" (change)="toggleOtherLanguage($event)">
+                    <option  value="french">French</option>
+                    <option  value="english">English</option>
                     <option value="other">Other</option>
                   </select>
-                  <input type="text" class="form-control mt-2 d-none" id="otherLanguageInput" name="otherLanguage" placeholder="Specify language">
+                  <input formControlName="langue" type="text" class="form-control mt-2 d-none" id="otherLanguageInput" name="langue" placeholder="Specify language">
                 </div>
                 <div class="col-md-6">
                   <label class="mb-2">Language Level:</label>
-                  <select class="form-select" name="languageLevel" required>
-                    <option value="">Select</option>
-                    <option value="beginner">Beginner</option>
-                    <option value="intermediate">Intermediate</option>
-                    <option value="advanced">Advanced</option>
-                    <option value="bilingual">Bilingual</option>
+                  <select class="form-select" formControlName="niveau" name="niveau" required>
+                    <option  value="">Select</option>
+                    <option  value="beginner">Beginner</option>
+                    <option  value="intermediate">Intermediate</option>
+                    <option  value="advanced">Advanced</option>
+                    <option  value="bilingual">Bilingual</option>
                   </select>
                 </div>
                 <div class="col-md-6">
                   <label class="mb-2">Interests:</label>
-                  <input type="text" class="form-control" placeholder="Interests (Like Music , dance ,reading...)" name="interests">
+                  <input formControlName="centreInteret" type="text" class="form-control" placeholder="Interests (Like Music , dance ,reading...)" name="centreInteret">
                 </div>
 
                 <div class="col-md-6">
                   <label class="mb-2">Motorized:</label>
                   <div>
-                    <input type="radio" class="form-check-input" name="motorized" id="motorizedYes" value="yes" required>
+                    <input formControlName="motorise" type="radio" class="form-check-input" name="motorise" id="motorizedYes" value="yes" required>
                     <label for="motorizedYes" class="me-3">Yes</label>
-                    <input type="radio" class="form-check-input" name="motorized" id="motorizedNo" value="no">
+                    <input formControlName="motorise" type="radio" class="form-check-input" name="motorise" id="motorizedNo" value="no">
                     <label for="motorizedNo">No</label>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <label class="mb-2">Smoker:</label>
                   <div>
-                    <input type="radio" class="form-check-input" name="smoker" id="smokerYes" value="yes" required>
+                    <input formControlName="fumer" type="radio" class="form-check-input" name="fumer" id="smokerYes" value="yes" required>
                     <label for="smokerYes" class="me-3">Yes</label>
-                    <input type="radio" class="form-check-input" name="smoker" id="smokerNo" value="no">
+                    <input formControlName="fumer" type="radio" class="form-check-input" name="fumer" id="smokerNo" value="no">
                     <label for="smokerNo">No</label>
                   </div>
                 </div>
@@ -520,28 +562,44 @@
               <div class="row g-4 mb-4">
                 <div class="col-md-4">
                   <label class="mb-2">ID Card image side 1:</label>
-                  <input type="file" class="form-control" name="idImage1" id="idImage1" accept="image/*"
+                  <img *ngIf="imgIdent1Url" [src]="imgIdent1Url" alt="User Image" class="image-preview  border border-primary" style="width:120px; height:120px; object-fit:cover;">
+
+                  <img *ngIf="!imgIdent1Url && profileNounouForm.get('imgIdent1')?.value"
+                       [src]="'http://localhost:8081/user/displayImage/' + profileNounouForm.get('imgIdent1')?.value"
+                       alt="User Photo"
+
+                       style=" max-width:100px; margin-top:10px;">
+
+                  <!--<input type="file" class="form-control" name="idImage1" id="idImage1" accept="image/*"
                          (change)="previewAndBase64($event, 'idImage1Preview', 'idImage1Base64')">
                   <img id="idImage1Preview" src="" alt="Preview" style="display:none; max-width:100px; margin-top:10px;"/>
-                  <input type="hidden" id="idImage1Base64" name="idImage1Base64">
+                  <input type="hidden" id="idImage1Base64" name="idImage1Base64">-->
                 </div>
                 <div class="col-md-4">
                   <label class="mb-2">ID Card image side 2:</label>
-                  <input type="file" class="form-control" name="idImage2" id="idImage2" accept="image/*"
+                  <img *ngIf="imgIdent2Url" [src]="imgIdent2Url" alt="User Image" class="image-preview  border border-primary" style="width:120px; height:120px; object-fit:cover;">
+
+                  <img *ngIf="!imgIdent2Url && profileNounouForm.get('imgIdent2')?.value"
+                       [src]="'http://localhost:8081/user/displayImage/' + profileNounouForm.get('imgIdent2')?.value"
+                       alt="User Photo"
+
+                       style=" max-width:100px; margin-top:10px;">
+
+                  <!--<input type="file" class="form-control" name="idImage2" id="idImage2" accept="image/*"
                          (change)="previewAndBase64($event, 'idImage2Preview', 'idImage2Base64')">
                   <img id="idImage2Preview" src="" alt="Preview" style="display:none; max-width:100px; margin-top:10px;"/>
-                  <input type="hidden" id="idImage2Base64" name="idImage2Base64">
+                  <input type="hidden" id="idImage2Base64" name="idImage2Base64">-->
                 </div>
-                <div class="col-md-4">
+               <!-- <div class="col-md-4">
                   <label class="mb-2">Profile Photo:</label>
                   <input type="file" class="form-control" name="photo" id="photo" accept="image/*"
                          (change)="previewAndBase64($event, 'photoPreview', 'photoBase64')">
                   <img id="photoPreview" src="" alt="Preview" style="display:none; max-width:100px; margin-top:10px;"/>
                   <input type="hidden" id="photoBase64" name="photoBase64">
-                </div>
+                </div>-->
                 <div class="col-md-6">
                   <label class="mb-2">Hourly Rate (DT):</label>
-                  <input type="number" class="form-control" placeholder="Hourly Rate (DT)" name="hourlyRate" min="0" step="0.01">
+                  <input formControlName="tarifHoraire" type="number" class="form-control" placeholder="Hourly Rate (DT)" name="tarifHoraire" min="0" step="0.01">
                 </div>
               </div>
               <div class="d-flex justify-content-between">
@@ -569,19 +627,26 @@
   <div class="modal-dialog modal-sm modal-dialog-scrollable modal-top-end">
     <div class="modal-content custom-modal">
       <div class="modal-header py-2">
-        <h6 class="modal-title" id="notifModalLabel">Notifications</h6>
+        <h6 class="modal-title" id="notifModalLabel">Notifications ({{ unreadCount }} new)</h6>
         <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body p-2">
         <ul class="list-unstyled mb-0">
-          <li>🔔 Nouvelle mise à jour</li>
-          <li>🔔 Nouveau commentaire</li>
-          <li>🔔 Invitation à un événement</li>
-          <li>🔔 Notification supplémentaire...</li>
-          <li>🔔 Notification supplémentaire...</li>
-          <li>🔔 Notification supplémentaire...</li>
-
+          <li *ngIf="notifications.length === 0" class="text-muted">No notifications</li>
+          <li *ngFor="let notif of notifications" class="d-flex justify-content-between align-items-center border-bottom py-1">
+            <div>
+              <span [ngClass]="{ 'fw-bold': !notif.isRead }">🔔 {{ notif.message }}</span>
+              <br />
+              <small class="text-muted">{{ notif.date | date:'short' }}</small>
+            </div>
+            <button class="btn btn-sm text-danger" (click)="deleteNotification(notif.idNotif!)">
+              &times;
+            </button>
+          </li>
         </ul>
+      </div>
+      <div class="modal-footer py-1 px-2">
+        <button *ngIf="unreadCount > 0" class="btn btn-sm btn-primary" (click)="markAllAsRead()">Mark all as read</button>
       </div>
     </div>
   </div>

@@ -16,15 +16,21 @@
             <h1 class="display-3">Welcome back!</h1>
             <p class="mb-5"> Log in to continue your journey with Allo Nounou.</p>
           </div>
-          <form action="#">
-            <input type="email" class="w-100 form-control py-3 mb-4 border-primary" placeholder="Enter Your Email" style="position:relative;z-index:1061;" />
+          <form [formGroup]="authForm" (ngSubmit)="authenticate()">
+            <input type="email" formControlName="email" class="w-100 form-control py-3 mb-4 border-primary" placeholder="Enter Your Email" style="position:relative;z-index:1061;" />
+            <mat-error *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched" class="text-danger">
+              <small *ngIf="authForm.get('email')?.errors?.['required']">Email is required.</small>
+              <small *ngIf="authForm.get('email')?.errors?.['email']">Please enter a valid email address.</small></mat-error>
             <div class="position-relative">
-              <input id="passwordInputL" type="password" class="w-100 form-control py-3 mb-4 border-primary" placeholder="Enter Your Password" style="position:relative;z-index:1061; padding-right: 45px;" />
+              <input id="passwordInputL" type="password" formControlName="password" class="w-100 form-control py-3 mb-4 border-primary" placeholder="Enter Your Password" style="position:relative;z-index:1061; padding-right: 45px;" />
               <span id="togglePasswordL" style="position:absolute; top:50%; right:15px; transform:translateY(-50%); cursor:pointer; z-index:1062;">
                                     <i class="fa fa-eye-slash" id="eyeIcon"></i>
                                 </span>
+              <mat-error *ngIf="authForm.get('password')?.invalid && authForm.get('password')?.touched" class="text-danger">
+                <small *ngIf="authForm.get('password')?.errors?.['required']">Password is required.</small>
+                <small *ngIf="authForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters long.</small></mat-error>
             </div>
-            <a href="#" class="btn btn-primary px-5 py-3 btn-border-radius w-100" style="position:relative;z-index:1061;">Login</a>
+            <button type="submit" class="btn btn-primary px-5 py-3 btn-border-radius w-100" style="position:relative;z-index:1061;">Login</button>
           </form>
           <p class="text-center mt-4">Don't have an account? <a  routerLink="/signup" class="text-primary">Sign Up</a></p>
           <p class="text-center"><a (click)="goToForgotPass()"  class="text-primary">Forgot Password?</a></p>

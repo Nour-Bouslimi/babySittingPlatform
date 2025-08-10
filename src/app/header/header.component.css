@@ -44,3 +44,13 @@
 .animate-pulse {
   animation: pulse 1.5s infinite;
 }
+
+  /* styles.css ou component CSS */
+  #notifModal .modal-dialog {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    margin: 0;
+    width: 300px;
+    z-index: 1066; /* au-dessus du premier modal */
+  }

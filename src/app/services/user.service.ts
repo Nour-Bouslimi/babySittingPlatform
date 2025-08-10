@@ -3,18 +3,21 @@ import {HttpClient} from "@angular/common/http";
 import {User} from "../models/user";
 import {Observable} from "rxjs";
 import {UserRole} from "../models/UserRole";
+import {AuthService} from "./auth.service";
 
 @Injectable({providedIn: 'root'})
 
 export class UserService {
 
-  constructor(private http:HttpClient) {
+  constructor(private http:HttpClient,private authService:AuthService) {
+
   }
 
   private baseUrl = 'http://localhost:8081/user';
 
   // Create a new user without image
   createUser(user: User) {
+
     return this.http.post<User>(`${this.baseUrl}/addUser`, user);
   }
 
@@ -60,44 +63,66 @@ export class UserService {
   }
   // Update user without image
   updateUser(idUser: number,user: User) {
-    return this.http.put<User>(`${this.baseUrl}/updateUse/${idUser}`, user);
+    // Add authorization header if needed
+    const headers = this.authService.createAuthorization();
+    return this.http.put<User>(`${this.baseUrl}/updateUser/${idUser}`, user, { headers });
   }
 
   //update user with image
-  updateUserWithImage(idUser: number, image: File) {
+  updateUserWithImage(idUser: number, file: File) {
     const formData: FormData = new FormData();
-    formData.append('image', image);
-    return this.http.put<User>(`${this.baseUrl}/saveImageForUser/${idUser}`, formData);
+    formData.append('file', file);
+    // Add authorization header if needed
+    const headers = this.authService.createAuthorization();
+    return this.http.put<String>(`${this.baseUrl}/saveImageForUser/${idUser}`, formData, { headers });
   }
 
     // Get all users
     getAllUsers() {
-    return this.http.get<User[]>(`${this.baseUrl}/getAllUser`);
+      // Add authorization header if needed
+      const headers = this.authService.createAuthorization();
+    return this.http.get<User[]>(`${this.baseUrl}/getAllUser`, { headers });
     }
 
     // Get user by ID
-    getUserById(id: number) {
-    return this.http.get<User>(`${this.baseUrl}/getUserById/${id}`);
-    }
+  getUserById(id: number) {
+    console.log('📞 getUserById called with id:', id);
+
+    // Add authorization header if needed
+    const headers = this.authService.createAuthorization();
+    console.log('Headers object:', headers);
+    console.log('Authorization header exists:', headers.has('Authorization'));
+    console.log('Authorization header value:', headers.get('Authorization')?.substring(0, 30) + '...');
+
+    return this.http.get<User>(`${this.baseUrl}/getUserById/${id}`, { headers });
+  }
 
     //get user by email
     getUserByEmail(email: string) {
-    return this.http.get<User>(`${this.baseUrl}/getUserByEmail/${email}`);
+      // Add authorization header if needed
+      const headers = this.authService.createAuthorization();
+    return this.http.get<User>(`${this.baseUrl}/getUserByEmail/${email}`, { headers });
     }
 
     //get user by cin
     getUserByCin(cin: string) {
-    return this.http.get<User>(`${this.baseUrl}/getUserByCin/${cin}`);
+      // Add authorization header if needed
+      const headers = this.authService.createAuthorization();
+    return this.http.get<User>(`${this.baseUrl}/getUserByCin/${cin}`, { headers });
     }
 
     //get user by role
   getUsersByRole(role: string) {
-    return this.http.get<User[]>(`${this.baseUrl}/getUsersByRole/${role}`);
+    // Add authorization header if needed
+    const headers = this.authService.createAuthorization();
+    return this.http.get<User[]>(`${this.baseUrl}/getUsersByRole/${role}`, { headers });
   }
 
     // Delete user by ID
     deleteUser(id: number) {
-    return this.http.delete<void>(`${this.baseUrl}/deleteUser/${id}`);
+      // Add authorization header if needed
+      const headers = this.authService.createAuthorization();
+    return this.http.delete<void>(`${this.baseUrl}/deleteUser/${id}`, { headers });
     }
 
     //sending new password to user email
@@ -106,19 +131,31 @@ export class UserService {
     }
     //update user password
     updateUserPassword(id: number,currentPassword:string, newPassword: string) {
-      return this.http.put<{ data: User }>(`${this.baseUrl}/updateUserPassword/${id}`, {currentPassword, newPassword}, { observe: 'response' });
+    const body = {
+      currentPassword,
+      newPassword
+    };
+      // Add authorization header if needed
+      const headers = this.authService.createAuthorization();
+      return this.http.put< User >(`${this.baseUrl}/updateUserPassword/${id}`, body,  { headers });
     }
     // Block user by ID
     blockUser(id: number) {
-    return this.http.put(`${this.baseUrl}/blockUser/${id}`, { responseType: 'text', observe: 'response' });
+      // Add authorization header if needed
+      const headers = this.authService.createAuthorization();
+    return this.http.put(`${this.baseUrl}/blockUser/${id}`, { responseType: 'text', observe: 'response' }, { headers });
     }
     // Unblock user by ID
     unblockUser(id: number) {
-    return this.http.put(`${this.baseUrl}/unblockUser/${id}`, { responseType: 'text', observe: 'response' });
+      // Add authorization header if needed
+      const headers = this.authService.createAuthorization();
+    return this.http.put(`${this.baseUrl}/unblockUser/${id}`, { responseType: 'text', observe: 'response' }, { headers });
     }
     //methode de géolocalisation des nounou les plus proche d'une adresse de parent
    getNounousByLocation(parentCin:string):Observable<User[] | string> {
-    return this.http.get<User[] |string>(`${this.baseUrl}/nearby-nannies/${parentCin}`);
+     // Add authorization header if needed
+     const headers = this.authService.createAuthorization();
+    return this.http.get<User[] |string>(`${this.baseUrl}/nearby-nannies/${parentCin}`, { headers });
     }
 
 

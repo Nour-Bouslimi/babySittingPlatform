@@ -4,6 +4,7 @@ import {Annonce} from "../../models/annonces";
 import {AnnoncesService} from "../../services/annonces.service";
 import {Route, Router} from "@angular/router";
 import Swal from 'sweetalert2';
+import {AuthService} from "../../services/auth.service";
 @Component({
   selector: 'app-create-announce',
   templateUrl: './create-announce.component.html',
@@ -20,7 +21,8 @@ export class CreateAnnounceComponent {
   constructor(
     private fb:FormBuilder,
     private annonceService:AnnoncesService,
-    private router:Router
+    private router:Router,
+    private authService: AuthService // Inject AuthService to get userId
   ) {
     this.annonceForm= this.fb.group({
       titre:['',[Validators.required]],
@@ -35,7 +37,18 @@ export class CreateAnnounceComponent {
 //methode onsubmit elly bch n3aytelha fyl form pour creer une annonce
   onsubmit(){
       if(this.annonceForm.valid){
+
+
+        const userId= this.authService.getUserId(); // Use AuthService to get userId
+       console.log('User ID from AuthService:', userId);
+        if(!userId) {
+            this.error = 'User ID not found in local storage';
+            console.error(this.error);
+            return;
+        }
         this.annonce= this.annonceForm.value;
+        this.annonce.user_idUser=userId;
+        //this.annonce.user_idUser= parseInt(userId, 10); // Convert userId to number
         this.annonceService.createAnnonce(this.annonce).subscribe(
           {
             next: () => {

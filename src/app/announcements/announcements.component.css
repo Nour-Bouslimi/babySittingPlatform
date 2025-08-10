@@ -16,3 +16,10 @@
   background-color:#FF4880; /* Couleur au survol */
 }
 
+.events-text div::-webkit-scrollbar {
+  width: 6px;
+}
+.events-text div::-webkit-scrollbar-thumb {
+  background-color:  #007bff;
+  border-radius: 10px;
+}

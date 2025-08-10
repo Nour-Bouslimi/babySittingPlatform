@@ -57,24 +57,24 @@
             </div>
           </div>
           <!-- Profile form (same inputs as signupParent.html) -->
-          <form>
+          <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
             <div class="row g-4 mb-4">
               <div class="col-lg-4">
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
                   <i class="fas fa-map-marker-alt fa-2x text-primary me-4"></i>
-                  <input type="text" class="form-control border-0 shadow-none" placeholder="Address" name="address" style="background:transparent;">
+                  <input type="text" formControlName="address" class="form-control border-0 shadow-none" placeholder="Address" name="address" style="background:transparent;">
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
                   <i class="fas fa-envelope fa-2x text-primary me-4"></i>
-                  <input type="email" class="form-control border-0 shadow-none" placeholder="Email" name="email" style="background:transparent;">
+                  <input type="email" formControlName="email" class="form-control border-0 shadow-none" placeholder="Email" name="email" style="background:transparent;">
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
                   <i class="fa fa-phone-alt fa-2x text-primary me-4"></i>
-                  <input type="tel" class="form-control border-0 shadow-none" placeholder="Phone Number" name="phone" style="background:transparent;">
+                  <input type="tel" formControlName="phoneNumber" class="form-control border-0 shadow-none" placeholder="Phone Number" name="phone" style="background:transparent;">
                 </div>
               </div>
             </div>
@@ -83,11 +83,11 @@
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white" style="min-height: 48px;">
                   <i class="fa fa-venus-mars fa-2x text-primary me-4"></i>
                   <div class="form-check form-check-inline mb-0">
-                    <input class="form-check-input" type="radio" name="gender" id="genderF" value="F">
+                    <input class="form-check-input" type="radio" formControlName="genre" name="genre" id="genderF" value="Female">
                     <label class="form-check-label" for="genderF">Female</label>
                   </div>
                   <div class="form-check form-check-inline mb-0 ms-3">
-                    <input class="form-check-input" type="radio" name="gender" id="genderM" value="M">
+                    <input class="form-check-input" type="radio" formControlName="genre" name="genre" id="genderM" value="Male">
                     <label class="form-check-label" for="genderM">Male</label>
                   </div>
                 </div>
@@ -95,7 +95,7 @@
               <div class="col-lg-4">
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white" style="min-height: 48px;">
                   <i class="fa fa-calendar-alt fa-2x text-primary me-4"></i>
-                  <input type="date" class="form-control border-0 shadow-none" placeholder="Birth Date" name="birthdate" style="background:transparent;">
+                  <input type="date" formControlName="dateOfBirth" class="form-control border-0 shadow-none" placeholder="Birth Date" name="birthdate" style="background:transparent;">
                 </div>
               </div>
               <div class="col-lg-4">
@@ -107,23 +107,23 @@
                     </button>
                     <div id="ageDropdownList" class="border rounded bg-white mt-1" style="display:none; position:absolute; left:55px; right:10px; z-index:10;">
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="0-1" id="age0_1">
+                        <input class="form-check-input" type="checkbox" formControlName="ageChildren" value="0-1" id="age0_1">
                         <label class="form-check-label" for="age0_1">0-1 year</label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="1-3" id="age1_3">
+                        <input class="form-check-input" type="checkbox" formControlName="ageChildren" value="1-3" id="age1_3">
                         <label class="form-check-label" for="age1_3">1-3 year</label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="3-6" id="age3_6">
+                        <input class="form-check-input" type="checkbox" formControlName="ageChildren" value="3-6" id="age3_6">
                         <label class="form-check-label" for="age3_6">3-6 year</label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="6-10" id="age6_10">
+                        <input class="form-check-input" type="checkbox" formControlName="ageChildren" value="6-10" id="age6_10">
                         <label class="form-check-label" for="age6_10">6-10 year</label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="10+" id="age10plus">
+                        <input class="form-check-input" type="checkbox" formControlName="ageChildren" value="10+" id="age10plus">
                         <label class="form-check-label" for="age10plus">10 year and more</label>
                       </div>
                     </div>
@@ -135,24 +135,24 @@
               <div class="col-lg-4">
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
                   <i class="fa fa-child fa-2x text-primary me-4"></i>
-                  <input type="tel" class="form-control border-0 shadow-none" placeholder="Number of children" name="childrenCount" style="background:transparent;">
+                  <input type="tel" formControlName="nbChildren" class="form-control border-0 shadow-none" placeholder="Number of children" name="childrenCount" style="background:transparent;">
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
-                  <input type="text" class="form-control border-0 shadow-none" placeholder="First Name" name="firstName" style="background:transparent;">
+                  <input type="text" formControlName="firstName" class="form-control border-0 shadow-none" placeholder="First Name" name="firstName" style="background:transparent;">
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white">
-                  <input type="text" class="form-control border-0 shadow-none" placeholder="Last Name" name="lastName" style="background:transparent;">
+                  <input type="text" formControlName="lastName" class="form-control border-0 shadow-none" placeholder="Last Name" name="lastName" style="background:transparent;">
                 </div>
               </div>
             </div>
             <div class="row g-4 mb-4">
               <div class="col-lg-4">
                 <div class="d-flex align-items-center w-100 border border-primary p-2 rounded bg-white position-relative">
-                  <input id="passwordInputProfile" type="password" class="form-control border-0 shadow-none" placeholder="Password" name="password" style="background:transparent;">
+                  <input id="passwordInputProfile" formControlName="password" type="password" class="form-control border-0 shadow-none" placeholder="Password" name="password" style="background:transparent;">
                   <span id="togglePasswordProfile" style="position:absolute; right:20px; cursor:pointer;">
                         <i class="fa fa-eye-slash" id="eyeIconProfile"></i>
                     </span>
@@ -178,19 +178,26 @@
   <div class="modal-dialog modal-sm modal-dialog-scrollable modal-top-end">
     <div class="modal-content custom-modal">
       <div class="modal-header py-2">
-        <h6 class="modal-title" id="notifModalLabel">Notifications</h6>
+        <h6 class="modal-title" id="notifModalLabel">Notifications ({{ unreadCount }} new)</h6>
         <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body p-2">
         <ul class="list-unstyled mb-0">
-          <li>🔔 Nouvelle mise à jour</li>
-          <li>🔔 Nouveau commentaire</li>
-          <li>🔔 Invitation à un événement</li>
-          <li>🔔 Notification supplémentaire...</li>
-          <li>🔔 Notification supplémentaire...</li>
-          <li>🔔 Notification supplémentaire...</li>
-
+          <li *ngIf="notifications.length === 0" class="text-muted">No notifications</li>
+          <li *ngFor="let notif of notifications" class="d-flex justify-content-between align-items-center border-bottom py-1">
+            <div>
+              <span [ngClass]="{ 'fw-bold': !notif.isRead }">🔔 {{ notif.message }}</span>
+              <br />
+              <small class="text-muted">{{ notif.date | date:'short' }}</small>
+            </div>
+            <button class="btn btn-sm text-danger" (click)="deleteNotification(notif.idNotif!)">
+              &times;
+            </button>
+          </li>
         </ul>
+      </div>
+      <div class="modal-footer py-1 px-2">
+        <button *ngIf="unreadCount > 0" class="btn btn-sm btn-primary" (click)="markAllAsRead()">Mark all as read</button>
       </div>
     </div>
   </div>

@@ -1,5 +1,5 @@
 import { AfterViewInit,Component } from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {User} from "../models/user";
 import {UserService} from "../services/user.service";
 import {Router} from "@angular/router";
@@ -119,7 +119,7 @@ imageUrl: string | ArrayBuffer | null = null; // Pour stocker l'URL de l'image
       genre: ['', [Validators.required]],
       //la date n'accepte que ceux on 19 ans ou plus
       dateOfBirth: ['', [Validators.required, this.ageValidator]],
-      ageChildren: ['', [Validators.required]],
+      ageChildren: this.fb.array([], Validators.required),
       nbChildren: ['', [Validators.required, Validators.min(1), Validators.max(4)]],
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20), Validators.pattern('^[a-zA-Z]+$')]], // should contain only letters
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20), Validators.pattern('^[a-zA-Z]+$')]], // should contain only letters
@@ -149,13 +149,29 @@ imageUrl: string | ArrayBuffer | null = null; // Pour stocker l'URL de l'image
     }
 
   }
+// Méthode pour ajouter ou supprimer des âges d'enfants
+  onAgeCheckboxChange(event: any) {
+    const ageChildrenArray: FormArray = this.signupForm.get('ageChildren') as FormArray;
 
+    if (event.target.checked) {
+      ageChildrenArray.push(new FormControl(event.target.value));
+    } else {
+      const index = ageChildrenArray.controls.findIndex(x => x.value === event.target.value);
+      if (index >= 0) {
+        ageChildrenArray.removeAt(index);
+      }
+    }
+  }
 
   // méthode onsubmit elly bch n3aytelha fyl form pour creer un parent
   onsubmit(){
     if(this.signupForm.valid && this.imageToUpload) {
       this.user= this.signupForm.value;
       this.user.role = UserRole.PARENT; // Set default role to PARENT
+      // Convertir ageChildren array → string (par exemple : "0-1,1-3,3-6")
+      if (Array.isArray(this.user.ageChildren)) {
+        this.user.ageChildren = this.user.ageChildren.join(',');
+      }
        this.userService.createParentWithImage(this.user,this.imageToUpload).subscribe({
         next: () => {
           this.error = '';

@@ -21,7 +21,7 @@ import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
 import { ProfileNounouComponent } from './profile-nounou/profile-nounou.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { CreateAnnounceComponent } from './announcements/create-announce/create-announce.component';
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatDatepickerModule} from "@angular/material/datepicker";
@@ -37,6 +37,13 @@ import {MatCardModule} from "@angular/material/card";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableModule} from "@angular/material/table";
 import {MatDialogModule} from "@angular/material/dialog";
+import { UpdateAnnounceComponent } from './announcements/update-announce/update-announce.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ForbidenComponent } from './forbiden/forbiden.component';
+import { MyReservationsComponent } from './my-reservations/my-reservations.component';
+import { ChatComponent } from './chat/chat.component';
+import { ChatListComponent } from './chat-list/chat-list.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,7 +63,13 @@ import {MatDialogModule} from "@angular/material/dialog";
     SignupNounouComponent,
     ForgotPassComponent,
     ProfileNounouComponent,
-    CreateAnnounceComponent
+    CreateAnnounceComponent,
+    UpdateAnnounceComponent,
+    DashboardComponent,
+    ForbidenComponent,
+    MyReservationsComponent,
+    ChatComponent,
+    ChatListComponent
 
   ],
   imports: [
@@ -80,9 +93,11 @@ import {MatDialogModule} from "@angular/material/dialog";
     MatPaginatorModule,
     MatTableModule,
     MatDialogModule,
+
   ],
   providers: [
     HttpClient
+
   ],
   bootstrap: [AppComponent]
 })

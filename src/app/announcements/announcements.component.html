@@ -13,7 +13,7 @@
 </div>
 <!-- Page Header End -->
 
-<!-- Events Start -->
+<!-- annonce Start -->
 <div class="container-fluid events py-5 bg-light">
   <div class="container py-5">
     <div class="d-flex justify-content-end mt-3">
@@ -28,12 +28,12 @@
           <div class="events-inner position-relative">
             <div class="events-img overflow-hidden rounded-circle position-relative">
               <img src="/assets/img/event-1.jpg" class="img-fluid w-100 rounded-circle" alt="Image">
-              <div class="event-overlay" style="display: flex; gap: 15px; align-items: center;">
+              <div  class="event-overlay" style="display: flex; gap: 15px; align-items: center;">
                 <a href="/assets/img/event-1.jpg" data-lightbox="event-1"><i class="fas fa-search-plus text-white fa-2x"></i></a>
-                <button (click)="deleteAnnonce(a.idAnnonce)" style="border: none; background: none; padding: 0;">
+                <button *ngIf="a.user_idUser === currentUserId"  (click)="deleteAnnonce(a.idAnnonce)" style="border: none; background: none; padding: 0;">
                   <i class="fas fa-trash-alt text-white fa-2x"></i>
                 </button>
-                <button routerLink="/home/updateAnnounce/{{a.id}}" style="border: none; background: none; padding: 0;">
+                <button *ngIf="a.user_idUser === currentUserId"  (click)="openDialog(a)" style="border: none; background: none; padding: 0;">
                   <i class="fas fa-edit text-white fa-2x"></i>
                 </button>
               </div>
@@ -41,12 +41,23 @@
             <div class="px-4 py-2 bg-secondary text-white text-center events-rate">{{ a.date }}</div>
             <div class="d-flex justify-content-between px-4 py-2 bg-secondary">
               <small class="text-white"><i class="fas fa-calendar me-1 text-primary"></i>{{ a.date }}</small>
-              <small class="text-white"><i class="fas fa-map-marker-alt me-1 text-primary"></i> New York</small>
+              <small class="text-white"><i class="fas fa-map-marker-alt me-1 text-primary"></i>{{a.userAdresse || 'Unknown Address' }}</small>
             </div>
           </div>
           <div class="events-text p-4 border border-primary bg-white border-top-0 rounded-bottom">
             <a class="h4">{{ a.titre }}</a>
-            <p class="mb-0 mt-3">{{ a.description }}</p>
+            <div
+              class="mb-0 mt-3"
+              style="
+    max-height: 100px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  "
+            >
+              {{ a.description }}
+            </div>
+
           </div>
         </div>
       </div>
@@ -73,5 +84,5 @@
     </div>
   </div>
 </div>
-<!-- Events End -->
+<!-- annonce End -->
 

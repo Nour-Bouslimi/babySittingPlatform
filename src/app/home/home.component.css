@@ -1,0 +1,31 @@
+.card-annonce {
+  width: 300px;                /* ou 100%, selon le besoin */
+  height: 300px;               /* hauteur fixe */
+  border-radius: 20px;
+  border: 1px solid #ff6490;
+  background: white;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+
+.card-description {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #777;
+  text-align: center;
+  word-wrap: break-word;
+  overflow-y: auto;
+  max-height: 100px; /* hauteur max du bloc de description */
+}
+
+.email-break {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+

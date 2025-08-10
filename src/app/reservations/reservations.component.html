@@ -5,7 +5,7 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb justify-content-center mb-0">
         <li class="breadcrumb-item"><a routerLink="/home">Home</a ></li>
-        <li class="breadcrumb-item text-white" aria-current="page">Reservations</li>
+        <li class="breadcrumb-item text-white" aria-current="page">My Reservations</li>
       </ol>
     </nav>
   </div>
@@ -13,7 +13,55 @@
 <!-- Page Header End -->
 
 
-<!-- Programs Start -->
+<div *ngFor="let res of reservations" class="card my-3 shadow">
+  <div class="card-body d-flex flex-column p-4">
+    <h5 class="mb-2">
+      👨‍👩‍👧 Parent : {{ res.parent.firstName }} {{ res.parent.lastName }}
+    </h5>
+    <p class="mb-1 text-muted">
+      🏠 Address : {{ res.parent.address }}<br />
+      📞 Phone : {{ res.parent.phoneNumber }}<br />
+      👶 Child's number : {{ res.parent.nbChildren }}<br />
+      🧒 child's age : {{ res.parent.ageChildren }}<br />
+      📅 Date : {{ res.date }}<br />
+      🕒 Hour : {{ res.heureDebut }}h - {{ res.heureFin }}h
+    </p>
+
+    <span
+      class="badge px-3 py-2 rounded-pill w-fit"
+      [ngClass]="{
+        'bg-primary text-white': res.statut === 'PENDING',
+        'bg-success text-white': res.statut === 'ACCEPTED',
+        'bg-danger text-white': res.statut === 'REJECTED'
+      }"
+    >
+      {{ res.statut }}
+    </span>
+
+    <div class="mt-3" *ngIf="res.statut === 'PENDING'">
+      <button class="btn btn-success me-2" (click)="acceptReservation(res.idReserv)">
+        ✅ Accepter
+      </button>
+      <button class="btn btn-danger" (click)="rejectReservation(res.idReserv)">
+        ❌ Refuser
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Programs Start
 <div class="container-fluid program  py-5">
   <div class="container py-5">
     <div class="mx-auto text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
@@ -111,4 +159,4 @@
     </div>
   </div>
 </div>
-<!-- Program End -->
+-->

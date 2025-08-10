@@ -15,6 +15,12 @@ import {SignupNounouComponent} from "./signup-nounou/signup-nounou.component";
 import {ForgotPassComponent} from "./forgot-pass/forgot-pass.component";
 import {ProfileNounouComponent} from "./profile-nounou/profile-nounou.component";
 import {CreateAnnounceComponent} from "./announcements/create-announce/create-announce.component";
+import {UpdateAnnounceComponent} from "./announcements/update-announce/update-announce.component";
+import {DashboardComponent} from "./dashboard/dashboard.component";
+import {ForbidenComponent} from "./forbiden/forbiden.component";
+import {MyReservationsComponent} from "./my-reservations/my-reservations.component";
+import {ChatComponent} from "./chat/chat.component";
+import {ChatListComponent} from "./chat-list/chat-list.component";
 
 const routes: Routes = [
   {path:'home',component:HeaderfooterComponent,
@@ -23,12 +29,23 @@ const routes: Routes = [
     {path:'about',component:AboutComponent},
     {path:'disponibilities',component:DisponibilitiesComponent},
     {path:'reservations',component:ReservationsComponent},
+    {path:'myReservations',component:MyReservationsComponent},
     {path:'announcements',component:AnnouncementsComponent},
     {path:'createAnnounce',component:CreateAnnounceComponent},
+    {path:'updateAnnounce',component:UpdateAnnounceComponent},
     {path:'nannies',component:NanniesComponent},
     {path:'profile',component:ProfileComponent},
     {path:'profileNounou',component:ProfileNounouComponent},
-    {path:'forgotPass',component:ForgotPassComponent}
+    {path:'forgotPass',component:ForgotPassComponent},
+    {
+      path: 'chat/:receiverId',
+      component: ChatComponent
+    },
+    {
+      path: 'chat-list',
+      component: ChatListComponent
+    }
+
 
 
   ]},
@@ -36,6 +53,8 @@ const routes: Routes = [
   {path:'signup',component:SignupComponent},
   {path:'signupParent',component:SignupParentComponent},
   {path:'signupNounou',component:SignupNounouComponent},
+  {path:'dashboard',component:DashboardComponent},
+  {path:'forbiden',component:ForbidenComponent},
   {path:'',redirectTo:'/home',pathMatch:'full'}
 ];
 

@@ -65,4 +65,6 @@ export class User {
     this.latitude = 0;
     this.longitude = 0;
   }
+
+  [key: string]: any; // <-- autorise l'accès via string
 }

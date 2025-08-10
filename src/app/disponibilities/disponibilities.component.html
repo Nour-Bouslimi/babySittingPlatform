@@ -12,7 +12,7 @@
   </div>
 </div>
 <!-- Page Header End -->
-<!-- Service Start -->
+<!-- Service Start
 <div class="container-fluid service py-5">
   <div class="container py-5">
     <div class="mx-auto text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
@@ -75,4 +75,27 @@
     </div>
   </div>
 </div>
-<!-- Service End -->
+ -->
+<div class="container p-4">
+  <h2>Ajouter une disponibilité</h2>
+  <form [formGroup]="disponibiliteForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="date" class="form-label">Date</label>
+      <input type="date" id="date" class="form-control" formControlName="date">
+    </div>
+
+    <div class="mb-3">
+      <label for="heureDebut" class="form-label">Heure de début</label>
+      <input type="number" id="heureDebut" class="form-control" formControlName="heureDebut" min="0" max="23">
+    </div>
+
+    <div class="mb-3">
+      <label for="heureFin" class="form-label">Heure de fin</label>
+      <input type="number" id="heureFin" class="form-control" formControlName="heureFin" min="1" max="24">
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="disponibiliteForm.invalid">
+      Ajouter
+    </button>
+  </form>
+</div>
