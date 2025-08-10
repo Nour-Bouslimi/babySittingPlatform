@@ -2,6 +2,7 @@ package org.example.babysitting.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.babysitting.DTO.ConversationDTO;
 import org.example.babysitting.DTO.MessageRequest;
 import org.example.babysitting.entities.Message;
 import org.example.babysitting.entities.Reservation;
@@ -19,6 +20,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
@@ -87,6 +89,12 @@ public class MessageController {
     public List<Message> getAllMessages() {
         return messageInterface.getAllMessages();
     }
+
+    @GetMapping("/getAllConversationForUser/{userId}")
+    public List<ConversationDTO> getAllConversations(@PathVariable Long userId) {
+        return messageInterface.getAllConversations(userId);
+    }
+
     @GetMapping("/getMessageById/{id}")
     public Message getMessageById(@PathVariable Long id) {
         return messageInterface.getMessageById(id);
@@ -98,7 +106,7 @@ public class MessageController {
     @GetMapping("/getMessagesByDate/{date}")
     public List<Message> getMessagesByDate(@PathVariable String date) {
         try {
-            LocalDate parsedDate = LocalDate.parse(date); // Conversion de la chaîne en LocalDate
+            LocalDateTime parsedDate = LocalDateTime.parse(date); // Conversion de la chaîne en LocalDate
             return messageInterface.getMessagesByDate(parsedDate);
         } catch (DateTimeParseException e) {
             throw new RuntimeException("Format de date invalide. Utilisez 'yyyy-MM-dd'.");
@@ -139,8 +147,7 @@ public class MessageController {
 
     @MessageMapping("/chat.sendMessage")
     public void sendMessage(@Payload Message message) {
-        System.out.println("Sending from: " + message.getSender().getIdUser());
-        System.out.println("Sending to: " + message.getReceiver().getIdUser());
+
         System.out.println("Message content: " + message.getContent());
         if (message.getSender() == null || message.getReceiver() == null) {
             throw new IllegalArgumentException("Sender and receiver must not be null.");
@@ -152,6 +159,7 @@ public class MessageController {
         );
 
     }
+
 
 
 }

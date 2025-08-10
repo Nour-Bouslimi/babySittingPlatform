@@ -1,5 +1,6 @@
 package org.example.babysitting.serviceImplement;
 
+import org.example.babysitting.DTO.ConversationDTO;
 import org.example.babysitting.entities.Message;
 import org.example.babysitting.entities.Reservation;
 import org.example.babysitting.entities.User;
@@ -10,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
+
 @Service
 public class MessageImplement implements MessageInterface {
 
@@ -48,8 +52,19 @@ public class MessageImplement implements MessageInterface {
         if (m != null) {
             m.setContent(message.getContent());
             m.setDate(message.getDate());
-            m.setSender(message.getSender());
-            m.setReceiver(message.getReceiver());
+          //  m.setSender(message.getSenderId());
+           // m.setReceiver(message.getReceiver());
+            // Récupérer sender User à partir de l'id envoyé
+            if (message.getSenderId() != null) {
+                Optional<User> senderOpt = userRepo.findById(message.getSenderId());
+                senderOpt.ifPresent(m::setSender);
+            }
+
+            // Pour receiver, pareil si c'est un User ou un id à gérer pareil
+            if (message.getReceiverId() != null) {
+                Optional<User> receiverOpt = userRepo.findById(message.getReceiverId());
+                receiverOpt.ifPresent(m::setReceiver);
+            }
             return messageRepo.save(m);
         } else {
             return null;
@@ -72,7 +87,7 @@ public class MessageImplement implements MessageInterface {
     }*/
 
     @Override
-    public List<Message> getMessagesByDate(LocalDate date) {
+    public List<Message> getMessagesByDate(LocalDateTime date) {
         return messageRepo.findByDate(date);
     }
 
@@ -85,7 +100,7 @@ public class MessageImplement implements MessageInterface {
         msg.setSender(sender);
         msg.setReceiver(receiver);
         msg.setContent(content);
-        msg.setDate(LocalDate.now());
+        msg.setDate(LocalDateTime.now());
         return messageRepo.save(msg);
     }
 
@@ -93,4 +108,24 @@ public class MessageImplement implements MessageInterface {
     public List<Message> getConversation(Long userId1, Long userId2) {
         return messageRepo.getConversation(userId1, userId2);
     }
+
+    @Override
+    public List<ConversationDTO> getAllConversations(Long userId) {
+        List<Object[]> raw = messageRepo.findAllConversationsRaw(userId);
+        Map<Long, ConversationDTO> map = new LinkedHashMap<>();
+
+        for (Object[] row : raw) {
+            Long otherUserId = ((Number) row[0]).longValue();       // otherUserId
+            String lastMessage = (String) row[1];                   // lastMessage
+            LocalDateTime date = ((Timestamp) row[2]).toLocalDateTime(); // date
+            String firstName = (String) row[3];                      // firstName
+            String lastName = (String) row[4];                       // lastName
+            String photo = (String) row[5];                          // photo
+
+            map.put(otherUserId, new ConversationDTO(otherUserId, lastMessage, date, firstName, lastName, photo));
+        }
+        return new ArrayList<>(map.values());
+    }
+
+
 }

@@ -1,14 +1,12 @@
 package org.example.babysitting.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Date;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -26,12 +24,13 @@ public class Message {
     @CreationTimestamp
     @Column(name = "date", nullable = false, length = 30)
     @JsonProperty("date")
-    private LocalDate date;
+    private LocalDateTime date;
 
 
     // Association avec User
     @ManyToOne
     @JsonIgnore
+
     @JoinColumn(name="sender_id", nullable = false)
     private User sender;
     @ManyToOne
@@ -51,9 +50,24 @@ public class Message {
         //this.date = new Date(System.currentTimeMillis());
     }
 
+
+    @JsonProperty("sender_id")
+    public Long getSenderId() {
+        return sender != null ? sender.getIdUser() : null;
+    }
+
+    @JsonProperty("receiver_id")
+    public Long getReceiverId() {
+        return receiver != null ? receiver.getIdUser() : null;
+    }
     public User getSender() {
         return sender;
     }
+
+    public User getReceiver() {
+        return receiver;
+    }
+
 
     public void setSender(User sender) {
         this.sender = sender;
@@ -67,9 +81,7 @@ public class Message {
         this.reponses = reponses;
     }
 
-    public User getReceiver() {
-        return receiver;
-    }
+
 
     public List<Reponse> getReponses() {
         return reponses;
@@ -91,11 +103,11 @@ public class Message {
         this.content = content;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
