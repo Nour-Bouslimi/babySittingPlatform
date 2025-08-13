@@ -127,6 +127,7 @@ export class UserService {
 
     //sending new password to user email
     sendNewPassword(email: string) {
+
     return this.http.get(`${this.baseUrl}/forgotPassword/${email}`, { responseType: 'text', observe: 'response' });
     }
     //update user password

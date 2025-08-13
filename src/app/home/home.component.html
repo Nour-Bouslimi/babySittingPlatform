@@ -80,7 +80,7 @@
       <h4 class="text-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">Our Nannies</h4>
       <h1 class="mb-5 display-3">Meet With Our Professional Nannies</h1>
     </div>
-    <div class=" row g-5 justify-content-center">
+    <div *ngIf="(topNannies?.length || 0)> 0; else noNanny" class=" row g-5 justify-content-center">
       <div
         class=" col-md-6 col-lg-4 col-xl-3 wow fadeIn"
         *ngFor="let nanny of topNannies; let i = index"
@@ -109,7 +109,10 @@
         <a routerLink="/home/nannies" class="btn btn-primary text-white px-4 py-2 mb-3 btn-border-radius">View All</a>
       </div>
     </div>
-
+    <!-- Si aucune nounou -->
+    <ng-template #noNanny>
+      <div class="text-center text-muted">No nannies available at the moment.</div>
+    </ng-template>
   </div>
 </div>
 <!-- nannies End-->
@@ -125,7 +128,7 @@
       <h1 class="mb-5 display-3"> discover their needs and apply today.</h1>
     </div>
 
-    <div class="row g-5">
+    <div class="row g-5" *ngIf="(announcements?.length || 0)> 0; else noAnnouncement">
       <div
         class="col-md-6 col-lg-6 col-xl-3 wow fadeIn"
         *ngFor="let ann of announcements; let i = index"
@@ -145,7 +148,10 @@
         </div>
       </div>
     </div>
-
+    <!-- Si aucune annonce -->
+    <ng-template #noAnnouncement>
+      <div class="text-center text-muted">No announcements available at the moment.</div>
+    </ng-template>
     <div class="text-center mt-4">
       <a routerLink="/home/announcements" class="btn btn-primary text-white px-4 py-2 btn-border-radius">View All</a>
     </div>

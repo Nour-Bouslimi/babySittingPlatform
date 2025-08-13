@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
             bsModal.hide();
           }
         } else if (role === 'ROLE_PARENT' || role === 'PARENT') {
-          this.router.navigate(['home/announcements']);
+          this.router.navigate(['home']);
           //fermer le modal login
           const modal = document.getElementById('loginModal');
           if (modal) {
@@ -195,7 +195,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       bsModal.hide();
     }
     // Naviguer vers la page forgot password
-    this.router.navigate(['/home/forgotPass']);
+    this.router.navigate(['/forgotPass']);
   }
 
 

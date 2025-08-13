@@ -43,6 +43,7 @@ import { ForbidenComponent } from './forbiden/forbiden.component';
 import { MyReservationsComponent } from './my-reservations/my-reservations.component';
 import { ChatComponent } from './chat/chat.component';
 import { ChatListComponent } from './chat-list/chat-list.component';
+import { NearbyNanniesMapComponent } from './nearby-nannies-map/nearby-nannies-map.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { ChatListComponent } from './chat-list/chat-list.component';
     ForbidenComponent,
     MyReservationsComponent,
     ChatComponent,
-    ChatListComponent
+    ChatListComponent,
+    NearbyNanniesMapComponent
 
   ],
   imports: [

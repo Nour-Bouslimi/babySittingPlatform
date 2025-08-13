@@ -56,9 +56,21 @@
           <h1 class="display-3" style="font-size: 32px;">Reset your password</h1>
           <p class="mb-4">Enter your email address and we'll send you a temporary password to log in. Make sure to update it once you're back in.</p>
         </div>
-        <form>
-          <input type="email" class="w-100 form-control py-3 mb-4 border-primary" id="forgotEmail" placeholder="Enter Your Email" required />
-          <button type="submit" class="btn btn-primary px-5 py-3 btn-border-radius w-100">Send Temporary Password</button>
+        <form [formGroup]="forgotForm" (ngSubmit)="onSubmit()">
+          <!-- Success message -->
+          <div class="alert alert-success" *ngIf="message">{{ message }}</div>
+
+          <!-- Error message -->
+          <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+
+          <input type="email" class="w-100 form-control py-3 mb-4 border-primary" id="forgotEmail" [(ngModel)]="email" name="email" formControlName="email" placeholder="Enter Your Email" required />
+          <mat-error *ngIf="forgotForm.get('email')?.touched && forgotForm.get('email')?.errors?.['required']">
+            Email is required
+          </mat-error>
+          <mat-error *ngIf="forgotForm.get('email')?.touched && forgotForm.get('email')?.errors?.['email']">
+            Invalid email format
+          </mat-error>
+          <button type="submit" class="btn btn-primary px-5 py-3 btn-border-radius w-100" [disabled]="!forgotForm.valid">Send Temporary Password</button>
         </form>
         <p class="text-center mt-4 mb-0">
           <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Back to Login</a>

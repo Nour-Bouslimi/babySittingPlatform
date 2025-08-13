@@ -21,6 +21,7 @@ import {ForbidenComponent} from "./forbiden/forbiden.component";
 import {MyReservationsComponent} from "./my-reservations/my-reservations.component";
 import {ChatComponent} from "./chat/chat.component";
 import {ChatListComponent} from "./chat-list/chat-list.component";
+import {NearbyNanniesMapComponent} from "./nearby-nannies-map/nearby-nannies-map.component";
 
 const routes: Routes = [
   {path:'home',component:HeaderfooterComponent,
@@ -34,9 +35,10 @@ const routes: Routes = [
     {path:'createAnnounce',component:CreateAnnounceComponent},
     {path:'updateAnnounce',component:UpdateAnnounceComponent},
     {path:'nannies',component:NanniesComponent},
+    {path:'nearestNannies',component:NearbyNanniesMapComponent},
     {path:'profile',component:ProfileComponent},
     {path:'profileNounou',component:ProfileNounouComponent},
-    {path:'forgotPass',component:ForgotPassComponent},
+
     {
       path: 'chat/:receiverId',
       component: ChatComponent
@@ -53,6 +55,7 @@ const routes: Routes = [
   {path:'signup',component:SignupComponent},
   {path:'signupParent',component:SignupParentComponent},
   {path:'signupNounou',component:SignupNounouComponent},
+  {path:'forgotPass',component:ForgotPassComponent},
   {path:'dashboard',component:DashboardComponent},
   {path:'forbiden',component:ForbidenComponent},
   {path:'',redirectTo:'/home',pathMatch:'full'}

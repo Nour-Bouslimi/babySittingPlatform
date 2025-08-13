@@ -50,6 +50,7 @@
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
             <div class="dropdown-menu m-0 bg-secondary rounded-0">
               <a *ngIf="role === 'ROLE_PARENT'" routerLink="/home/nannies" class="dropdown-item" routerLinkActive="active">Nannies</a>
+              <a *ngIf="role === 'ROLE_PARENT'" routerLink="/home/nearestNannies" class="dropdown-item" routerLinkActive="active">Nearest Nannies</a>
               <a *ngIf="role === 'ROLE_PARENT'" routerLink="/home/myReservations" class="dropdown-item" routerLinkActive="active">My Reservations</a>
               <a *ngIf="role === 'ROLE_NOUNOU'"  class="dropdown-item"  routerLink="/home/chat-list"  routerLinkActive="active">Chat</a>
 

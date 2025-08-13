@@ -1043,16 +1043,7 @@ role:string = ''; // Pour stocker le rôle de l'utilisateur
     }
   }
 
-  goToForgotPass() {
-    // Fermer le modal login
-    const modal = document.getElementById('loginModal');
-    if (modal) {
-      const bsModal = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
-      bsModal.hide();
-    }
-    // Naviguer vers la page forgot password
-    this.router.navigate(['/home/forgotPass']);
-  }
+
 
 
 
@@ -1158,6 +1149,17 @@ role:string = ''; // Pour stocker le rôle de l'utilisateur
     sessionStorage.clear();
     window.location.href = '/home';
     console.log("User logged out");
+  }
+
+  goToForgotPass() {
+    // Fermer le modal login
+    const modal = document.getElementById('loginModal');
+    if (modal) {
+      const bsModal = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
+      bsModal.hide();
+    }
+    // Naviguer vers la page forgot password
+    this.router.navigate(['/forgotPass']);
   }
 
 }

@@ -1,0 +1,188 @@
+@import "node_modules/leaflet/dist/leaflet.css";
+
+
+
+#map {
+  height: 400px;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔹 Styles pour les petites photos circulaires au-dessus des marqueurs */
+::ng-deep .user-avatar-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+::ng-deep .avatar-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+::ng-deep .user-avatar-img {
+  width: 35px !important;             /* Largeur fixe */
+  height: 35px !important;            /* Hauteur identique = cercle parfait */
+  min-width: 35px !important;         /* Force les dimensions */
+  min-height: 35px !important;
+  max-width: 35px !important;
+  max-height: 35px !important;
+  border-radius: 50% !important;      /* Parfaitement circulaire */
+  border: 2px solid #ffffff !important; /* Bordure blanche fine */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4) !important; /* Ombre plus visible */
+  object-fit: cover !important;       /* Image bien cadrée sans déformation */
+  background-color: #f8f9fa;          /* Fond de secours */
+  transition: all 0.2s ease;          /* Animation douce */
+  position: relative;
+  z-index: 1000;                      /* Au-dessus du marqueur */
+  display: block !important;          /* Force l'affichage en bloc */
+  flex-shrink: 0 !important;          /* Empêche la compression */
+}
+
+/* Effet hover pour agrandir légèrement */
+::ng-deep .user-avatar-img:hover {
+  transform: scale(1.15) !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6) !important;
+  border-color: #007bff !important;   /* Bordure bleue au hover */
+}
+
+
+
+/* Nom affiché sous la photo (optionnel, peut être retiré) */
+::ng-deep .user-name-overlay {
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 1px;
+  white-space: nowrap;
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.9;
+}
+
+/* Version encore plus petite et discrète */
+::ng-deep .user-avatar-img.mini {
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Styles pour les popups */
+::ng-deep .leaflet-popup-content-wrapper {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+::ng-deep .leaflet-popup-content {
+  margin: 10px 15px !important;
+}
+
+::ng-deep .leaflet-popup-tip {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Styles pour les popups */
+::ng-deep .leaflet-popup-content-wrapper {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+::ng-deep .leaflet-popup-content {
+  margin: 10px 15px !important;
+}
+
+::ng-deep .leaflet-popup-tip {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* CSS pour les marqueurs groupés */
+.cluster-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.cluster-container {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ff6b6b;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  cursor: pointer;
+}
+
+.cluster-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #2c3e50;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  border: 2px solid white;
+}
+
+.cluster-icon {
+  font-size: 16px;
+}
+
+/* Améliorations pour les avatars existants */
+.user-avatar-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.avatar-container {
+  position: relative;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  overflow: hidden;
+  background: white;
+}
+
+.user-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Animation hover pour les marqueurs */
+.cluster-container:hover,
+.avatar-container:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+/* Style pour les popups */
+.leaflet-popup-content {
+  margin: 8px 12px !important;
+  line-height: 1.4 !important;
+}
+
+.leaflet-popup-content h4 {
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 5px;
+}
