@@ -305,7 +305,7 @@ public class UserController {
         if (parent == null || parent.getLatitude() == null || parent.getLongitude() == null) {
             return ResponseEntity.badRequest().body("Parent non trouvé ou géolocalisation absente.");
         }
-        List<User> nearby = userInterface.findNearbyNannies(parent.getLatitude(), parent.getLongitude(), 20.0); // 20.0 hya distance max elli lezem ykoun fyha nounou b3yd 3al parent Akther m distance heki ma yjibli 7atta nounou
+        List<User> nearby = userInterface.findNearbyNannies(parent.getLatitude(), parent.getLongitude(), 25.0); // 20.0 hya distance max elli lezem ykoun fyha nounou b3yd 3al parent Akther m distance heki ma yjibli 7atta nounou
         return ResponseEntity.ok(nearby);
     }
 

@@ -229,7 +229,7 @@ public class UserImplement implements UserInterface {
     public void sendEmail(String email, String subject, String message) {
         emailSenderService.sendEmail(email, subject, message);
     }
-    @Override
+    /*@Override
     public String forgotPassword(String email) {
         User user = userRepo.findByEmail(email);
         if(user == null){
@@ -244,12 +244,73 @@ public class UserImplement implements UserInterface {
         // check the gender of the user to customize the message
         String salutation = user.getGenre().equals("Male") ? "Mr." : "Mrs.";
         String name = user.getFirstName() != null ? user.getFirstName() : "User";
-        String message = "Hello "+salutation +name + "Your new password is: " + newPassword + "\nPlease change it after logging in.";
+       // String message = "Hello "+salutation + " " +name + "Your new password is: " + newPassword + "\nPlease change it after logging in.\n AlloNouNou Platform";
+        String message = "Dear " + salutation + " " + name + ",<br><br>" +
+                "We hope this message finds you well.<br><br>" +
+                "Following your password reset request, we have generated a new temporary password for your AlloNouNou account:<br><br>" +
+                "New Password: <span style='color: red; font-weight: bold;'>" + newPassword + "</span><br><br>" +
+                "For security reasons, we strongly recommend that you:<br>" +
+                "• Log in as soon as possible using this temporary password<br>" +
+                "• Immediately change your password in your account settings<br>" +
+                "• Choose a strong and unique password<br><br>" +
+                "If you did not request this password reset, please contact us immediately at <a href='mailto:bousliminour70@gmail.com'>allonounou@gmail.com</a><br><br>" +
+                "Thank you for your trust in alloNounou.<br><br>" +
+                "Best regards,<br>" +
+                "The alloNounou Team<br><br>" +
+                "---<br>" +
+                "This is an automated email, please do not reply.<br>" +
+                "For any questions: <a href='mailto:bousliminour70@gmail.com'>allonounou@gmail.com</a>";
         sendEmail(email, subject, message);
 
         LOGGER.info("Password for user with email {} has been reset", email);
         return "New password has been set and sent to your email"; // Retourner un message de succès
 
+    }*/
+    @Override
+    public String forgotPassword(String email) {
+        User user = userRepo.findByEmail(email);
+        if(user == null){
+            LOGGER.warn("User with email {} not found", email);
+            return "User not found";
+        }
+
+        // Générer un mot de passe aléatoire plus sécurisé (12 caractères)
+        String newPassword = RandomStringUtils.randomAlphanumeric(12);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepo.save(user);
+
+        // Préparer l'email
+        String subject = "AlloNounou - Password Reset Request";
+
+        // Déterminer la salutation selon le genre
+        String salutation = "Male".equalsIgnoreCase(user.getGenre()) ? "Mr." : "Ms.";
+        String name = user.getFirstName() != null && !user.getFirstName().trim().isEmpty()
+                ? user.getFirstName() : "User";
+
+        String message = "Dear " + salutation + " " + name + ",\n\n" +
+                "We hope this message finds you well.\n\n" +
+                "Following your password reset request, we have generated a new temporary password for your AlloNouNou account:\n\n" +
+                "New Password: " + newPassword + "\n\n" +
+                "For security reasons, we strongly recommend that you:\n" +
+                "• Log in as soon as possible using this temporary password\n" +
+                "• Immediately change your password in your account settings\n" +
+                "• Choose a strong and unique password\n\n" +
+                "If you did not request this password reset, please contact us immediately at allonounou@gmail.com\n\n" +
+                "Thank you for your trust in AlloNouNou.\n\n" +
+                "Best regards,\n" +
+                "The AlloNouNou Team\n\n" +
+                "---\n" +
+                "This is an automated email, please do not reply.\n" +
+                "For any questions: allonounou@gmail.com";
+
+        try {
+            sendEmail(email, subject, message);
+            LOGGER.info("Password reset email sent successfully to user: {}", email);
+            return "A new temporary password has been sent to your email address. Please check your inbox and follow the instructions.";
+        } catch (Exception e) {
+            LOGGER.error("Failed to send password reset email to user: {}", email, e);
+            return "Failed to send reset email. Please try again later or contact support.";
+        }
     }
 
     @Override

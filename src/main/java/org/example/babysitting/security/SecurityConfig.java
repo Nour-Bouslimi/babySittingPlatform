@@ -50,6 +50,7 @@ public class SecurityConfig {
                             .requestMatchers("/user/addUser").permitAll() // Autoriser les requêtes vers /user/addUser sans authentification
                             .requestMatchers("/user/addUserWithImage").permitAll() // Autoriser les requêtes vers /user/addUserWithImages sans authentification
                             .requestMatchers("/user/displayImage/**").permitAll() // Autoriser les requêtes vers /user/displayImage/** sans authentification
+                    .requestMatchers("/user/forgotPassword/**").permitAll()
                             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Autoriser les requêtes OPTIONS (CORS) sans authentification
 
 
