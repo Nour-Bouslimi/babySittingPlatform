@@ -66,7 +66,7 @@ export class MyReservationsComponent implements OnInit {
             console.log(`🗑️ Reservation ${id} deleted successfully`);
             Swal.fire(
               'Deleted!',
-              `Reservation #${id} has been successfully deleted.`,
+              `Reservation  has been successfully deleted.`,
               'success'
             );
           },

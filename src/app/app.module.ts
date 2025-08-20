@@ -44,7 +44,8 @@ import { MyReservationsComponent } from './my-reservations/my-reservations.compo
 import { ChatComponent } from './chat/chat.component';
 import { ChatListComponent } from './chat-list/chat-list.component';
 import { NearbyNanniesMapComponent } from './nearby-nannies-map/nearby-nannies-map.component';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CallComponent } from './call/call.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -71,13 +72,15 @@ import { NearbyNanniesMapComponent } from './nearby-nannies-map/nearby-nannies-m
     MyReservationsComponent,
     ChatComponent,
     ChatListComponent,
-    NearbyNanniesMapComponent
+    NearbyNanniesMapComponent,
+    CallComponent
 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    FontAwesomeModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MatSlideToggleModule,

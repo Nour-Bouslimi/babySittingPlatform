@@ -1,23 +1,30 @@
-
 <!-- Page Header Start -->
 <div class="container-fluid page-header py-5 wow fadeIn" data-wow-delay="0.1s">
   <div class="container text-center py-5">
     <h1 class="display-2 text-white mb-4">Chat</h1>
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb justify-content-center mb-0">
-        <li class="breadcrumb-item"><a routerLink="/home">Home</a ></li>
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
         <li class="breadcrumb-item text-white" aria-current="page">Chat</li>
       </ol>
     </nav>
-
   </div>
 </div>
 <!-- Page Header End -->
 
-
+<br><br><br>
 
 <div class="chat-container">
-  <div class="messages"  *ngIf="senderPhoto && receiverPhoto">
+  <!-- ✅ Header du chat avec bouton vidéo -->
+  <div class="chat-header d-flex justify-content-between align-items-center">
+    <h3>Chat</h3>
+    <button class="video-btn" (click)="startLive()" title="Start live">
+      <fa-icon [icon]="faVideo"></fa-icon>
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div class="messages" *ngIf="senderPhoto && receiverPhoto">
     <div *ngFor="let msg of messages" class="message-row"
          [ngClass]="{'my-message': (+msg.sender_id === senderId), 'their-message': (+msg.sender_id === receiverId)}">
 
@@ -32,22 +39,21 @@
         <small class="time">{{ msg.date | date:'shortTime' }}</small>
       </div>
 
-      <!-- 3 points menu, affiché uniquement pour les messages du sender -->
+      <!-- Menu options -->
       <div *ngIf="+msg.sender_id === senderId" class="message-options-container" style="position: relative; display: inline-block;">
         <button (click)="toggleOptions(msg.idMsg)" class="ellipsis-btn" title="Options">⋮</button>
-
-        <!-- Menu déroulant -->
-        <div *ngIf="openedMessageId === msg.idMsg" class="options-menu" style="position: absolute; background: white; border: 2px  solid #ccc; border-radius: 4px 2px 4px 2px; hover:#000; right: 0; z-index: 100;">
+        <div *ngIf="openedMessageId === msg.idMsg" class="options-menu"
+             style="position: absolute; background: white; border: 2px solid #ccc; border-radius: 4px; right: 0; z-index: 100;">
           <button (click)="onEditMessage(msg)" style="background:none; border:none; cursor:pointer; color: #4f93ff">Update</button>
           <button (click)="onDeleteMessage(msg.idMsg)" style="background:none; border:none; cursor:pointer; color: #4f93ff">Delete</button>
         </div>
       </div>
     </div>
-
   </div>
 
+  <!-- Zone input -->
   <div class="input-area">
-    <input [(ngModel)]="newMessage" placeholder="Écrire un message..." (keyup.enter)="sendMessage()"/>
+    <input [(ngModel)]="newMessage" placeholder="Write Message..." (keyup.enter)="sendMessage()"/>
     <button (click)="sendMessage()">
       <i class="fa fa-paper-plane"></i>
     </button>

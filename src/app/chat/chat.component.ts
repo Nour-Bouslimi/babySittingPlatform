@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../services/auth.service";
 import {MessageService} from "../services/message.service";
 import {MessageRequest} from "../models/messageRequest";
 import {UserService} from "../services/user.service";
 import Swal from "sweetalert2";
+import { faVideo } from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-chat',
@@ -21,11 +23,15 @@ export class ChatComponent implements OnInit{
   openedMessageId: number | null = null;  // message dont le menu est ouvert
   editingMessageId: number | null = null; // id message en édition
   newMessage: string = '';                 // contenu input message
+  //live
+  faVideo = faVideo;
+
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
     private messageService: MessageService,
-    private userService:UserService
+    private userService:UserService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -160,6 +166,20 @@ export class ChatComponent implements OnInit{
     });
   }
 
+//live
 
+  startLive() {
+    //alert("Live video feature coming soon 🎥");
+    Swal.fire({
+      title: 'Live Video',
+      text: 'This feature is coming soon! Stay tuned.',
+      icon: 'info',
+      confirmButtonText: 'OK'
+    }).then(() =>{
+      // 🔜 ici tu mettras la navigation vers /call/:id
+      this.router.navigate(['home/call', this.receiverId]);
+    })
+
+  }
 
 }

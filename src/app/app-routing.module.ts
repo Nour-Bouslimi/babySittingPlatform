@@ -22,6 +22,7 @@ import {MyReservationsComponent} from "./my-reservations/my-reservations.compone
 import {ChatComponent} from "./chat/chat.component";
 import {ChatListComponent} from "./chat-list/chat-list.component";
 import {NearbyNanniesMapComponent} from "./nearby-nannies-map/nearby-nannies-map.component";
+import {CallComponent} from "./call/call.component";
 
 const routes: Routes = [
   {path:'home',component:HeaderfooterComponent,
@@ -46,6 +47,10 @@ const routes: Routes = [
     {
       path: 'chat-list',
       component: ChatListComponent
+    },
+    {
+      path: 'call/:id',
+      component: CallComponent
     }
 
 

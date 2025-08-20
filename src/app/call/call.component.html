@@ -1,0 +1,34 @@
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-5 wow fadeIn" data-wow-delay="0.1s">
+  <div class="container text-center py-5">
+    <h1 class="display-2 text-white mb-4">Live</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+        <li class="breadcrumb-item text-white" aria-current="page">Live</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+<!-- Page Header End -->
+
+<br><br><br>
+
+
+<div class="call-container">
+  <h2>Live video call with {{ fullName }}</h2>
+
+  <!-- Flux vidéo -->
+  <div class="video-wrapper">
+    <img [src]="liveURL" alt="Flux vidéo" class="video-stream">
+  </div>
+
+  <!-- Flux audio -->
+  <audio [src]="audioURL" controls autoplay></audio>
+
+  <!--bouton pour end call-->
+  <!-- Icône téléphone rouge avec slash -->
+  <button class="end-call-btn" (click)="endCall()">
+    <fa-icon [icon]="faPhoneSlash" class="red-icon"></fa-icon>
+  </button>
+</div>

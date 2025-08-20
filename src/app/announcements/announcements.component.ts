@@ -137,6 +137,7 @@ filteredAnnonces:any[] = [];
     //verifier si user est connecté pour hide btn update et delete
     this.loggedIn = this.authService.isLoggedIn();
     this.currentUserId = this.authService.getUserId();
+
   }
 
   // dialog for update annonce

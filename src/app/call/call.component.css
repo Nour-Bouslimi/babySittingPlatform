@@ -1,0 +1,27 @@
+.call-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.video-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.video-stream {
+  width: 70%;
+  max-width: 100%;
+  border: 4px solid #4f93ff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.red-icon {
+  color: #e74c3c; /* rouge vif */
+  font-size: 2rem;
+}
+.end-call-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
