@@ -658,11 +658,11 @@ Make sure you have installed:
 ## 📥 Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/allo-nounou.git
+git clone https://github.com/Nour-Bouslimi/babySittingPlatform.git
 cd allo-nounou
 ```
 
-> Replace `https://github.com/your-username/allo-nounou.git` with the actual repository URL.
+
 
 ---
 
