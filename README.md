@@ -772,7 +772,7 @@ It allows users to discover the platform and access its main functionalities thr
 Example:
 
 ```markdown
-![Home Page]([assets/screenshots/home.png](https://raw.githubusercontent.com/Nour-Bouslimi/babySittingPlatform/angularLastVersion/src/assets/screenshots/home.png))
+![Home Page]([assets/screenshots/home.png](https://raw.githubusercontent.com/Nour-Bouslimi/babySittingPlatform/angularLastVersion/src/assets/screenshots/home.png)
 ```
 
 ---
