@@ -761,7 +761,7 @@ with your local MySQL password.
 
 # 🖼️ Screenshots
 
-The following screenshots can be added to the `screenshots/` directory.
+The following screenshots are available in the `src/assets/screenshots/` directory.
 
 ## 🏠 Home Page
 
@@ -769,11 +769,7 @@ The home page provides the main entry point to the Allo Nounou platform.
 
 It allows users to discover the platform and access its main functionalities through a clear and intuitive interface.
 
-Example:
-
-```markdown
 ![Home Page](src/assets/screenshots/home.png)
-```
 
 ---
 
@@ -783,9 +779,7 @@ The authentication interface allows users to securely access the platform.
 
 It provides the login and registration functionalities required to create and access an account.
 
-```markdown
 ![Authentication](src/assets/screenshots/authentication.png)
-```
 
 ---
 
@@ -793,9 +787,7 @@ It provides the login and registration functionalities required to create and ac
 
 The profile interface allows users to manage their personal information.
 
-```markdown
 ![User Profile](src/assets/screenshots/profile.png)
-```
 
 ---
 
@@ -803,9 +795,7 @@ The profile interface allows users to manage their personal information.
 
 The announcements interface allows parents to browse babysitting services published by nannies.
 
-```markdown
 ![Announcements](src/assets/screenshots/announcements.png)
-```
 
 ---
 
@@ -815,9 +805,7 @@ The availability interface allows nannies to manage their available periods.
 
 Parents can consult these periods before making a reservation.
 
-```markdown
 ![Availability](src/assets/screenshots/availability.png)
-```
 
 ---
 
@@ -825,9 +813,7 @@ Parents can consult these periods before making a reservation.
 
 The reservation interface allows parents to select an available nanny and submit a booking request.
 
-```markdown
 ![Reservation](src/assets/screenshots/reservation.png)
-```
 
 ---
 
@@ -835,9 +821,7 @@ The reservation interface allows parents to select an available nanny and submit
 
 The messaging interface allows parents and nannies to communicate directly.
 
-```markdown
 ![Messaging](src/assets/screenshots/messaging.png)
-```
 
 ---
 
@@ -845,9 +829,7 @@ The messaging interface allows parents and nannies to communicate directly.
 
 The notification interface allows users to view important updates related to their activities.
 
-```markdown
 ![Notifications](src/assets/screenshots/notifications.png)
-```
 
 ---
 
@@ -855,9 +837,7 @@ The notification interface allows users to view important updates related to the
 
 The live video functionality allows parents to monitor their children remotely during the babysitting session.
 
-```markdown
-![Live Video](src/assets/screenshots/live-video.png)
-```
+![Live Video](src/assets/screenshots/messaging.png)
 
 ---
 
