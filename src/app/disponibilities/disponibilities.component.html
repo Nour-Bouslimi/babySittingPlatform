@@ -77,7 +77,7 @@
 </div>
  -->
 <div class="container p-4">
-  <h2>Ajouter une disponibilité</h2>
+  <h2>Add a disponibility</h2>
   <form [formGroup]="disponibiliteForm" (ngSubmit)="onSubmit()">
     <div class="mb-3">
       <label for="date" class="form-label">Date</label>
@@ -85,17 +85,17 @@
     </div>
 
     <div class="mb-3">
-      <label for="heureDebut" class="form-label">Heure de début</label>
+      <label for="heureDebut" class="form-label">Start Hour</label>
       <input type="number" id="heureDebut" class="form-control" formControlName="heureDebut" min="0" max="23">
     </div>
 
     <div class="mb-3">
-      <label for="heureFin" class="form-label">Heure de fin</label>
+      <label for="heureFin" class="form-label">End Hour</label>
       <input type="number" id="heureFin" class="form-control" formControlName="heureFin" min="1" max="24">
     </div>
 
     <button type="submit" class="btn btn-primary" [disabled]="disponibiliteForm.invalid">
-      Ajouter
+      Add
     </button>
   </form>
 </div>

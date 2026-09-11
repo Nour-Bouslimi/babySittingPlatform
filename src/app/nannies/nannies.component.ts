@@ -179,7 +179,7 @@ console.log('formattedDate:', formattedDate);
           heureDebut >= d.heureDebut && heureFin <= d.heureFin
         );
 console.log('availability:', dispos);
-        if (!isWithinAvailability) {
+     /*   if (!isWithinAvailability) {
           Swal.fire({
             icon: 'error',
             title: 'Unavailable Time',
@@ -187,7 +187,7 @@ console.log('availability:', dispos);
             confirmButtonText: 'OK'
           });
           return;
-        }
+        }*/
 
         // Étape 2 : Vérifier qu’il n’y a pas déjà une réservation ACCEPTÉE sur ce créneau
         this.reservationService.getReservationsByNounouId(this.selectedNounouId)

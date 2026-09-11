@@ -27,7 +27,7 @@ filteredAnnonces:any[] = [];
   itemsPerPage: number = 3; // Number of announcements per page
   totalPages: number = 1;
   currentUserId: number | null = null;
-
+role: string | null = null; // Store the user's role
   getAnnonces() {
     this.annoncesService.getAllAnnonces().subscribe({
       next: (response) => {
@@ -137,6 +137,10 @@ filteredAnnonces:any[] = [];
     //verifier si user est connecté pour hide btn update et delete
     this.loggedIn = this.authService.isLoggedIn();
     this.currentUserId = this.authService.getUserId();
+    const tokenPayload = this.authService.decodedToken();
+    console.log('Decoded token payload:', tokenPayload);
+    const roles = tokenPayload?.roles || []; // Gestion si roles est absent
+    this.role = Array.isArray(roles) ? roles[0] : roles;
 
   }
 

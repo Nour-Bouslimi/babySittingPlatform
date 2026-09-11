@@ -43,11 +43,11 @@ export class DisponibilitiesComponent implements OnInit{
 
     this.disponibiliteService.createDisponibility(disponibilite).subscribe({
       next: () => {
-        Swal.fire('Succès', 'Disponibilité ajoutée avec succès.', 'success');
+        Swal.fire('Success', 'Disponibility added successfully.', 'success');
         this.disponibiliteForm.reset();
       },
       error: () => {
-        Swal.fire('Erreur', 'Impossible d’ajouter la disponibilité.', 'error');
+        Swal.fire('Error', 'Can Not add disponibility.', 'error');
       },
     });
   }
